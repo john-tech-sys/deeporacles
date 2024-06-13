@@ -1,0 +1,22 @@
+
+{% extends 'main.html' %}
+
+{% load static %}
+{% block home %}
+<div class="container-fluid">
+  <div class="card py-4">
+    <div class="card-body">
+      <h1 class="card-title text-center module-title"><b>Server Error</b></h1><br>
+      <div class="w-100 d-flex justify-content-center">
+      <img class="" src="{% static 'home/images/404.png' %}" alt="error 500">
+      </div>
+      <p><h1>500 - Server Error</h1></p>
+      <div class="main-panel d-flex justify-content-center flex-column">
+          <p class="w-100 text-center">There was an error on the server. Please try again later.</p>
+          <a class="button-404 btn w-auto" href="{% url "home" %}">Back - to - Homepage</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

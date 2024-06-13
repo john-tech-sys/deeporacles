@@ -1,0 +1,16 @@
+{% load thumbnail %}
+<div class="d-flex">
+    <a class="d-flex justify-content-between" href="{% url 'details' post.slug %}" >
+      <div class="my-auto ml-1">
+        <span class="text-main h6">{{ post.title|safe|truncatechars_html:"60" }}</span>
+        <span class="text-field text-main"> {{post.content|safe|truncatechars_html:"70"}}
+        </span>
+      </div>
+      <span class="my-auto">
+        {% if post.picture %}
+        <img class="image" src="{% thumbnail post.get_picture 80x80 crop %}"
+          alt="Space"/>
+        {% endif %}
+      </span>
+    </a>
+  </div><hr>

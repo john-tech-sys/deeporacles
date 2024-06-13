@@ -1,0 +1,22 @@
+<br><div class="w-100 d-flex well dummy-request" id="request-container-{{member.pk}}">
+		<div class=" d-flex w-100">
+			<div>
+				<img src="{{member.profile.picture.url}}" class=" small-image">
+			</div>
+			<div class="ml-2 my-auto h6">
+				<a href="">
+					{{member.profile.name}}
+				</a>
+			</div>
+		</div>
+		<div class=" my-auto w-50">
+			<button class="accept" onclick="AcceptUserRequestToGroup('{{forum.pk}}', '{{member.pk}}')">
+				Accept
+			</button>
+			<button style=" width: 100px; " class="alert" onclick="DenyUserRequestToGroup('{{forum.pk}}', '{{member.pk}}')">
+				Deny
+			</button>
+		</div>
+	</div><br>
+	{% include 'fragments/js/profilesjs.html' %}
+	{% include 'fragments/postingjs.html' %}

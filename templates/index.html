@@ -1,0 +1,485 @@
+
+
+{% load static %}
+{% load custom_tags %}
+{% footerlinks as footerlinks %}
+{% load solo_tags %}
+{% get_solo 'settings.SiteConfiguration' as site_config %}
+<style>
+  .narva div,
+  .narva ul,
+  .narva li,
+  .narva nav {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+  }
+  .narva nav,
+  .narva section {
+    display: block;
+  }
+  body {
+    padding-left: 3rem;
+  }
+  @media (max-width: 1024px) {
+    body {
+      padding-left: 0;
+    }
+    .mCustomScrollbar2, .mCustomScrollbar2 .category-list,
+    .mCustomScrollbar2 .menu-item, .mCustomScrollbar2 .card-toggle {
+      padding-left: 0 !important;
+      margin-left: 0 !important;
+    }
+  }
+  .narva {
+    font-size: 62.5%;
+    width: 23.2rem;
+    height: 100vh;
+    padding-left:0.5rem;
+    padding-bottom: 4rem;
+    position: fixed;
+    transition: all 0.5s ease;
+  }
+.toggle-nav-sidebar {
+  z-index: 110;
+  left: 0;
+  display: block;
+  align-items: start;
+  justify-content: start;
+  border: 0;
+  background-color: #d9edf7;
+}
+  .narva .logo-name-wrapper {
+    position: relative;
+    display: flex;
+    font-size: 1.2rem;
+  }
+  .narva .logo-name {
+    display: flex;
+    align-items: center;
+    flex: 1;
+  }
+  .narva .logo-name img.logo2 {
+    height: 30px;
+  }
+  .narva .logo-name__name {
+    padding-left: 0.5rem;
+    white-space: nowrap;
+  }
+  .narva .logo-name__button {
+    right: 0;
+    font-size: 1.8rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .narva .logo-name__icon {
+    font-size: 1.8rem;
+    margin-right:1rem
+  }
+  .mCustomScrollbar2 .message {
+    background: #b2d5ff;
+  }
+  .mCustomScrollbar2 .message .bi{
+    color:#d9edf7 !important;
+  }
+  .mCustomScrollbar2 .message-icon {
+    color:#d9edf7 !important;
+    padding-left:0.5rem;
+    font-size: 1.5rem;
+    transform: translateX(3rem);
+    transition: all 0.5s ease;
+  }
+  .mCustomScrollbar2 .category-item-status.bi, .mCustomScrollbar2 .message-icon.bi {
+    color:#0f335f !important;
+  }
+  .narva.collapse .message-icon {
+    transform: translateX(0);
+    color:#0f335f !important
+  }
+  .mCustomScrollbar2 .message-text {
+    margin-left: 0;
+    white-space: nowrap;
+    transform: translateX(3rem);
+    transition: all 0.5s ease;
+  }
+  .narva.collapse .mCustomScrollbar2 {
+    overflow-y: scroll;
+  }
+  .mCustomScrollbar1 {
+    height: 80vh;
+  }
+  .mCustomScrollbar2 {
+    overflow-y: scroll;
+    padding-bottom: 3rem;
+    padding-right: 1.2rem;
+    height: 90vh;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  .mCustomScrollbar2 .message:hover, .mCustomScrollbar2 .card-toggle:hover {
+    background-color: #b2d5ff;
+  }
+  .mCustomScrollbar2::-webkit-scrollbar-track {
+    border-radius: 2px;
+  }
+  .mCustomScrollbar2::-webkit-scrollbar {
+    width: 0;
+    background-color: #fafafa;
+  }
+  .mCustomScrollbar2::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #BFBFBF;
+  }
+  .mCustomScrollbar2 .category-list {
+    color: #0f335f;
+    list-style: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    border-bottom: 1px solid #292932;
+  }
+  .mCustomScrollbar2 .j-menu, .mCustomScrollbar2 .menu-item {
+    background-color: #b2d5ff;
+  }
+  .mCustomScrollbar2 .category-item {
+    position: relative;
+    padding-top: 0.9rem;
+    margin-left: 2rem;
+    line-height: 1.8rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .narva.collapse .mCustomScrollbar2 .category-item,
+  .narva.collapse .mCustomScrollbar2 .j-menu {
+    margin-left: 0;
+    padding-left: 0 !important;
+  }
+  .mCustomScrollbar2 .category-item-text {
+    transition: opacity 0.6s ease;
+    opacity: 1;
+  }
+  .narva.collapse .category-item-status.bi {
+    color:#0f335f !important
+  }
+  .mCustomScrollbar2 .category-item-status_img img{
+  height: 1.6rem;
+  width: 1.6rem;
+  border-radius: 50%;
+  margin-left: 1rem;
+  border: none;
+  display: inline-block;
+  }
+  .mCustomScrollbar2 .category-item-status {
+  border-radius: 50%;
+  margin-left: 1rem;
+  border: none;
+  display: inline-block;
+  height: 1.6rem;
+  width: 1.6rem;
+}
+.mCustomScrollbar2 .category-item-status.bi {
+  background-color: transparent !important;
+}
+.mCustomScrollbar2 .category-item-status:hover {
+background-color: white !important;
+}
+.mCustomScrollbar2 .category-item-number {
+    top: 50%;
+    right: 0;
+  }
+  .narva.collapse {
+    width: 3rem;
+    background-color: #fff;
+    opacity: 1;
+    transition: 0.3s;
+  }
+  .narva.collapse:hover{
+    width: 23.2rem;
+  }
+  .narva.collapse:hover .mCustomScrollbar2 .category-item, .mCustomScrollbar2 .j-menu {
+    padding-top: 0.9rem;
+    margin-left: 2rem;
+  }
+  .narva.collapse:hover 
+  .narva.collapse .logo-name,
+  .narva.collapse .category-item-text,
+  .narva.collapse .category-item-number,
+  .narva.collapse .message-text {
+    visibility: visible;
+  }
+  .narva .bi-list{
+    right: 0 !important;
+    color:#0f335f !important
+  }
+  .narva .bi-list, .narva.collapse .bi-x-circle{
+    display:none
+  }
+  .narva.collapse .bi-list, .narva .bi-x-circle{
+    display:block
+  }
+  .bi-x-circle{
+    color: #114488 !important
+  }
+  .narva.collapse .logo-name,
+  .narva.collapse .category-item-text,
+  .narva.collapse .category-item-number,
+  .narva.collapse .message-text {
+    visibility: invisible;
+  }
+  .narva.collapse .logo-name__button {
+    right: -0.8rem !important
+  }
+</style>
+<nav class="narva toggle-nav-sidebar collapse">
+  <div class="pt-2">
+    <div class="logo-name-wrapper sidebar_open pt-3 cursor-pointer">
+      <div class="logo-name ml-2">
+        <img src="{{site_config.logo.url}}" class="my-auto" style="height:25px" alt="{{site_name}}" />
+      </div>
+      <button class="logo-name__button my-auto">
+        <i class="bi bi-x-circle logo-name__icon" id="logo-name__icon"></i>
+        <i class="bi bi-list logo-name__icon" id="logo-name__icon"></i>
+      </button>
+    </div>
+    <div class="mCustomScrollbar1 my-3" id="main-menu">
+      <div class="mCustomScrollbar2">
+        <a href="{% url 'home' %}" class="w-100 mt-1">
+          <ul class="category-list bg-transparent mx-0 mt-3">
+            <div class="{% if 'home' in segment %}message{% endif %} card-toggle cursor-pointer py-1 d-flex">
+              <i class="message-icon h3 my-2 bi bi-house-door" title="home"></i>
+              <div class="message-text">
+                  <h6 class="bg-transparent text-blue">Home</h6>
+              </div>
+            </div>
+          </ul>
+        </a>
+        {% comment %} <ul class="category-list bg-transparent mx-0 my-3">
+          <div data-toggle="collapse" data-target="#collapse-60b6a85d1e68f" 
+          class="{% if 'Ajoreb' in segment %}message{% endif %} card-toggle cursor-pointer py-1 d-flex">
+            <i class="message-icon h3 my-2 bi fa fa-group" title="Forums"></i>
+            <div class="message-text">
+                <a class="section">
+                    <h6 class="bg-transparent text-blue">Forums</h6>
+                </a>
+            </div>
+          </div>
+          <li class="menu-item ">
+            <ul class="collapse" id="collapse-60b6a85d1e68f">
+              <li class="category-item mb-2">
+                <a  data-toggle="collapse" data-target="#collapse-60b6a85d1e68my" title="{{menu.section_name}}" class="cursor-pointer">
+                  <span class="category-item-status {{menu.icon}}"></span>
+                  <b class="category-item-text">My Forums</b>
+                </a>
+                <div class="collapse" id="collapse-60b6a85d1e68my">
+                  <ul class="j-menu pl-1">
+                    <li class="menu-item my-2" title="{{ link.name|title }}">
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="category-item mb-2">
+                <a  data-toggle="collapse" data-target="#collapse-60b6a85d1e68pi" title="{{menu.section_name}}" class="cursor-pointer">
+                  <span class="category-item-status {{menu.icon}}"></span>
+                  <b class="category-item-text">Followed Forums</b>
+                </a>
+                <div class="collapse" id="collapse-60b6a85d1e68pi">
+                  <ul class="j-menu pl-1">
+                    <li class="menu-item my-2" title="SCruitny">
+                      {% for forum in request.user.circles.forums.all %}
+                      {% if request.user == forum.forum_admin %}
+                      <a class="m-1" href="{% url 'forum' forum.slug %}">
+                          <img class="small-image mr-1" src="{{forum.picture.url}}"/>
+                          <span class="links-text">{{ forum.forum_name }}</span>
+                      </a>
+                      {% endif %}
+                      {% endfor %}
+                    </li>
+                  </ul>
+                </div>
+              </li>
+              <li class="category-item mb-2">
+                <a  data-toggle="collapse" data-target="#collapse-60b6a85d1e68{{menu.pk}}" title="{{menu.section_name}}" class="cursor-pointer">
+                  <span class="category-item-status {{menu.icon}}"></span>
+                  <b class="category-item-text">All Forums</b>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul> {% endcomment %}
+        <ul class="category-list bg-transparent mx-0 my-3">
+          <div data-toggle="collapse" data-target="#collapse-60b6a85d1e68b" 
+          class="{% if 'Market' in segment %}message{% endif %} card-toggle cursor-pointer py-1 d-flex">
+            <i class="message-icon h3 my-2 bi bi-chat-dots" title="My Stores"></i>
+            <div class="message-text">
+                <a class="section" href="{% url 'mypal' %}">
+                    <h6 class="bg-transparent text-blue">My Pal</h6>
+                </a>
+            </div>
+          </div>
+        </ul>
+        <ul class="category-list bg-transparent mx-0 my-3">
+          <div data-toggle="collapse" data-target="#collapse-60b6a85d1e68c" 
+          class="{% if 'Bucket' in segment %}message{% endif %} card-toggle cursor-pointer py-1 d-flex">
+            <i class="message-icon h3 my-2 bi bi-basket3" title="In My Bucket"></i>
+            <div class="message-text">
+                <a class="section">
+                    <h6 class="bg-transparent text-blue">My Bucket</h6>
+                </a>
+            </div>
+          </div>
+          <li class="menu-item ">
+            <ul class="collapse" id="collapse-60b6a85d1e68c">
+              {% if user.is_authenticated %}
+              <li class="category-item mb-3">
+                <a href="{% url 'save-post' %}" title="Saved Posts">
+                <span class="category-item-status bi bi-journal-richtext"></span><span class="category-item-text">
+                  Saved Posts</span>
+                 </a>
+              </li>
+              <li class="category-item mb-3">
+                <a href="{% url 'reviews' %}" title="Reviews">
+                <span class="category-item-status bi bi-box-arrow-in-right pr-3"></span><span class="category-item-text">
+                  Reviews</span>
+                  </a>
+              </li> 
+              {% endif %}
+            </ul>
+          </li>
+        </ul>
+        <ul class="category-list bg-transparent mx-0 my-3">
+          <div data-toggle="collapse" data-target="#collapse-60b6a85d1e68e" 
+            class="{% if 'Mall' in segment %}message{% elif 'Hub' in segment %}message{% endif %} card-toggle cursor-pointer py-1 d-flex">
+            <i class="message-icon h3 my-2 bi bi-grid" title="Menu"></i>
+            <div class="message-text">
+                <a class="section">
+                    <h6 class="bg-transparent text-blue">Menu</h6>
+                </a>
+            </div>
+          </div>
+          <li class="menu-item ">
+            <ul class="collapse" id="collapse-60b6a85d1e68e">
+              <li class="category-item mb-2">
+                <a data-toggle="collapse" data-target="#collapse-60b6a85d1e68w" title="Services" class="cursor-pointer">
+                <span class="category-item-status bi bi-menu-button"></span>
+                <b class="category-item-text">Products & Services</b></a>
+                  <div class="collapse" id="collapse-60b6a85d1e68w">
+                      <ul class="j-menu pl-1">
+                        <li class="menu-item my-2">
+                          <a href="{% url "about"%}">
+                            <span class="category-item-status fa "></span>
+                            <span class="links-text">Web dev</span>
+                          </a>
+                      </li>
+                      <li class="menu-item my-2">
+                        <a href="">
+                          <span class="category-item-status fa "></span>
+                          <span class="links-text">Web dev</span>
+                        </a>
+                    </li>
+                      </ul>
+                  </div>
+              </li>
+              <li class="category-item mb-2">
+                <a data-toggle="collapse" data-target="#collapse-60b6a85d1e68kl" title="More" class="cursor-pointer">
+                <span class="category-item-status bi bi-menu-button"></span>
+                <b class="category-item-text">More Information</b></a>
+                  <div class="collapse" id="collapse-60b6a85d1e68kl">
+                      <ul class="j-menu pl-1">
+                        <li class="menu-item my-2">
+                          <a href="{% url "faq"%}">
+                            <span class="category-item-status fa "></span>
+                            <span class="links-text">Help & FAQs</span>
+                          </a>
+                        </li>
+                        <li class="menu-item my-2">
+                            <a href="{% url "about"%}">
+                              <span class="category-item-status fa "></span>
+                              <span class="links-text">About</span>
+                            </a>
+                        </li>
+                        <li class="menu-item my-2">
+                          <a href="{% url "contact"%}">
+                            <span class="category-item-status fa "></span>
+                            <span class="links-text">contact</span>
+                          </a>
+                        </li>
+                        <li class="menu-item my-2" title="Terms & Policies">
+                          <a href="{% url "terms"%}">
+                            <span class="category-item-status fa "></span>
+                            <span class="links-text">Terms & Policies</span>
+                          </a>
+                        </li>
+                      </ul>
+                  </div>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        {% if request.user.is_superuser or request.user.is_admin %}
+        <ul class="category-list bg-transparent mx-0 my-3">
+          <div data-toggle="collapse" data-target="#collapse-60b6a85d1e68d" 
+          class="{% if 'Management' in segment %}message{% endif %} card-toggle cursor-pointer py-1 d-flex">
+            <i class="message-icon h3 my-2 bi bi-building" title="Management"></i>
+            <div class="message-text">
+                <a class="section">
+                    <h6 class="bg-transparent text-blue">Management</h6>
+                </a>
+            </div>
+          </div>
+          <li class="menu-item ">
+            <ul class="collapse" id="collapse-60b6a85d1e68d">
+              <li class="category-item mb-3">
+                  <a href="/deeporacles/admin" title="Go to Admin">
+                    <span class="category-item-status bi bi-building"></span>
+                    <span class="category-item-text">Main Admin</span>
+                  </a>
+              </li>
+              <li class="category-item mb-3">
+                  <a href="/api/docs" title="Go to Admin">
+                    <span class="category-item-status bi bi-building"></span>
+                    <span class="category-item-text">Deep API Docs</span>
+                  </a>
+              </li>
+              <li class="category-item mb-3">
+                  <a href="/api/redoc" title="Go to Admin">
+                    <span class="category-item-status bi bi-building"></span>
+                    <span class="category-item-text">Deep API Redoc</span>
+                  </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+        {% endif %}
+        <ul class="category-list bg-transparent mx-0 my-3">
+          <div class="card-toggle pr-1 d-flex cursor-pointer">
+            <i class="message-icon h3 my-2 bi bi-power" {% if user.is_authenticated %}
+            title="logout"{% else %} title="login"{% endif %}></i>
+            <div class="message-text">
+              {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="section">
+                    <h6 class="bg-transparent text-danger">logout</h6>
+                </a>
+                {% else %}
+                <a href="{% url 'login' %}" class="section">
+                    <h6 class="bg-transparent text-blue">login</h6>
+                </a>
+                {% endif %}
+            </div>
+          </div>
+        </ul>
+      </div><br>
+    </div>
+  </div>
+</nav>
+  <script type="text/javascript">
+      let sideBar = document.querySelector('.narva');
+      let sideBarOpen = document.querySelector('.sidebar_open');
+      sideBarOpen.onclick = () => {
+        sideBar.classList.toggle('collapse');
+        arrowCollapse.classList.toggle('collapse');
+      };
+  </script>

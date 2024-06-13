@@ -1,0 +1,28 @@
+{% extends 'accounts/LandingPage.html' %}
+
+{% load static %}
+{% block signup %}
+
+
+<link rel="stylesheet" href="{% static 'home/Bootstrap/dist/css/bootstrap.css' %}">
+
+<link href="{% static 'home/css/ajoreb.css' %}" type="text/css" rel="stylesheet" media="all">
+
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+<div class='row'>
+    <div class="col-12 text-center py-5">
+            {% if key %}
+                <h1 class='my-5 py-5'>Activation Error. Please try again.</h1>
+            {% else %}
+                <h1 class='my-5 py-5'>Re-activate your Email Below.</h1>
+            {% endif %}
+      </div>
+        <div class="col-12 text-center">
+            <form method='POST' action=''>{% csrf_token %}
+                {{ form.as_p }}
+                <input class='btn btn-default' type='submit' value='Resend Activation' />
+            </form>
+      </div>
+</div>
+{% endblock %}

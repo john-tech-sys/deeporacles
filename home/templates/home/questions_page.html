@@ -1,0 +1,65 @@
+{% extends 'main.html' %} 
+{% load static %} 
+{% load social_share %} 
+{% load thumbnail %} 
+{% block headtitle %} {{ site_name }}-Homepage-{{request.user}} 
+{% endblock headtitle %} 
+{{ form.media }} {% block home %} 
+{% block extendheader %}
+<script
+  async
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8577136522156224"
+  crossorigin="anonymous"
+></script>
+{% endblock %}
+<div class="bg-now">
+  <div class="container-fluid">
+    <div class="w-100 bg-info d-flex">
+      <ul class="breadcrumb">
+        <li><a href="{% url 'home' %}"><span class="bi bi-house"></span></a>
+        </li>
+        <li class="active"><span class="h6">Questions</span></li>
+      </ul>
+      <a href="{% url 'ask_question' %}" class="px-2 my-auto bg-now main-btn d-flex" >
+        <span class="btn p-0"><i class="h5 bi bi-plus"></i></span>
+        <span class="h6 mx-1 text-center">Ask Question</span>
+      </a>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div id="bottom" class="bottom top-row">
+      <div class="grid-rows">
+        <div class="grid-row grid-row-top-6 px-2 pt-3">
+          <div class="grid-cols">
+            <div class="grid-col grid-col-top-6-1">
+              <div class="grid-items crumina-sticky-sidebar">
+                <div class="grid-item grid-item-top-6-1-1 px-2 sidebar__inner">
+                  <span class="title">Trending</span>
+                  <ul class="my-2 mx-0 px-0">
+                    <li class="menu-item w-100 well">
+                      {% for post in questions %}
+                      {% include 'home/fragments/trend_post.html' %}
+                      {% endfor %}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="grid-col grid-col-top-6-2 px-0">
+              <div class="grid-items crumina-sticky-sidebar">
+                <div class="grid-item grid-item-top-6-2-1">
+                  <span class="h3 title">Questions</span>
+                  <div class="module module-blocks module-blocks-100 blocks-grid py-1 question-container" id="questions">
+                    {% include 'home/fragments/grid_question.html' %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% include 'fragments/js/profilesjs.html' %} 
+{% include 'fragments/postingjs.html' %} {% endblock home %}

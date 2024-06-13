@@ -1,0 +1,109 @@
+{% extends 'main.html' %}
+        {% load static %}
+        {% block headtitle %}
+        {{ site_name }}-{{user.profile.user}}'s Timeline
+        {% endblock headtitle %}
+        {% load thumbnail %}
+        {% block home %}
+        <div class="bg-now">
+            {% include 'profiles/profile_top.html' %}
+            <div class="container-fluid">
+                <div id="bottom" class="bottom top-row">
+                    <div class="grid-rows">
+                        <div class="grid-row grid-row-top-0 pt-3">
+                            <div class="grid-cols">
+                                <div class="grid-col grid-col-top-0-1">
+                                    <div class="grid-items crumina-sticky-sidebar">
+                                        <div class="grid-item grid-item-top-0-1-1 sidebar__inner">
+                                            {% if user == request.user %}
+                                            <ul class="h6 mx-0 px-0">
+                                                <li class="menu-item w-100 well ">
+                                                    <div class="d-flex flex-column">
+                                                        <a class="p-2 w-100 lean" href="{% url "posts_viewed" %}">
+                                                            <span class="links-text"><i class="h3 bi bi-eye pr-3"></i>Recently viewed</span>
+                                                        </a>
+                                                        <a class="p-2 w-100 lean" href="{% url "recommend_post" %}">
+                                                            <span class="links-text"><i class="h3 bi bi-signpost pr-3"></i>Recommended</span>
+                                                        </a>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            {% endif %}
+                                            <span class="title">Forums</span>
+                                            <ul class="my-3 mx-0 px-0">
+                                                <li class="menu-item w-100 well">
+                                                    {% for forum in request.user.circles.forums.all %}
+                                                    {% if request.user == forum.forum_admin %}
+                                                    <div class="d-flex py-1">
+                                                        <a class="m-1" href="{% url 'forum' forum.slug %}">
+                                                            <img class="small-image mr-1" src="{% thumbnail forum.picture 50x50 crop %}"
+                                                            alt="{% thumbnail forum.forum_cover_photo 20x20 crop %}"/>
+                                                            <span class="links-text">{{ forum.forum_name }}</span>
+                                                        </a>
+                                                    </div>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                    {% if user == request.user %}
+                                                    <div class="d-flex mt-2 pt-2 justify-content-between">
+                                                        <a class="m-1 main-btn" href="{% url 'forums' %}">
+                                                            <span class="fa fa-group"></span>
+                                                            <span class="h6">view all</span>
+                                                        </a>
+                                                        <a class="m-1 main-btn" href="{% url 'create-forum' %}">
+                                                            <span class="fa fa-plus"></span>
+                                                            <span class="h6">Create Forum</span>
+                                                        </a>
+                                                    </div>
+                                                    {% endif %}
+                                                </li>
+                                            </ul>
+                                            {% if user == request.user %}
+                                            <h4 class="title">Bucket</h4>
+                                            <ul class="my-3 h6 mx-0 px-0">
+                                                <li class="menu-item">
+                                                    <a class="w-100 well my-1" href="{% url 'save-post' %}">
+                                                        <span class="links-text m-auto"><i class="bi bi-journal-richtext pr-3"></i>Saved Posts</span>
+                                                    </a>
+                                                </li>
+                                                <li class="menu-item">
+                                                    <a class="w-100 well my-1" href="{% url 'reviews' %}">
+                                                        <span class="links-text m-auto"><i class="bi bi-box-arrow-in-right pr-3"></i>Reviews</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid-col grid-col-top-0-2">
+                                    <div class="grid-items">
+                                        <div class="grid-item grid-item-top-0-2-1 crumina-sticky-sidebar">
+                                            <h4 class="title">{% if 'Bucket' in segment %}Saved{% elif 'Recommendation' in segment %}Recommended
+                                                {% elif 'Reviews' in segment %}Reviewed{% elif 'Recentviews' in segment %}viewed{% endif %} Post Feeds</h4>
+                                            <div class="module module-blocks module-blocks-100 blocks-grid post-container" id="filterData" data-counter="2">
+                                                {% include 'home/posts.html' %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="grid-col grid-col-top-0-3">
+                                    <div class="grid-items crumina-sticky-sidebar">
+                                        <div class="grid-item grid-item-top-0-1-1 sidebar__inner">
+                                            <h4 class="title">{% if 'Bucket' in segment %}Saved{% elif 'Recommendation' in segment %}Recommended
+                                                {% elif 'Reviews' in segment %}Reviewed{% elif 'Recentviews' in segment %}viewed{% endif %} Question Feeds</h4>
+                                            <div class="module module-blocks module-blocks-100 blocks-grid py-1 question-container" id="questions">
+                                                {% include 'home/questions.html' %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include 'fragments/js/profilesjs.html' %}
+        {% include 'fragments/postingjs.html' %}
+        {% endblock %}
+

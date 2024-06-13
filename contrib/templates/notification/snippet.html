@@ -1,0 +1,23 @@
+
+
+{% load thumbnail %}
+<ul class="notificaion-menu j-menu pt-3 text-wrap" id="notification_div">
+    <h4 class="w-100 text-center">Notifications</h4>
+    {% for notification in notifications %}
+    <li class="menu-item d-flex justify-content-between">
+            <a  href="{{notification.redirect_url}}" class=" links-text dropdown-item">
+                    {% comment %} <img class="small-image" src="{% thumbnail notification.sender.profile.picture 50x50 crop %}"> {% endcomment %}
+                    @ {{notification.text_preview|safe}}
+            </a>
+            <a class="flex-1 cursor-pointer bi bi-x-circle m-auto"
+                    hx-delete="{% url 'remove_notification' notification.pk %}" hx-target="#notification_div">
+            </a> 
+    </li>
+    {% empty %}
+    <li class="menu-item">
+            <a class="links-text dropdown-item">
+                    You do not have new notificaions
+            </a>
+    </li>
+    {% endfor %}
+</ul>

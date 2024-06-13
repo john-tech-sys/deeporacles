@@ -1,0 +1,112 @@
+{% extends "main.html" %}
+{% load static %}
+{% block headtitle %}
+safetytips
+{% endblock headtitle %}
+{% block home %}
+
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8577136522156224"
+    crossorigin="anonymous"></script>
+</head>
+<div class="bg-now">
+<div class="container-fluid">
+
+    <div id="bottom" class="bottom top-row">
+        <div class="grid-rows">
+
+            <div class="grid-row grid-row-top-9">
+                <div class="grid-cols">
+                    <div class="grid-col grid-col-top-9-1">
+                        <div class="grid-items">
+                            <div class="grid-item grid-item-top-9-1-1">
+                                <div class="module-items">
+                                    <h3 class="title module-title">Safety Tips</h3>
+                                    <ul class="menu-item">
+                                        {% for safetytip in safetytips %}
+                                        <li class="menu-items my-3">
+                                            <a href="#{{ safetytip.pk }}" class="module-title">
+                                                {{ safetytip.title|safe }}
+                                            </a>
+                                        </li>
+
+                                        {% endfor %}
+                                    </ul><br><hr>
+                                    <h3 class="title module-title">Security</h3>
+                                    <ul class="menu-item">
+                                        {% for safetytip in safetytips %}
+                                        <li class="menu-items my-3">
+                                            <a href="#{{ safetytip.pk }}" class="module-title">
+                                                {{ safetytip.title|safe }}
+                                            </a>
+                                        </li>
+
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                    <hr>
+                    <div class="grid-col grid-col-top-9-2">
+                        <div class="grid-items">
+                            <div class="grid-item grid-item-top-9-2-1">
+                                <div class="row">
+                                    <h3 class="w-100 text-center">GET TO KNOW HOW TO BE SAFE</h3>
+                                    <div id="content" >
+                                        <section class="faq-area section-padding-lg bg-white">
+                                            <div class="row">
+                                                <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-12 offset-0">
+                                                    <div class="section-title ">
+                                                        <h4>Your safe is the most important thing to us, so read through
+                                                            our safety guidelines.
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row faq-wrapper">
+                                                <div class="">
+                                                    <div class="accordion-wrap" id="cr-accordion">
+                                                        {% for safetytip in safetytips %}
+                                                        <div class="accordion my-5  text-center"
+                                                            id="{{ safetytip.pk }}">
+                                                            <div class="section-title" data-toggle="collapse"
+                                                                data-target="#cr-accordion-section-{{ safetytip.pk }}">
+                                                                <h4 class="text-blue"><b>{{ safetytip.title }}</b>
+                                                                </h4>
+                                                            </div>
+                                                            <div id="cr-accordion-section-{{ safetytip.pk }}"
+                                                                class="collapse show" data-parent="#cr-accordion">
+                                                                <div class="accordion-body" style="margin: auto;">
+                                                                    {{ safetytip.details|safe }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        {% endfor %}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                </div><br>
+                                <hr>
+                            </div>
+                            <h3>Still have questions? Contact us at deeperoracles@gmail.com </h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% include 'modules/info-block.html' %}
+
+</div>
+{% endblock home %}

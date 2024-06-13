@@ -1,0 +1,29 @@
+
+{% extends 'main.html' %}
+
+{% load static %}
+{% block home %}
+<div class="container-fluid">
+  <div class="card py-4">
+    <div class="card-body">
+      <h1 class="card-title text-center module-title"><b>ERROR 404</b></h1><br>
+      <div class="w-100 d-flex justify-content-center">
+      <img class="" src="{% static 'home/images/404.png' %}" alt="error 404">
+      </div>
+      <p><h5 class="card-title text-center">
+        <b>Sorry the page you are looking for does not exist </b>
+        </h5>
+      </p>
+      <p><h5 class="text-blue card-title text-center"><b>
+        <span >or </span>
+        <span >might have been shifted.</span>
+      </b></h5></p>
+      <div class="main-panel d-flex justify-content-center flex-column">
+          <p class="w-100 text-center">The page you went to does not exist </p>
+          <a class="button-404 btn w-auto" href="{% url "home" %}">Back - to - Homepage</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

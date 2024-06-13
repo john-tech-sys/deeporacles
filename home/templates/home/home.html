@@ -1,0 +1,170 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% load social_share %}
+
+{% load thumbnail %}
+{% block headtitle %}
+{{ site_name }}-Homepage-{{request.user}}
+{% endblock headtitle %}
+
+{{ form.media }}
+
+{% block home %}
+<div class="bg-now">
+    <div class="container-fluid">
+        <div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-0 py-0">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-0-1 ">
+                            <div class="listing d-flex justify-content-around">
+                                <a href="{% url 'questions' %}" class="my-2 mx-2 main-btn border-secondary">
+                                    <span class="btn p-0"><i class="h4 bi bi-patch-question-fill"></i></span>
+                                    <span class="mt-3 h6 mx-1">Questions</span>
+                                </a>
+                                <a href="{% url 'ask_question' %}" class="my-auto mx-2 main-btn border-secondary">
+                                    <span class="btn p-0"><i class="h5 bi bi-plus"></i></span>
+                                    <span class="mt-3 h6 mx-1">Ask</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="grid-col grid-col-top-0-2">
+                            <div class="grid-items d-flex flex-row">
+                                {% if request.user.is_authenticated %}
+                                <a href="{% url 'my_profile' %}" class="user my-auto">
+                                    <span class="links-text mr-2" >
+                                        {% if request.user.profile.picture %}
+                                        <img class="medium-image"
+                                            src="{% thumbnail request.user.profile.picture 80x80 %}"
+                                            alt="{{ request.user.profile.name }}">
+                                        {% else %}
+                                        <div class="h4 medium-image bg-now p-2 d-flex">
+                                            <span class="m-auto">
+                                                {{ request.user.profile.name_initials }}
+                                            </span>
+                                        </div>
+                                        {% endif %}
+                                    </span>
+                                </a>
+                                {% else %}
+                                <a href="{% url 'login' %}" class="user my-auto" >
+                                    <span class="bi bi-person-circle h1 mr-2"></span>
+                                </a>
+                                {% endif %}
+                                <a name="post_form" href="{% url 'post_create' %}" style="flex: 1;">
+                                    <textarea placeholder="Share what's new in the market"
+                                        class="form-control form-control-small px-4" name="words" type="text"
+                                        value=""></textarea>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="grid-col grid-col-top-0-3 ">
+                            <div class="listing d-flex justify-content-around">
+                                <a href="{% url 'questions' %}" class="my-2 mx-2 main-btn border-secondary">
+                                    <span class="btn p-0"><i class="h4 bi bi-patch-question-fill"></i></span>
+                                    <span class="mt-3 h6 mx-1">Questions</span>
+                                </a>
+                                <a href="{% url 'ask_question' %}" class="my-auto mx-2 main-btn border-secondary">
+                                    <span class="btn p-0"><i class="h5 bi bi-plus"></i></span>
+                                    <span class="mt-3 h6 mx-1">Ask</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-0 pt-3">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-0-1">
+                            <div class="grid-items crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-0-1-1 sidebar__inner">
+                                    <ul class="h6 mx-0 px-0">
+                                        <li class="menu-item w-100 well ">
+                                            <div class="d-flex flex-column">
+                                                <a class="p-2 w-100 lean" href="{% url "posts_viewed" %}">
+                                                    <span class="links-text"><i class="h3 bi bi-eye pr-3"></i>Recently viewed</span>
+                                                </a>
+                                                <a class="p-2 w-100 lean" href="{% url "recommend_post" %}">
+                                                    <span class="links-text"><i class="h3 bi bi-signpost pr-3"></i>Recommended</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <span class="title">Forums</span>
+                                    <ul class="my-3 mx-0 px-0">
+                                        <li class="menu-item w-100 well">
+                                            {% for forum in forums %}
+                                            {% if request.user == forum.forum_admin %}
+                                            <div class="d-flex py-1">
+                                                <a class="p-2 w-100 lean" href="{% url 'forum' forum.slug %}">
+                                                    <img class="small-image mr-1" src="{{forum.picture.url}}"/>
+                                                    <span class="links-text">{{ forum.forum_name }}</span>
+                                                </a>
+                                            </div>
+                                            {% elif forloop.counter <= 10 %}
+                                            <div class="d-flex py-1">
+                                                <a class="p-2 w-100 lean" href="{% url 'forum' forum.slug %}">
+                                                    <img class="small-image mr-1" src="{%thumbnail forum.picture 50x50%}"/>
+                                                    <span class="links-text">{{ forum.forum_name }}</span>
+                                                </a>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                            <div class="d-flex mt-2 pt-2 justify-content-between">
+                                                <a class="m-1 main-btn" href="{% url 'forums' %}">
+                                                    <span class="fa fa-group"></span>
+                                                    <span class="h6">view all</span>
+                                                </a>
+                                                <a class="m-1 main-btn" href="{% url 'create-forum' %}">
+                                                    <span class="fa fa-plus"></span>
+                                                    <span class="h6">Create</span>
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <span class="title">Trending</span>
+                                    <ul class="my-3 mx-0 px-0">
+                                        <li class="menu-item w-100 well ">
+                                            {% for post in posts %}
+                                            {% if forloop.counter <= 10 %}
+                                            {% include 'home/fragments/trend_post.html' %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-col grid-col-top-0-2">
+                            <div class="grid-items">
+                                <div class="grid-item grid-item-top-0-2-1">
+                                    <div class="module module-blocks module-blocks-100 blocks-grid py-1 post-container" id="filterData">
+                                        {% include 'home/posts.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-col grid-col-top-0-3">
+                            <div class="grid-items crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-0-1-1 sidebar__inner">
+                                    <div class="module module-blocks module-blocks-100 blocks-grid py-1 question-container" id="questions">
+                                        {% include 'home/questions.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% include 'fragments/js/profilesjs.html' %}
+{% include 'fragments/postingjs.html' %}
+{% endblock home %}

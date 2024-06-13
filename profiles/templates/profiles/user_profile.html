@@ -1,0 +1,363 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block headtitle %}
+{{ site_name }}-{{profile.user}}'s Potfolio
+{% endblock headtitle %}
+{% block home %}
+<div class="bg-now">
+
+    {% include 'profiles/profile_top.html' %}
+    <div class="container-fluid">
+        <div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-00">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-00-1 ">
+                            <div class="grid-items  crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-00-1-1">
+                                    <div class="accordion-menu ">
+                                        <h3 class="title module-title">Brief Summarry</h3>
+                                        <div class="Profile-thumb">
+                                            <div class="image">
+                                                <a>
+                                                    <img class="large-image img-fluid"
+                                                        src="{% thumbnail request.user.profile.picture 100x100 crop %}" alt="{% thumbnail request.user.profile.image 50x50 crop %}">
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="">
+                                                <fieldset class="form-group">
+                                                    <br />
+                                                    <b>Followers:</b><span class="ml-2">{{ number_of_followers }}</span>
+                                                </fieldset>
+                                                <button class="btn py-2" 
+                                                style="text-transform: None;">
+                                                    <a data-href="{{ profile.user.circles.get_api_follow_url }}" class="follow-btn" 
+                                                    data-followers="{{profile.user.circles.followers.count}}" style="color:#f0f8ff;">
+                                                        <bdo>
+                                                            {{profile.user.circles.followers.count}}
+                                                            {% if request.user in profile.user.circles.followers.all %}
+                                                                Unfollow
+                                                            {% else %} Follow
+                                                            {% endif %}
+                                                        </bdo>
+                                                    </a>
+                                                </button>
+                                            </div>
+                                            <div class="text-center">
+                                                <fieldset class="form-group">
+                                                    <br />
+                                                    <b>Connections:</b><span
+                                                        class="ml-2">{{ user.circles.connections.count }}</span>
+                                                </fieldset>
+                                            </div>
+                                        </div><hr>
+                                        <ul class="j-menu mt-4">
+                                            <h2 class="title">My Summary</h2>
+                                            <li class="d-flex my-3">
+                                                <span><strong>First Name: </strong></span>{{ user.profile.first_name }}
+                                            </li>
+                                            <li class="d-flex my-3">
+                                                <span><strong>Last Name: </strong></span> {{ user.profile.last_name }}
+                                            </li>
+                                            <li class="d-flex my-3">
+                                                <span><strong>Middle Name:
+                                                    </strong></span>{{ user.profile.middle_name }}
+                                            </li>
+                                            {% if user.profile.phone %}
+                                            <li class="d-flex my-3">
+                                                <a class="h6 btn p-0 ml-2 my-auto" href="tel:{{user.profile.phone}}">Call</a>
+                                            </li>
+                                            {% endif %}
+                                            <li class="d-flex my-3">
+                                                <span><strong>Email: </strong></span>{{ user.profile.profile_email }}
+                                                <a class="h6 btn p-0 ml-2 my-auto" href="mailto:{{ user.profile.profile_email }}">Send email</a>
+                                            </li>
+                                            <li class="d-flex my-3">
+                                                <span><strong>Gender: </strong></span>{{ user.profile.gender }}
+                                            </li>
+                                            {%if not user.profile.hide_sensitive %}
+                                            <li class="d-flex my-3">
+                                                <span><strong>Birth date: </strong></span>{{ user.profile.birth_date }}
+                                            </li>
+                                            {%else%}
+                                            {%endif%}
+                                            <li class="d-flex my-3">
+                                                <span><strong>Date Joined:
+                                                    </strong></span>{{ user.profile.date_joined }}
+                                            </li>
+                                            <hr>
+                                            <br>
+                                        </ul>
+                                    </div><br>
+                                    <hr>
+                                    <div class="accordion-menu ">
+                                        <h3 class="title module-title">More About {{ user.profile.name }}</h3>
+                                        <div class="well">
+                                            <h4 class="title">Default Address</h4>
+                                            {% for adress in address_book %}
+                                            {% if adress.default %}
+                                            <ul class="j-menu mt-3">
+                                                <li
+                                                    class="d-flex my-3">
+                                                    <span><strong>Name: </strong></span>{{ adress.name }}
+                                                </li>
+                                                <li
+                                                    class="d-flex my-3">
+                                                    <span><strong>Phone: </strong></span>{{ adress.phone }}
+                                                </li>
+                                                <hr>
+                                            </ul>
+                                            <ul class="j-menu">
+                                                <li
+                                                    class="d-flex my-3">
+                                                    <span><strong>Adress: </strong></span>{{ adress.address }}
+                                                </li>
+                                                <li
+                                                    class="d-flex my-3">
+                                                    <span><strong>City: </strong></span> {{ adress.area }}
+                                                </li>
+                                                <li
+                                                    class="d-flex my-3">
+                                                    <span><strong>City: </strong></span> {{ adress.city }}
+                                                </li>
+                                                <li
+                                                    class="d-flex my-3">
+                                                    <span><strong>Region: </strong></span>{{ adress.region }}
+                                                </li>
+                                                <li
+                                                    class="d-flex my-3">
+                                                    <span><strong>Country: </strong></span>{{ adress.country }}
+                                                </li>
+                                                <hr>
+                                                <br>
+                                            </ul>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-col grid-col-top-00-2">
+                            <div class="grid-items">
+                                <div class="grid-item grid-item-top-00-2-1">
+                                    <h4 class="text-center title module-title">{{ user.profile.name }}'s Details</h4>
+                                    <div class="well">
+                                        <h2 class="title">Biography</h2>
+                                        <p>{{  user.profile.bio|safe }}</p>
+                                    </div>
+                                    <div class="well">
+                                        <h2 class="title">Education Background</h2>
+                                        <div id="content">
+                                            {% if studies %}
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <td class="text-left td-name">Institution
+                                                            </td>
+                                                            <td class="text-center td-Price">
+                                                                Qualification</td>
+                                                            <td class="text-center td-Store">Period</td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for educ in studies %}
+                                                        <tr class="">
+                                                            <td class="text-left td-name">
+                                                                {{ educ.institution }}</td>
+                                                            <td class="text-center td-Price">
+                                                                {{ educ.qualification }}</td>
+                                                            <td class="text-center td-Store">
+                                                                {{ educ.period }}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            {% else %}
+                                            <p class="w-100 text-center"><span class=" py-5">No
+                                                    education information added yet.</span></p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="well">
+                                        <h2 class="title">Latest Career History</h2>
+                                        <div id="content">
+                                            {% include 'profiles/fragments/potfolio.html' %}
+                                        </div>
+                                    </div>
+                                    <div class="well">
+                                        <h2 class="title">Skillset</h2>
+                                        {% if skills %}
+                                        <div id="content" class="{{ class }}">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <td class="text-center td-image">
+                                                                image
+                                                            </td>
+                                                            <td class="text-left td-name">Skill</td>
+                                                            <td class="text-center td-Price">score
+                                                            </td>
+                                                            <td class="text-center td-Store">Details
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for skill in skills %}
+                                                        <tr class="">
+                                                            <td class="text-center td-image">
+                                                                <img src="{% thumbnail skill.image 150x150 %}"
+                                                                    style="max-height: 80px;" alt="">
+                                                            </td>
+                                                            <td class="text-left td-name">
+                                                                {{ skill.title }}</td>
+                                                            <td class="text-center td-Price">
+                                                                <input type="range" id="rangeInput"
+                                                                    value="{{skill.score}}">
+                                                                {{ skill.score }}%</td>
+                                                            <td class="text-center td-Store">
+                                                                {{ skill.details }}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <p class="w-100 text-center">
+                                            <span class=" py-5"> No skillset added yet</span>
+                                        </p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="well">
+                                        <h2 class="title">Certifications and Other Awards</h2>
+                                        {% if files %}
+                                        <div id="content" class="{{ class }}">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <td class="text-center td-image">
+                                                                Document
+                                                            </td>
+                                                            <td class="text-left td-name">Document
+                                                                Name
+                                                            </td>
+                                                            <td class="text-center td-Price">
+                                                                Download
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for file in files %}
+                                                        <tr class="">
+                                                            <td class="text-center td-image">
+                                                                <img src="{% thumbnail file.image 150x150 %}"
+                                                                    style="max-height: 80px;" alt="">
+                                                            </td>
+                                                            <td class="text-left td-name">
+                                                                {{ file.title }}</td>
+                                                                <td class="text-center td-action">
+                                                                    {% if file.document %}
+                                                                    <a download class="btn btn-primary p-2"
+                                                                        href="{{ file.document.url }}">
+                                                                        <span class="bi bi-download"><span
+                                                                                class="ml-2">Download</span></span>
+                                                                    </a>
+                                                                    {% endif %}
+                                                                </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <p class="w-100 text-center"><span class=" py-5">No certification added
+                                                yet</span></p>
+                                        {% endif %}
+                                    </div>
+                                    <div class="row">
+                                        <div class="module w-100 mx-4">
+                                            <div id="top">
+                                                <div class=" module-title w-100 text-center bg-info py-2">
+                                                    <h1>Contact {{ profile.name }}</h1>
+                                                </div>
+                                            </div>
+                                            {% if confirm_message %}
+                                            <p>{{ confirm_message }}</p>
+                                            {% endif %}
+                                            {% if contact_form %}
+                                            <h3 class="mt-4 module-title">Write your message here
+                                            </h3>
+                                            <div class="module-body">
+                                                <form action="" method="POST" class="form-horizontal">
+                                                    <fieldset>
+                                                        {% csrf_token %}
+                                                        <div class="form-group custom-field required">
+                                                            <label class="col-sm-2 control-label"
+                                                                for="field-611a20961d4ce-1">Your Name</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" name="name" value=""
+                                                                    placeholder="Your Name" id="field-611a20961d4ce-1"
+                                                                    class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group custom-field required">
+                                                            <label class="col-sm-2 control-label"
+                                                                for="field-611a20961d4ce-2">Your Phone</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="text" name="phone" value=""
+                                                                    placeholder="Your Phone" id="field-611a20961d4ce-2"
+                                                                    class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group custom-field required">
+                                                            <label class="col-sm-2 control-label"
+                                                                for="field-611a20961d4ce-3">Your Email</label>
+                                                            <div class="col-sm-10">
+                                                                <input type="email" name="email" value=""
+                                                                    placeholder="Your Email" id="field-611a20961d4ce-3"
+                                                                    class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group custom-field required">
+                                                            <label class="col-sm-2 control-label"
+                                                                for="field-611a20961d4ce-4">Message</label>
+                                                            <div class="col-sm-10">
+                                                                <textarea name="message" rows="5" placeholder="Message"
+                                                                    id="field-611a20961d4ce-4"
+                                                                    class="form-control"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </fieldset>
+                                                    <div class="buttons">
+                                                        <div class="pull-right">
+                                                            <input type="submit" class="btn btn-primary"
+                                                                value="submit" />
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'fragments/js/profilesjs.html' %}
+
+{% endblock %}

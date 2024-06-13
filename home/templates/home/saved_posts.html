@@ -1,0 +1,110 @@
+{% extends 'profiles/timeline_base.html' %}
+{% load thumbnail %}
+{% load static %}
+{% load humanize %}
+{% block timeline %}
+<style>
+    tbody tr .td-image a {
+        max-width: 300px;
+        max-height: 200px !important;
+    }
+
+    tbody tr .td-image a video {
+        max-width: 300px;
+        max-height: 200px !important;
+    }
+</style>
+<div id="account-wishlist">
+    <h1 class="title module-title">{{ heading_title }}</h1>
+    <div class="alert bg-info alert-dismissible"><i class="fa fa-check-circle"></i>
+        You now have {{ request.user.profile.saved_posts.all.count }} Saved posts
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+
+    <div class="row">
+        <div class='col-12'>
+            <div id="content" class="{{ class }}">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <td class="text-center td-image">
+                                    image
+                                </td>
+                                <td class="text-left td-title">Title</td>
+                                <td class="text-center td-user">Author</td>
+                                <td class="text-center td-date_posted">Date Posted</td>
+                                <td class="text-center td-action">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in request.user.profile.saved_posts.all %}
+
+                            <tr class="">
+                                <td class="text-center td-image">
+
+                                    {% if post.picture %}
+                                    <a href="{{ MEDIA_URL }}{{ post.picture.url }}" target="blank">
+                                        <img src="{% thumbnail post.picture 100x100 %}">
+
+                                    </a>
+                                    {% elif post.Audio_file %}
+                                    <a href="{{ MEDIA_URL }}{{ post.Audio_file.url }}">
+                                        <audio src="{{ post.Audio_file.url }}" class=" bg-now" controls
+                                            preload="metadata"></audio>
+
+                                    </a>
+                                    {% elif post.Video_file %}
+                                    <a href="{{ MEDIA_URL }}{{ post.Video_file.url }}">
+                                        <video src="{{ post.Video_file.url }}" preload="metadata"
+                                            controls></video>
+
+                                    </a>
+                                    {% endif %}
+                                </td>
+                                <td class="text-left td-title"><a data-toggle="modal"
+                                        data-target="#post-quickview{{ post.pk }}">{{ post.get_title|truncatechars:30 }}</a></td>
+                                <td class="text-center td-user">{{ post.user }}</td>
+                                <td class="text-center td-date_posted">{{ post.date_posted|naturaltime }}</td>
+                                <td class="text-center td-action">
+                                    <a href="#" data-toggle="modal" data-target="#post-quickview{{ post.pk }}"
+                                        class="btn p-2 btn-sm btn-view">
+                                        View
+                                    </a>
+                                    <a data-toggle="tooltip" title="delete"
+                                        class="btn py-2 btn-danger btn-remove" id="savePostBtn-{{post.pk}}"
+                                        onclick="SavePost('{{post.pk}}')"><i class="bi bi-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <div class=" modal popup-sell fade" id="post-quickview{{post.pk}}" tabindex="-1"
+                                role="dialog" aria-labelledby="product-quickview" aria-hidden="true">
+                                <div class="modal-dialog window-popup" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-body">
+                                            <iframe class="w-100" style="height: 80vh;"
+                                                src="{% url 'details' post.pk %}" frameborder="0"></iframe>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% empty %}
+
+                            <p class="w-100 text-center"><span class=" py-5"> You have not saved any post yet. -
+                                    Start now </span></p>
+                            <div class="buttons clearfix">
+                                <div class="pull-right"><a href="{% url 'home' %}" class="btn btn-primary">click
+                                        here to browse posts and add</a></div>
+                            </div>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+    {% endblock %}

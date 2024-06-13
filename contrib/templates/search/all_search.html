@@ -1,0 +1,37 @@
+
+<style>
+    .header-search {
+        font-size: 1.2em;
+        font-weight: 500;
+    }
+</style>
+    <form id="search" action="{% url 'search_general_results' %}" name="search_form" onsubmit="" class="dropdown search-form" method="GET">
+        <button class="dropdown-toggle search-trigger" data-toggle="dropdown"></button>
+        <div class="dropdown-menu j-dropdown">
+            <div class="header-search">
+                <div class="search-categories dropdown drop-menu">
+                    <div class="search-categories-button dropdown-toggle icon" data-toggle="dropdown">
+                        All
+                    </div>
+                    <div class="dropdown-menu j-dropdown">
+                        <ul class="j-menu">
+                            <li data-category_id="0" class="category-level-1"><a>All</a></li>
+                            <li data-category_id="59" class=" category-level-1"><a>Home</a>
+                            </li>
+                            <li data-category_id="107" class=" category-level-1"><a>Demall</a>
+                            </li>
+                            <li data-category_id="109" class=" category-level-1"><a>Classifieds</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <span class="twitter-typeahead" style="position: relative; display: inline-block;">
+                    {% csrf_token %}
+                    <input type="text" name="q" placeholder="Type Something to Search..." required>
+                </span>
+                <button type="submit" class="search-button icon">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </form>

@@ -1,0 +1,451 @@
+
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+    * {
+        margin: 0;
+        font-size: 1rem !important;
+        padding: 0;
+        font-family: 'Titillium Web';
+    }
+    .landing-page {
+        height: 100vh;
+        /* give it desired aspect ratio with transforms */
+        transform: scaley(calc(1/(var(--ratio))));
+
+        /* set background */
+        background: 
+            /* below the diagonal */
+            conic-gradient(from 45deg at 0 100%, 
+                    #00bff0, #0f335f, #007ff0 45deg, transparent 0%), 
+            /* above the diagonal */
+            conic-gradient(from calc(.5turn + 45deg) at 100% 0, 
+                    #007ff0, #0f335f, #00bff0 45deg);
+    }
+
+    .landing-content .title {
+        font-size: 4.5rem !important;
+        font-family: cursive;
+        font-weight: 800;
+        color: #114488;
+    }
+
+    .landing-content .block {
+        font-size: 6rem !important;
+        font-weight: 900;
+        font-family: Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        color: #0f335f;
+    }
+
+    .landing-content h1 {
+        font-size: 2.5rem !important;
+        color: green;
+        font-weight: 700;
+    }
+
+    .landing-content p {
+        font-size: 1.5rem;
+        font-family: 'Helvetica Neue' sans-serif;
+        font-weight: 600;
+        
+    }
+    a {
+        text-decoration: none !important;
+    }
+
+    .registration-login-form,
+    .tab-content,
+    .tab-pane {
+        height: 100%;
+        background: linear-gradient(to bottom, #0f335f, #007ff0);
+    }
+
+    .bg-primaria {
+        background-color: #00b7ffc2 !important;
+    }
+
+    .header--standard-wrap .logo:hover {
+        transform: rotate(360deg);
+        transition: 2s all ease-in-out;
+    }
+
+    .header--standard-wrap .logo img {
+        height: 50px;
+        width: 50px;
+    }
+
+    .header--standard-wrap .title-block {
+        font: 900 2rem parisienne, z003, segoe script, comic sans ms, cursive;
+    }
+
+    .registration-login-form form {
+        height: 100%;
+        display: inline;
+        justify-content: space-between;
+    }
+
+    .registration-login-form .nav  h3 {
+        font-size: 1rem;
+        color: aliceblue;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        position: absolute;
+        padding-bottom: 30px;
+        transform: rotate(270deg);
+        transform-origin: 0 0;
+      }
+
+      .registration-login-form .nav svg {
+          fill: aliceblue;
+          height: 22px;
+          position: absolute;
+          width: 22px;
+          bottom: 50px;
+      }
+
+      .registration-login-form .nav .nav-link {
+          background-color: #007ff0;
+      }
+
+      .registration-login-form .nav .nav-link:hover {
+          background-color: #00bfff;
+      }
+
+      .registration-login-form .nav .nav-link.active {
+        background-color: #00bfff;
+    }
+
+    .registration-login-form .h5 {
+        color: #ddd
+    }
+
+    .registration-login-form .form-group {
+        border-bottom: 1px solid #007ff0;
+        margin-bottom: 1.5rem
+    }
+
+    .registration-login-form .form-group:hover {
+        border-bottom: 1px solid #007ff0
+    }
+
+    .registration-login-form .form-group .icon {
+        color: #e8e8e8
+    }
+
+    .registration-login-form .form-group .form-control {
+        background: inherit;
+        border: none;
+        border-radius: 0px;
+        box-shadow: none;
+        color: #e9e9e9
+    }
+
+    .registration-login-form .form-group input::placeholder {
+        color: #ccc
+    }
+
+    .registration-login-form .form-group input:focus::placeholder {
+        opacity: 0
+    }
+
+    .registration-login-form .form-group .fa-phone {
+        transform: rotate(90deg)
+    }
+
+    
+    .registration-login-form .password {
+        color: #00bff0
+    }		
+    .registration-login-form .password:hover {
+        color: lightblue
+    }
+
+    .registration-login-form .option {
+        color: #FFF;
+        display: block;
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        user-select: none
+    }
+
+    .registration-login-form .option:hover {
+        color: rgb(217, 228, 243)
+    }
+
+    .registration-login-form .option input {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        font-size: 1.2rem;
+        cursor: pointer;
+        background-color: #ddd;
+        height: 0;
+        width: 0
+    }
+
+    .registration-login-form .checkmark {
+        position: absolute;
+        top: 3px;
+        left: 0;
+        height: 18px;
+        width: 18px;
+        background-color: inherit;
+        border: 1px solid #00bff0;
+        border-radius: 2px
+    }
+
+    .registration-login-form .option input:checked~.checkmark {
+        transition: 300ms ease-in-out all
+    }
+
+    .registration-login-form .checkmark:after {
+        content: "\2713";
+        position: absolute;
+        display: none;
+        font-weight: 600;
+        color: #FFF;
+        font-size: 0.9rem
+    }
+
+    .registration-login-form .option input:checked~.checkmark:after {
+        display: block
+    }
+
+    .registration-login-form .option .checkmark:after {
+        left: 2px;
+        top: 0;
+        width: 10px;
+        height: 10px
+    }
+
+    .registration-login-form .btn.btn-primary {
+        position: relative;
+        color: #eee;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        border: 1px solid #00b7ff;
+        background-color: inherit;
+        box-shadow: none;
+        overflow: hidden
+    }
+
+    .registration-login-form .btn.btn-primary:hover {
+        background-color: #b4b4b433;
+        color: #fff
+    }
+
+    .registration-login-form .terms {
+        color: #bbb;
+        font-size: 0.85rem;
+        text-align: center
+    }
+
+    .registration-login-form .terms a {
+        text-decoration: none;
+        color: #00b7f0
+    }
+
+    .registration-login-form .text-white {
+        color: aliceblue !important;
+    }
+
+    .registration-login-form .terms a:hover {
+        color: aliceblue
+    }
+
+    .registration-login-form .connect {
+        position: relative
+    }
+
+    .registration-login-form .connect::after {
+        content: "or Sign in using";
+        position: absolute;
+        top: -12px;
+        width: 100%;
+        text-align: center;
+        color: #eee;
+        z-index: 100;
+        background-color: #1f558800
+    }
+
+    .registration-login-form .ajo-social-links {
+        margin-top: 50px;
+        position: relative;
+        list-style: none;
+        display: flex;
+        justify-content: space-around
+    }
+
+    .registration-login-form .ajo-social-links .bi-facebook {
+        color: #00b7f0;
+        font-size: 1.2rem !important;
+        margin: auto;
+    }
+
+    .registration-login-form .ajo-social-links .bi-google {
+        color: #00bff0;
+        font-size: 1.2rem !important;
+        margin: auto;
+    }
+
+    .registration-login-form .ajo-social-links .bi-twitter {
+        color: #00bff0;
+        font-size: 1.2rem !important;
+        margin: auto;
+    }
+
+
+    .registration-login-form .ajo-social-links li a {
+        font-size: 2rem !important;
+        width: 50px;
+        height: 50px;
+        background-color: #ffffff17;
+        border: 1px solid #ffffff66;
+        border-right: 1px solid #ffffff33;
+        border-bottom: 1px solid #ffffff33;
+        display: flex;
+        text-decoration: none;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        border-radius: 6px;
+        box-shadow: 0 5px 30px #004683e0;
+        transition: 0.5s;
+        overflow: hidden
+    }
+
+    .registration-login-form .ajo-social-links li a:hover {
+        transform: translateY(-20px)
+    }
+
+    .registration-login-form .ajo-social-links li a::before,
+    .btn.btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 25px;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.925);
+        transform: skew(45deg) translateX(130px);
+        transition: .5s;
+        opacity: 0
+    }
+
+    .registration-login-form .ajo-social-links li a:hover:before,
+    .btn.btn-primary:hover::before {
+        opacity: 1;
+        transform: skew(45deg) translateX(-130px)
+    }
+
+
+
+/* Smartphones (portrait and landscape) ----------- */
+
+@media only screen and (max-width: 1024px) {
+
+.registration-login-form .nav  h3 {
+    transform: rotate(0deg);
+  }
+}
+
+@media only screen and (max-width: 800px) {
+* {
+    font-size: 0.85rem !important;
+}
+.landing-content .title {
+    font-size: 3rem !important;
+    font-weight: 750;
+}
+
+.landing-content .block {
+    font-size: 4.5rem !important;
+    font-weight: 800;
+}
+
+.landing-content h1 {
+    font-size: 2rem !important;
+    font-weight: 700;
+}
+
+.landing-content p {
+    font-size: 1.5rem;
+    font-weight: 550;
+    
+}
+
+}
+
+@media only screen and (max-width: 520px) {
+* {
+    font-size: 0.85rem !important;
+}
+.landing-content .title {
+    font-size: 2.5rem !important;
+    font-weight: 750;
+}
+
+.landing-content .block {
+    font-size: 4rem !important;
+    font-weight: 800;
+}
+
+.landing-content h1 {
+    font-size: 2rem !important;
+    font-weight: 700;
+}
+
+}
+
+@media only screen and (max-width: 420px) {
+* {
+    font-size: 0.85rem !important;
+}
+.landing-content .title {
+    font-size: 2.2rem !important;
+    font-weight: 750;
+}
+
+.landing-content .block {
+    font-size: 3.5rem !important;
+    font-weight: 800;
+}
+
+.landing-content h1 {
+    font-size: 1.8rem !important;
+    font-weight: 700;
+}
+
+}
+
+
+/* Smartphones (portrait) ----------- */
+@media only screen and (max-width: 320px) {
+* {
+    font-size: 0.8rem !important;
+}
+.landing-content .title {
+    font-size: 2rem !important;
+    font-weight: 750;
+}
+
+.landing-content .block {
+    font-size: 2.5rem !important;
+    font-weight: 800;
+}
+
+.landing-content h1 {
+    font-size: 1.5rem !important;
+    font-weight: 700;
+}
+
+.landing-content p {
+    font-size: 1.2rem;
+    font-weight: 550;
+    
+}
+
+}

@@ -1,0 +1,232 @@
+    {% load static %}
+    {% load search_tags %}
+    {% load thumbnail %}
+    {% load notification_tag %}
+    {% load custom_tags %}
+    {% load solo_tags %}
+    {% currencies as currencies %}
+    {% footerlinks as footerlinks %}
+    {% mycurrency as mycurrency %}
+    {% DefaultCurrency as dc %}
+    {% get_solo 'settings.SiteConfiguration' as site_config %}
+    <header class="header-classic" id="site-header">
+        <div class="header header-classic header-lg ">
+            <div class="top-bar navbar-nav bg-main">
+                <div class="hn-body w-100">
+                    <div class="hn-content w-100">
+                        <div class="ticker-news">
+                            <span class="w-100">This is a test version many features are still missing. Your review is
+                                of value for the improvements. Thanks.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mid-bar navbar-nav px-5">
+                <div class="desktop-logo-wrapper">
+                    <div id="logo" class="d-flex">
+                        <a href="{% url 'home' %}">
+                            <img src="{{site_config.logo.url}}" style="height:35px" alt="{{site_name}}">
+                            <div class="d-flex flex-column">
+                                <span class="logo-text h3 my-auto mx-2 text-main ">
+                                    {{site_name}}
+                                </span>
+                                <s class="mx-auto">The Blogger's widom</s>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="desktop-search-wrapper full-search default-search-wrapper mx-2 w-100">
+                    {% all_search request %}
+                </div>
+                {% if request.user.is_authenticated %}
+                {% notification %}
+                {% else %}
+                <div class="top-menu top-menu-14">
+                    <ul class="j-menu">
+                        <li class="menu-item top-menu-item dropdown drop-menu">
+                            <a href="" class="dropdown-toggle" data-toggle="" aria-expanded="false">
+                                <i class="bi bi-bell h3"></i>
+                                <span class="count-badge">0</span>
+                            </a>
+                            <div class="dropdown-menu j-dropdown">
+                                <ul class="notificaion-menu j-menu pt-3 text-wrap">
+                                    <h4 class="w-100 text-center">Notifications</h4>
+                                    <li class="menu-item"><a href="{% url 'login' %}" class="links-text dropdown-item">
+                                            Login to your account to view notifications</a></li>
+                                    <li class="menu-item"><a href="{% url 'register' %}"
+                                            class="links-text dropdown-item">
+                                            If you haven't registered yet, register from here</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="classic-cart-wrapper">
+                    <div class="top-menu secondary-menu">
+                        <div class="top-menu top-menu-14">
+                            <ul class="j-menu">
+                                <li class="menu-item top-menu-item dropdown drop-menu">
+                                    {% if request.user.is_authenticated %}
+                                    <a href="{% url 'my_timeline' %}" class="dropdown-toggle" data-toggle=""
+                                        aria-expanded="false">
+                                        <span class="links-text mr-3">
+                                            {% if request.user.profile.picture %}
+                                            <img class="small-image"
+                                                src="{% thumbnail request.user.profile.picture 50x50 crop %}"
+                                                alt="{% thumbnail request.user.profile.image 50x50 crop %}">
+                                            {% else %}
+                                            <div class="h5 bg-now d-flex">
+                                                <span class="m-auto">
+                                                    {{ request.user.profile.name_initials }}
+                                                </span>
+                                            </div>
+                                            {% endif %}
+                                        </span>
+                                        <span class="links-text">
+                                            {% if request.user.verified.is_verified %}
+                                            <div class="is_verified">
+                                                <span class="bi bi-check-circle-fill"></span>
+                                            </div>
+                                            {% endif %}
+                                            {{ request.user.profile.name }}
+                                        </span>
+                                        {% if request.user.profile.is_online %}
+                                        <div class="online-circle"></div>
+                                        {% else %}
+                                        <div class="offline-circle"></div>
+                                        {% endif %}
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url 'login' %}" class="dropdown-toggle" data-toggle=""
+                                        aria-expanded="false">
+                                        <span class="bi bi-person-circle h1 mr-2">
+                                        </span>
+                                        <span class="links-text">
+                                            <b>Hello Friend</b>
+                                            <s>Login /
+                                                Register</s>
+                                        </span>
+                                    </a>
+                                    {% endif %}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="menu owl-carousel owl-2 ajo row ">
+                {%for space in spaces%}
+                <a class="info-block-content main-btn mx-2" href="{% url 'space' space.slug %}">
+                    <div class="inner-content d-flex justify-content-center h6">
+                        <i class="{{space.icon}} mx-2"></i>
+                        <div class="info-block-text">{{space.name}}</div>
+                        <i class="bi bi-chevron-double-down ml-2"></i>
+                    </div>
+                </a>
+                {%endfor%}
+            </div>
+        </div>
+        <div class="mobile-header mobile-default mobile-1">
+            <div class="mobile-top-bar mx-1">
+                <div class="mobile-top-menu-wrapper ml-1">
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'home/images/deepoo2.png' %}" class="my-auto small-image" alt="{{site_name}}" />
+                    </a>
+                </div>
+                {% if request.user.is_authenticated %}
+                {% notification %}
+                {% else %}
+                <div class="top-menu top-menu-14">
+                    <ul class="j-menu">
+                        <li class="menu-item top-menu-item dropdown drop-menu">
+                            <a href="" class="dropdown-toggle" data-toggle="" aria-expanded="false">
+                                <i class="bi bi-bell h6"></i>
+                                <span class="count-badge">0</span>
+                            </a>
+                            <div class="dropdown-menu j-dropdown bg-main">
+                                <h4 class="w-100 text-center">Notifications</h4>
+                                <ul class="j-menu pt-3 text-wrap bg-royal">
+                                    <li class="menu-item"><a href="{% url 'login' %}" class="links-text dropdown-item">
+                                            Login to view notifications</a></li>
+                                    <li class="menu-item"><a href="{% url 'register' %}"
+                                            class="links-text dropdown-item">
+                                            Register from here</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="top-menu top-menu-13">
+                    <ul class="j-menu">
+                        <li class="menu-item top-menu-item dropdown drop-menu">
+                            {% if request.user.is_authenticated %}
+                            <a href="{% url 'my_timeline' %}" class="dropdown-toggle" data-toggle=""
+                                aria-expanded="false">
+                                <span class="links-text mr-3">
+                                    {% if request.user.profile.picture %}
+                                    <img class="small-image"
+                                        src="{{ MEDIA_URL }}{{ request.user.profile.picture.url }}"
+                                        alt="{{ request.user.profile.name }}">
+                                    {% else %}
+                                    <div class="h5 small-image bg-now d-flex">
+                                        <span class="m-auto">
+                                            {{ request.user.profile.name_initials }}
+                                        </span>
+                                    </div>
+                                    {% endif %}
+                                </span>
+                                <span class="links-text">
+                                    {{ request.user.profile.name }}                                  </span>
+                                {% if request.user.profile.is_online %}
+                                <div class="circle"></div>
+                                {% else %}
+                                <div class="circle"></div>
+                                {% endif %}
+                            </a>
+                            {% else %}
+                            <a href="{% url 'login' %}" class="dropdown-toggle" data-toggle=""
+                                aria-expanded="false">
+                                <span class="bi bi-person-circle h4 mr-2">Login
+                                </span>
+                            </a>
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mobile-bar sticky-bar">
+                <div class="mobile-bar-group">
+                    <div class="menu-trigger ml-3">
+                        <div class="icon d-flex justify-content-center circle bg-info" style="height: 40px; width:40px">
+                            <span class="my-auto h2 bi bi-grid-fill"></span>
+                        </div>
+                    </div>
+                    <div class="mobile-custom-menu">
+                        <a href="{% url 'home' %}">
+                            <div class="icon">
+                                <span class="bi bi-house-door"></span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="mobile-search-wrapper mini-search">
+                        <div class="icon position-absolute">
+                            <span class="bi bi-search"></span>
+                        </div>
+                    </div>
+                    <div class="mobile-cart-wrapper mini-cart">
+                    </div>
+                </div>
+            </div>
+            <div class="cart-trigger desktop-cart-wrapper">
+                <div id="cart" class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle cart-heading mr-3">
+                        <div class="icon d-flex justify-content-center circle bg-info" style="height: 40px; width:40px">
+                            <span class="my-auto h3 bi bi-grid-3x3-gap-fill"></span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>

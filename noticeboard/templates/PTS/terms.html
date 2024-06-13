@@ -1,0 +1,88 @@
+{% extends "main.html" %}
+{% load static %}
+{% block headtitle %}
+Dmall Homepage
+{% endblock headtitle %}
+{% block home %}
+
+<div class="bg-now">
+    <div class="container-fluid">
+        <div class="w-100 bg-info">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}"><span class="bi bi-house"></span></a>
+                </li>
+                <li class="active"><Span class="h6">Terms and Policies</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-9">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-9-1">
+                            <div class="grid-items">
+                                <div class="grid-item grid-item-top-9-1-1">
+                                    <div class="module-items">
+                                        <h3 class="title module-title">Terms and policies</h3>
+                                        <ul class="menu-item d-flex justify-content-around">
+                                            {% for term in terms %}
+                                            <li class="menu-items m-3">
+                                                <a href="#{{ term.pk }}" class="module-title">
+                                                    {{ term.title|safe }}
+                                                </a>
+                                            </li>
+                                            {% endfor %}
+                                        </ul><hr>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><br>
+                        <hr>
+                        <div class="grid-col grid-col-top-9-2">
+                            <div class="grid-items">
+                                <div class="grid-item grid-item-top-9-2-1">
+                                    <div id="content" >
+                                        <section class="term-area section-padding-lg">
+                                            <div class="row term-wrapper">
+                                                {% for term in terms %}
+                                                <div class="accordion w-100 mt-2 p-2 well"
+                                                    id="{{ term.pk }}">
+                                                    <div class="section-title cursor-pointer" data-toggle="collapse"
+                                                        data-target="#cr-accordion-section-{{ term.pk }}">
+                                                        <h4 class="text-blue"><b>{{ term.title }}</b>
+                                                        </h4>
+                                                    </div>
+                                                    <div id="cr-accordion-section-{{ term.pk }}"
+                                                        class="collapse {% if forloop.first %}show{% endif %}" data-parent="#cr-accordion">
+                                                        <div class="accordion-body">
+                                                            <blockquote>{{term.description|safe}}</blockquote>
+                                                            <p><span class="drop-cap">{{term.drop_cap}}</span>{{ term.details|safe }}</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {% endfor %}
+                                            </div>
+                                        </section>
+                                    </div><hr>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+        </div>
+    
+    </div>
+    
+
+
+    {% include 'modules/info-block.html' %}
+
+</div>
+
+
+{% endblock home %}

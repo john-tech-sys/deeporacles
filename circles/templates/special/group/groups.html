@@ -1,0 +1,177 @@
+
+
+{% extends 'main.html' %}
+{% load static %}
+{% block headtitle %}
+{{ site_name }}--forums
+{% endblock headtitle %}
+{% block home %}
+<div class="bg-now">
+    <div class="container-fluid">
+        <div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-6 pt-3">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-6-1">
+                            <div class="grid-items crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-6-1-1 sidebar__inner">
+                                    <h4 class="title">My Forums</h4>
+                                    <ul class="my-3 h6 mx-0 px-0">
+                                        <li class="menu-item w-100 well">
+                                            {% for forum in request.user.circles.forums.all %}
+                                            {% if request.user == forum.forum_admin %}
+                                            <div class="d-flex py-1">
+                                                <a class="m-1" href="{% url 'forum' forum.slug %}">
+                                                    <img class="small-image mr-1" src="{{forum.picture.url}}"/>
+                                                    <span class="links-text">{{ forum.forum_name }}</span>
+                                                </a>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% for forum in forums %}
+                                            {% if request.user != forum.forum_admin and request.user in forum.forum_members.all %}
+                                            <div class="d-flex py-1">
+                                                <a class="m-1" href="{% url 'forum' forum.slug %}">
+                                                    <img class="small-image mr-1" src="{{forum.picture.url}}"/>
+                                                    <span class="links-text">{{ forum.forum_name }}</span>
+                                                </a>
+                                            </div>
+                                            {% endif %}
+                                            {% endfor %}
+                                            <div class="w-100">
+                                                <div class="text-center">
+                                                    <a href="{% url 'create-forum' %}">
+                                                        <button class="border-primary main-btn border h6" >+ {% if not request.user.circles.forums.all %}Create Forum
+                                                            {% else %}Add Forum
+                                                            {% endif %}
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-col grid-col-top-6-2">
+                            <div class="grid-items">
+                                <div class="grid-item grid-item-top-6-2-1 crumina-sticky-sidebar">
+                                    <h4 class="pl-3 title "> All Forums</h4>
+                                    <div class="row">
+                                        {% for forum in forums %}
+                                        {% if not request.user in forum.forum_members.all %}
+                                        <div class="col-md-4 col-sm-6 col-12">
+                                            <div class="card-container  manual-flip">
+                                                <div class="card w-100">
+                                                    <div class="front w-100">
+                                                        <div class="cover">
+                                                            <img src="{{forum.forum_cover_photo.url}}"alt="{{forum.forum_name}}"/>
+                                                        </div>
+                                                        <a class="center-block" href="{% url 'forum' forum.slug %}">
+                                                            {% if forum.picture %}
+                                                            <div class="user">
+                                                                <img class="img-circle" src="{{forum.picture.url}}" alt="{{ forum.forum_name }}"/>
+                                                            </div>
+                                                            {% endif %}
+                                                            <h4 class="name mt-0">
+                                                                <b>{{forum.forum_name|truncatechars:20}}</b>
+                                                            </h4>
+                                                        </a>
+                                                        <div class="content">
+                                                            <div class="main">
+                                                                <div class="d-flex justify-content-around my-2">
+                                                                    <b>Admin</b>
+                                                                    <span> {{forum.forum_admin.circles.user.profile.name}} </span>
+                                                                </div>
+                                                                <div class="stats-container">
+                                                                    <div class="stats">
+                                                                        <p>{{forum.followers.count}}</p>
+                                                                        <p> Followers </p>
+                                                                    </div>
+                                                                    <div class="stats">
+                                                                        <p>{{forum.forum_members.count}}</p>
+                                                                        <p> Members </p>
+                                                                    </div>
+                                                                    <div class="stats">
+                                                                        <p>{{forum.forum_members.count}}</p>
+                                                                        <p> Authors </p>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="mb-1">
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span>Blog Posts</span>
+                                                                    <span>{{forum.total_posts}}</span>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span>Questions</span>
+                                                                    <span>{{forum.total_questions}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="footer">
+                                                                <button class="border-secondary main-btn border btn-simple" onclick="rotateCard(this)">
+                                                                    <i class="fa fa-mail-forward"></i> Rotate
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                    <div class="back w-100">
+                                                        <div class="content">
+                                                            <div class="main">
+                                                                <h6 class="text-center w-100">Brief Description</h6>
+                                                                <p class="text-center">{{forum.forum_bio|safe|truncatechars:100}}</p>                                                                            
+                                                            </div>
+                                                        </div>
+                                                        <div class="d-flex justify-content-around mb-2">
+                                                            {% if not request.user == forum.forum_admin %}
+                                                            <a data-href="{{ forum.get_forum_api_follow_url }}" class="follow-btn main-btn py-1">
+                                                                {% if request.user in forum.followers.all %} 
+                                                                    Unfollow
+                                                                {% else %} Follow
+                                                                {% endif %}
+                                                            </a>
+                                                            {% endif %}
+                                                            {% if request.user in forum.forum_members.all and not request.user == forum.forum_admin %}
+                                                            <form method="POST" action="{% url 'leave-forum' forum.pk %}">
+                                                                {% csrf_token %}
+                                                                <a href="#">
+                                                                    <button class=" main-btn py-1">
+                                                                        Leave forum
+                                                                    </button>
+                                                                </a>
+                                                            </form>
+                                                            {% elif request.user not in forum.forum_members.all %}                                                
+                                                            <a data-href="{{ forum.get_forum_api_join_url }}" class="join-btn main-btn py-1">
+                                                                {% if request.user in forum.forum_members_waiting.all %}
+                                                                Cancel Request to join
+                                                                {% else %} Join Forum
+                                                                {% endif %}
+                                                            </a>
+                                                            {% endif %}
+                                                        </div>
+                                                        <div class="footer">
+                                                            <div class="social-links text-center">
+                                                                <button class="border-secondary main-btn border btn-simple" rel="tooltip" title="Flip Card" onclick="rotateCard(this)">
+                                                                    <i class="fa fa-reply"></i> Back
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div> 
+                                            </div> 
+                                        </div> 
+                                        {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'fragments/js/profilesjs.html' %}
+{% include 'fragments/postingjs.html' %}
+{% endblock %}

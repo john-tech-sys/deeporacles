@@ -1,0 +1,40 @@
+{% extends "main.html" %}
+{% load static %}
+{% block headtitle %}
+    {{ site_name }}-Ask Question
+{% endblock headtitle %}
+{% block home %}
+<div class="container-fluid pops">
+  <div class="card card-signin my-3">
+    <div class="card-body  p-2">
+      <h4 class="card-title text-center"><b>Ask question</b></h4><br>
+      <form class="w-100" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+        <br/>
+        <div class="preview w-100 d-flex flex-column">
+            <span><b>Sellect Forum</b></span>
+            <select class="form-control p-1 mb-2" name="forum" id="space_select">
+                {% for forum in forums %}
+                {%if request.user in forum.forum_members.all%}
+                <option value="{{ forum.id }}">{{ forum.forum_name }}</option>
+                {%endif%}
+                {% endfor %}
+            </select>
+        </div>
+        <br/>
+          <div class="preview w-100 d-flex flex-column">
+            <span><b>Write the title</b></span>
+            <input class="form-control" name="title" placeholder="  Question Title....">
+            <div class="mt-3" placeholder="Content here" >{{form.content}}</div>
+          </div>
+        </fieldset>
+          <button class="btn py-2 fa fa-paper-plane " type="submit" id="postSubmit">
+            Send
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock home %}

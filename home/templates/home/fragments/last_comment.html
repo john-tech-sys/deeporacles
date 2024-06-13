@@ -1,0 +1,66 @@
+
+{% load humanize %}
+{% load thumbnail %}
+
+    <ul class="m-0 p-0" id="post-{{post.pk}}-comments-div"> 
+        {% if post.last_comment %}
+        <li >
+            <hr>
+            <div class="post__user m-0 p-0 user vcard inline-items d-flex justify-content-between">
+                <div class="user-thumb d-flex">
+                    <a class="my-auto">
+                        {% if post.last_comment.user.profile.picture %}
+                        <img class="small-image"
+                            src="{% thumbnail post.last_comment.user.profile.picture 100x100 crop %}"
+                            alt="{{ post.last_comment.user.profile.name_initials }}">
+                        {% else %}
+                        <div class="h5 small-image bg-now d-flex">
+                            <span class="m-auto">
+                                {{ post.last_comment.user.profile.name_initials }}
+                            </span>
+                        </div>
+                        {% endif %}
+                    </a>
+                    <div class="my-auto d-flex">
+                        <a class="post__user-name" href="{% if request.user == post.user %}{% url 'my_timeline' %}
+                        {% else %}{% url 'user_timeline' post.last_comment.user.profile.slug %}{% endif %}">
+                        {{ post.last_comment.user.profile.name }}</a>
+                        <s class="main-btn my-auto py-1">
+                            <a data-href="{{ post.last_comment.user.circles.get_api_follow_url }}" class="follow-btn" 
+                            data-followers="{{post.last_comment.user.circles.followers.count}}">
+                                {% if request.user in post.last_comment.user.circles.followers.all %}
+                                    Unfollow
+                                {% else %} Follow
+                                {% endif %}
+                            </a>
+                        </s>
+                        <s class="my-auto ml-2">
+                            <time class="published">
+                                <span>{{ post.last_comment.comment_date|naturaltime }}</span>
+                            </time>
+                        </s>
+                    </div>
+                </div>
+                <div class="more bi bi-three-dots h2 pr-2" style="right: 0;">
+                    {% if request.user == post.last_comment.user %}
+                    <ul class="more-dropdown">
+                        <li>
+                            <a class="cursor-pointer" hx-delete="{% url 'delete_response' post.last_comment.pk %}" hx-target="#post-{{post.pk}}-comments-div">
+                                Delete response
+                            </a>
+                        </li>
+                    </ul>
+                    {% else %}
+                    <ul class="more-dropdown">
+                        <li>
+                            <a>Report response</a>
+                        </li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <p>{{ post.last_comment.comment|truncatechars_html:"200" }}
+            </p>
+        </li>
+        {% endif %}
+    </ul>

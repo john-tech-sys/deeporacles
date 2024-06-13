@@ -1,0 +1,211 @@
+
+<script>
+
+    function rotateCard(btn){
+        var $card = $(btn).closest('.card-container');
+        console.log($card);
+        if($card.hasClass('hover')){
+            $card.removeClass('hover');
+        } else {
+            $card.addClass('hover');
+        }
+    }
+    // following and Unfollowing
+    $(".follow-btn").click(function(e) {
+        e.preventDefault();
+        var btn = $(this);
+        var followUrl = btn.attr("data-href");
+        if (followUrl) {
+            $.ajax({
+                url: followUrl,
+                method: "GET",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                data: {},
+                success: function(data) {
+                    console.log(data); // Log the data object for debugging
+                    if (data.updated) {
+                        if (data.following) {
+                            btn.text("Follow"); // Update button text to "Unfollow" if following
+                        } else {
+                            btn.text("Unfollow"); // Update button text to "Follow" if not following
+                        }
+                    } else {
+                        console.log("Data not updated successfully."); // Log error message
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                    console.log("Error occurred during AJAX request."); // Log error message
+                }
+            });
+        }
+    });
+    
+
+    $(".join-btn").click(function(e) {
+        e.preventDefault();
+        var btn = $(this);
+        var joinUrl = btn.attr("data-href");
+        if (joinUrl) {
+            $.ajax({
+                url: joinUrl,
+                method: "GET",
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+                data: {},
+                success: function(data) {
+                    console.log(data); // Log the data object for debugging
+                    if (data.updated) {
+                        if (data.joined) {
+                            btn.text("Join Forum"); // Update button text to "Unfollow" if following
+                        } else {
+                            btn.text("Cancel Request to Join"); // Update button text to "Follow" if not following
+                        }
+                    } else {
+                        console.log("Data not updated successfully."); // Log error message
+                    }
+                },
+                error: function(error) {
+                    console.log(error);
+                    console.log("Error occurred during AJAX request."); // Log error message
+                }
+            });
+        }
+    });
+        
+  
+    //  adding to profile send
+    function updateText(btn, verb){
+        btn.text(" " + verb)
+    }
+    $(".send-btn").click(function(e){
+        e.preventDefault()
+        var this_ = $(this)
+        var sendUrl = this_.attr("data-href")
+        if (sendUrl){
+            $.ajax({
+                url: sendUrl,
+                method: "GET",
+                data: {},
+                success: function(data){
+                    if (data.requestsent){ 
+                        updateText(this_, "Sent")
+                    } else {
+                        updateText(this_, "Sent")
+                    }
+                }, error: function(error){
+                console.log(error)
+                console.log("error")
+                }
+            })
+        }
+    })
+        
+    //  adding to profile connect
+    function updateText(btn, verb){
+        btn.text(" " + verb)
+    }
+    $(".accept-btn").click(function(e){
+        e.preventDefault()
+        var this_ = $(this)
+        var acceptUrl = this_.attr("data-href")
+        if (acceptUrl){
+            $.ajax({
+                url: acceptUrl,
+                method: "GET",
+                data: {},
+                success: function(data){
+                    if (data.requestaccepted){ 
+                        updateText(this_, "Accepted")
+                    } else {
+                        updateText(this_, "Accepted")
+                    }
+                }, error: function(error){
+                console.log(error)
+                console.log("error")
+                }
+            })
+        }
+    })
+        
+    //  adding to profile connect
+    function updateText(btn, verb){
+        btn.text(" " + verb)
+    }
+    $(".cancel-btn").click(function(e){
+        e.preventDefault()
+        var this_ = $(this)
+        var cancelUrl = this_.attr("data-href")
+        if (cancelUrl){
+            $.ajax({
+                url: cancelUrl,
+                method: "GET",
+                data: {},
+                success: function(data){
+                    if (data.requestcancelled){ 
+                        updateText(this_, "Cancelled")
+                    } else {
+                        updateText(this_, "Cancelled")
+                    }
+                }, error: function(error){
+                console.log(error)
+                console.log("error")
+                }
+            })
+        }
+    })
+        
+    //  adding to profile connect
+    function updateText(btn, verb){
+        btn.text(" " + verb)
+    }
+    $(".reject-btn").click(function(e){
+        e.preventDefault()
+        var this_ = $(this)
+        var DeleteRequesttUrl = this_.attr("data-href")
+        if (DeleteRequesttUrl){
+            $.ajax({
+                url: DeleteRequesttUrl,
+                method: "GET",
+                data: {},
+                success: function(data){
+                    if (data.requestdeleted){ 
+                        updateText(this_, "Request Deleted")
+                    } else {
+                        updateText(this_, "Request Deleted")
+                    }
+                }, error: function(error){
+                console.log(error)
+                console.log("error")
+                }
+            })
+        }
+    })
+        
+    //  adding to profile connect
+    function updateText(btn, verb){
+        btn.text(" " + verb)
+    }
+    $(".delete-btn").click(function(e){
+        e.preventDefault()
+        var this_ = $(this)
+        var DeletetUrl = this_.attr("data-href")
+        if (DeletetUrl){
+            $.ajax({
+                url: DeletetUrl,
+                method: "GET",
+                data: {},
+                success: function(data){
+                    if (data.deleted){ 
+                        updateText(this_, "Disconnected")
+                    } else {
+                        updateText(this_, "Disconnected")
+                    }
+                }, error: function(error){
+                console.log(error)
+                console.log("error")
+                }
+            })
+        }
+    })
+    
+</script>

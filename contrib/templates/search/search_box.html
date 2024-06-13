@@ -1,0 +1,38 @@
+{% load static %}
+
+<style>
+
+     .search-form input {
+          border-radius: 50px;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          padding-left: 10px;
+     }
+
+     .search-form .btn {
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+          max-height: 30px !important;
+          position: relative;
+     }
+     .search-form .product-search{
+          font-size: 0.75em;
+          font-weight: 500;
+      }
+
+     @media (max-width: 390px) {
+
+          .search-form input {
+               max-width: 200px;
+               min-width: 100px;
+          }
+     }
+</style>
+
+<form class="search-form p-0 d-flex justify-content-center" action="{% url 'all_products' %}" method="GET">
+     <div class="product-search d-flex" style="text-align:right;">
+          {% csrf_token %}
+          {{ form.q }}
+          <button class="bi bi-search py-3 btn m-0" type="submit"></button>
+     </div>
+</form>

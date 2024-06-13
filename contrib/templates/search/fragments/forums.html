@@ -1,0 +1,37 @@
+
+
+<div class="row p-3">
+    {% if s_forums %}
+
+        {% for forum in s_forums %}
+<div class="col-md-6 col-12 well">
+    <div class="my-2 w-100">
+        <div class="card-body d-flex justify-content-around w-100">
+            <a href="{% url 'forum' forum.pk %}"><img
+                    src="{{ MEDIA_URL }}{{ forum.picture.url }}"
+                    class="rounded mr-2" width="40" height="40"
+                    alt="" /></a>
+            <a class="text-dark my-auto"
+                href="{% url 'forum' forum.slug %}"><b>{{ forum.forum_name }}</b></a>
+            <small class="main-btn my-auto py-1">
+                <a data-href="{{ post.forum.get_forum_api_follow_url }}" class="follow-btn">
+                    {% if request.user in post.forum.followers.all %}
+                        Unfollow
+                    {% else %} Follow
+                    {% endif %}
+                </a>
+            </small>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="col-12">
+    <h5><i>No Forums were found matching those searchterms.</i>
+    </h5>
+</div>
+{% endif %}
+</div>
+
+{% include 'fragments/js/profilesjs.html' %}
+{% include 'fragments/postingjs.html' %}

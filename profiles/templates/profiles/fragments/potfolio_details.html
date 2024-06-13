@@ -1,0 +1,200 @@
+
+{% extends 'main.html' %}
+{% load static %}
+{% block headtitle %}
+{{ site_name }}-My Profile
+{% endblock headtitle %}
+{% block home %}
+
+<div class="bg-now">
+
+    {% include 'profiles/profile_top.html' %}
+
+
+    <div class="container-fluid">
+        <div id="bottom" class="bottom top-row">
+
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-0">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-0-1 ">
+                            <div class="grid-items crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-0-1-1 sidebar__inner">
+                                    <div class="accordion-menu ">
+                                        <h3 class="title">Brief Summarry</h3>
+                                        <div class="Profile-thumb">
+                                            <div class="image">
+                                                <a>
+                                                    {% if user.profile.picture%}
+                                                    <img class="circle img-fluid"
+                                                        src="{{ MEDIA_URL }}{{ user.profile.picture.url }}" style="max-height: 100px;
+                                                    max-width:100px;border-radius: 100%;" alt="{{ user.profile.name }}">
+                                                    {%endif%}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="">
+                                                <fieldset class="form-group">
+                                                    <br />
+                                                    <b>Followers:</b><span class="ml-2">{{ number_of_followers }}</span>
+                                                </fieldset>
+                                            </div>
+                                            <div class="text-center">
+                                                <fieldset class="form-group">
+                                                    <br />
+                                                    <b>Connections:</b><span
+                                                        class="ml-2">{{ request.user.circles.connections.count }}</span>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+
+                                        <ul class="j-menu">
+                                            <h4 class="h4">My Summary</h4>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>First Name: </strong></span>{{ user.profile.first_name }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Last Name: </strong></span> {{ user.profile.last_name }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Middle Name:
+                                                    </strong></span>{{ user.profile.middle_name }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Status: </strong></span>{{ user.profile.status }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Phone: </strong></span>{{ user.profile.phone }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Email: </strong></span>{{ user.profile.email }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Gender: </strong></span>{{ user.profile.gender }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Birth date: </strong></span>{{ user.profile.birth_date }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Date Joined:
+                                                    </strong></span>{{ user.profile.date_joined.date }}
+                                            </li>
+                                            <hr>
+                                            <br>
+                                        </ul>
+                                    </div><br>
+                                    <hr>
+                                    <div class="accordion-menu ">
+                                        <h3 class="title">More About me</h3>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="well">
+                                                    <h4 class="h4">Current Address</h4>
+                                                    {% for adress in ca %}
+                                                    <ul class="j-menu">
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Adress: </strong></span>{{ adress.adress }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>City: </strong></span> {{ adress.city }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Region: </strong></span>{{ adress.state }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Country: </strong></span>{{ adress.country }}
+                                                        </li>
+                                                        <hr>
+                                                        <br>
+                                                    </ul>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="well">
+                                                    <h4 class="h4">Permanent Address</h4>
+                                                    {% for adress in pa %}
+                                                    <ul class="j-menu">
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Adress: </strong></span>{{ adress.adress }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>City: </strong></span> {{ adress.city }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Region: </strong></span>{{ adress.state }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Country: </strong></span>{{ adress.country }}
+                                                        </li>
+                                                        <hr>
+                                                        <br>
+                                                    </ul>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid-col grid-col-top-0-2">
+                            <div class="grid-items  crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-0-2-1 sidebar__inner">
+                                    <h1 class="title module-title">Carreer Details</h1>
+                                    <div class="row">
+                                        <div id="content">
+                                            <div class="post-details">
+                                                <div class="d-flex justify-content-between">
+                                                    <span class="title">{{pot_detail.title}}</span>
+                                                    <span class="p-view">{{pot_detail.view_count}} View(s)</span>
+                                                </div>
+                                                <div class="post-image">
+                                                    <span class="p-date p-date-image">No <i>{{pot_detail.pk}}</i></span>
+                                                    {% if pot_detail.image.url %}
+                                                    <img src="{{pot_detail.image.url}}"
+                                                         width="1140"
+                                                         height="300"
+                                                         alt="Journal Blog is Here"
+                                                         title="Journal Blog is Here">
+                                                        {% endif %}
+                                                </div>
+                                                <div class="post-content">
+                                                    <p>{{pot_detail.description|safe}}
+                                                    </p>
+                                                    <h6>More</h6>
+                                                    <p>
+                                                        {{pot_detail.details|safe}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="well w-100">
+                                        <h4 class="h4">Latest Career History</h4>
+                                        <div id="content">
+                                            {% include 'profiles/fragments/potfolio.html' %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,627 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block headtitle %}
+{{ site_name }}-My Potfolio
+{% endblock headtitle %}
+{% block home %}
+
+<div class="bg-now">
+    {% include 'profiles/profile_top.html' %}
+    <div class="container-fluid">
+        <div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-00">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-00-1 ">
+                            <div class="grid-items crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-00-1-1 sidebar__inner">
+                                    <div class="accordion-menu ">
+                                        <h3 class="title">Brief Summarry</h3>
+                                        <div class="Profile-thumb">
+                                            <div class="image">
+                                                <a>
+                                                    {% if request.user.profile.picture %}
+                                                    <img class="large-image"
+                                                        src="{% thumbnail request.user.profile.picture 150x150 %}"
+                                                        alt="{{ request.user.profile.name }}">
+                                                    {% else %}
+                                                    <div class="h4 large-image bg-now d-flex">
+                                                        <span class="m-auto">
+                                                            {{ request.user.profile.name_initials }}
+                                                        </span>
+                                                    </div>
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="">
+                                                <fieldset class="form-group">
+                                                    <br />
+                                                    <b>Followers:</b><span class="ml-2">{{ number_of_followers }}</span>
+                                                </fieldset>
+                                            </div>
+                                            <div class="text-center">
+                                                <fieldset class="form-group">
+                                                    <br />
+                                                    <b>Connections:</b><span
+                                                        class="ml-2">{{ request.user.circles.connections.count }}</span>
+                                                </fieldset>
+                                                <a class=" main-btn border-primary py-2" href="{% url 'profile' %}">Edit
+                                                    Profile</a>
+                                            </div>
+                                        </div>
+                                        <ul class="j-menu">
+                                            <h4 class="title">My Summary</h4>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>First Name: </strong></span>{{ user.profile.first_name }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Last Name: </strong></span> {{ user.profile.last_name }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Middle Name:
+                                                    </strong></span>{{ user.profile.middle_name }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Status: </strong></span>{{ user.profile.status }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Phone: </strong></span>{{ user.profile.phone }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Email: </strong></span>{{ user.profile.email }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Gender: </strong></span>{{ user.profile.gender }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Birth date: </strong></span>{{ user.profile.birth_date }}
+                                            </li>
+                                            <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                <span><strong>Date Joined:
+                                                    </strong></span>{{ user.profile.date_joined|date }}
+                                            </li>
+                                            <hr>
+                                        </ul>
+                                    </div>
+                                    <hr>
+                                    <div class="accordion-menu ">
+                                        <h3 class="title">More About me</h3>
+                                        <div class="row m-0">
+                                            <div class="col-12">
+                                                <div class="well">
+                                                    <h4 class="title">Default Address</h4>
+                                                    {% for adress in address_book %}
+                                                    {% if adress.default %}
+                                                    <ul class="j-menu mt-3">
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Name: </strong></span>{{ adress.name }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Phone: </strong></span>{{ adress.phone }}
+                                                        </li>
+                                                        <hr>
+                                                    </ul>
+                                                    <ul class="j-menu">
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Adress: </strong></span>{{ adress.address }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>City: </strong></span> {{ adress.area }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>City: </strong></span> {{ adress.city }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Region: </strong></span>{{ adress.region }}
+                                                        </li>
+                                                        <li
+                                                            class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                            <span><strong>Country: </strong></span>{{ adress.country }}
+                                                        </li>
+                                                        <hr>
+                                                        <br>
+                                                    </ul>
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-col grid-col-top-00-2">
+                            <div class="grid-items  crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-00-2-1 sidebar__inner">
+                                    <div class="d-flex justify-content-between">
+                                        <h4 class="text-center title">My Details</h4>
+                                        <span class="text-center ">
+                                            <a class=" main-btn border-primary py-2" href="{% url 'profile_view' profile.slug %}">View as User</a>
+                                        </span>
+                                    </div>
+                                    <div class="well">
+                                        <h4 class="title">My Biography</h4>
+                                        <p>{{  user.profile.bio|safe }}</p>
+                                    </div>
+                                    <div class="well">
+                                        <div id="content">
+                                            <h4 class="title">Education Background</h4>
+                                            {% if studies %}
+                                            <div class="table-responsive ">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <td class="text-left td-name">Institution
+                                                            </td>
+                                                            <td class="text-center td-Price">
+                                                                Qualification</td>
+                                                            <td class="text-center td-Store">Period</td>
+                                                            <td class="text-center td-action">Action
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="educ_id" hx-confirm="Are you sure you want to delete this program?"
+                                                    hx-target="#educ_id" hx-swap="outerHTML">
+                                                    {% include 'profiles/fragments/education.html' %}
+                                                </tbody>
+                                        
+                                                </table>
+                                            </div>
+                                            {% else %}
+                                            <p class="w-100 text-center"><span class=" py-5">Add
+                                                    education back ground so that potential partners
+                                                    or employers can contact you.</span></p>
+                                            {% endif %}
+                                        </div>
+                                        <div class="main-posts post-list">
+                                            <div class="d-flex" role="tab">
+                                                <a class=" main-btn border-primary py-2" data-toggle="collapse"
+                                                    href="#collapsetwo-2" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    <span class="bi bi-plus"> Add Education Level</span>
+                                                </a>
+                                            </div>
+                                            <div class="post-layout">
+                                                <div id="collapsetwo-2" class="collapse" role="tabpanel">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <form class="form-signin" >
+                                                                <fieldset class="form-group">
+                                                                    <br />
+                                                                    {{ educ_form }}
+                                                                </fieldset>
+                                                                <div class="form-group">
+                                                                    <button hx-post="{% url 'create_education' %}" hx-target="#educ_id"
+                                                                        class="btn btn-sm btn-primary btn-block text-uppercase" type="submit">
+                                                                        Save
+                                                                    </button><br />
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="well">
+                                        <h4 class="title">Latest Career History</h4>
+                                        <div id="content">
+                                            {% include 'profiles/fragments/potfolio.html' %}
+                                            <div class="main-posts post-list">
+                                                <div class="d-flex" role="tab">
+                                                    <a class=" main-btn border-primary py-2" data-toggle="collapse"
+                                                        href="#collapsetwo-3" aria-expanded="true"
+                                                        aria-controls="collapseOne">
+                                                        <span class="bi bi-plus"> Add Career</span>
+                                                    </a>
+                                                </div>
+                                                <div class="post-layout">
+                                                    <div id="collapsetwo-3" class="collapse" role="tabpanel">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <form class="form-signin" method="POST" action="{% url 'create_potfolio' %}"
+                                                                    enctype="multipart/form-data">
+                                                                    {% csrf_token %}
+                                                                    <fieldset class="form-group">
+                                                                        <br />
+                                                                        {{ pf_form }}
+                                                                    </fieldset>
+                                                                    <div class="form-group">
+                                                                        <button
+                                                                            class="btn btn-sm btn-primary btn-block text-uppercase"
+                                                                            type="submit">
+                                                                            Save</button><br />
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="well">
+                                        <h4 class="title">Skillset</h4>
+                                        {% if skills %}
+                                        <div class="row">
+                                            <div class='col-12'>
+                                                <div id="content" class="{{ class }}">
+                                                    <div class="table-responsive">
+                                                        <table class="table table-bordered table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <td class="text-center td-image">
+                                                                        image
+                                                                    </td>
+                                                                    <td class="text-left td-name">Skill</td>
+                                                                    <td class="text-center td-Price">score
+                                                                    </td>
+                                                                    <td class="text-center td-Store">Details
+                                                                    </td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {% for skill in skills %}
+                                                                <tr class="">
+                                                                    <td class="text-center td-image">
+                                                                        <img src="{% thumbnail skill.image 150x150 %}"
+                                                                            style="max-height: 80px;" alt="">
+                                                                    </td>
+                                                                    <td class="text-left td-name">
+                                                                        {{ skill.title }}</td>
+                                                                    <td class="text-center td-Price">
+                                                                        <input type="range" id="rangeInput"
+                                                                            value="{{skill.score}}">
+                                                                        {{ skill.score }}%</td>
+                                                                    <td class="text-center td-Store">
+                                                                        {{ skill.details }}</td>
+                                                                    <td class="text-center td-action">
+                                                                        <a
+                                                                            class="btn btn-danger p-2 btn-remove"><i
+                                                                                class="bi bi-trash"></i></a>
+                                                                        <a class="btn btn-primary p-2"
+                                                                            href="#collapsetwo-1">
+                                                                            <span class="bi bi-pencil"></span>
+                                                                        </a>
+                                                                    </td>
+                                                                </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <p class="w-100 text-center"><span class=" py-5"> You have not added
+                                                any skillset yet </span></p>
+                                        {% endif %}
+                                        <div class="main-posts post-list">
+                                            <div class="d-flex" role="tab">
+                                                <a class=" main-btn border-primary py-2" data-toggle="collapse"
+                                                    href="#collapsetwo-6" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    <span class="bi bi-plus">Add Skillset</span>
+                                                </a>
+                                            </div>
+                                            <div class="post-layout">
+                                                <div id="collapsetwo-6" class="collapse" role="tabpanel">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <form class="form-signin" method="POST" action="{% url 'create_skill' %}"
+                                                                enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <fieldset class="form-group">
+                                                                    <br />
+                                                                    {{ skill_form }}
+                                                                </fieldset>
+                                                                <div class="form-group">
+                                                                    <button
+                                                                        class="btn btn-sm btn-primary btn-block text-uppercase"
+                                                                        type="submit">
+                                                                        Save</button><br />
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="well">
+                                        <h4 class="title">Certifications and Other Awards</h4>
+                                        {% if files %}
+                                        <div id="content" class="{{ class }}">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <td class="text-center td-image">
+                                                                Document
+                                                            </td>
+                                                            <td class="text-left td-name">Document
+                                                                Name
+                                                            </td>
+                                                            <td class="text-center td-Price">
+                                                                Download
+                                                            </td>
+                                                            <td class="text-center td-Price">Delete
+                                                            </td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for file in files %}
+                                                        <tr class="">
+                                                            <td class="text-center td-image">
+                                                                {% if file.image %}
+                                                                <img src="{% thumbnail file.image 150x150 %}"
+                                                                    style="max-height: 80px;" alt="">
+                                                                {% endif %}
+                                                            </td>
+                                                            <td class="text-left td-name">
+                                                                {{ file.title }}</td>
+                                                            <td class="text-center td-action">
+                                                                {% if file.document %}
+                                                                <a download class="btn btn-primary p-2"
+                                                                    href="{{ file.document.url }}">
+                                                                    <span class="bi bi-download"><span
+                                                                            class="ml-2">Download</span></span>
+                                                                </a>
+                                                                {% endif %}
+                                                            </td>
+                                                            <td class="text-center td-action">
+                                                                <a class="btn btn-danger p-2 btn-remove"><i class="bi bi-trash"></i> </a>
+                                                            </td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <p class="w-100 text-center"><span class=" py-5"> You have never
+                                                added
+                                                any Document. - Add now </span></p>
+                                        {% endif %}
+                                        <div class="main-posts post-list">
+                                            <div class="d-flex" role="tab">
+                                                <a class=" main-btn border-primary py-2" data-toggle="collapse"
+                                                    href="#collapsetwo-7" aria-expanded="true"
+                                                    aria-controls="collapseOne">
+                                                    <span class="bi bi-plus"> Add Document</span>
+                                                </a>
+                                            </div>
+                                            <div class="post-layout">
+                                                <div id="collapsetwo-7" class="collapse" role="tabpanel">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <form class="form-signin" method="POST" action="{% url 'create_file' %}"
+                                                                enctype="multipart/form-data">
+                                                                {% csrf_token %}
+                                                                <fieldset class="form-group">
+                                                                    <br />
+                                                                    {{ file_form }}
+                                                                </fieldset>
+                                                                <div class="form-group">
+                                                                    <button
+                                                                        class="btn btn-sm btn-primary btn-block text-uppercase"
+                                                                        type="submit">
+                                                                        Save</button><br />
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .notify-badge {
+        display: block !important
+    }
+</style>
+
+
+<script type="text/javascript">
+
+	var cropper;
+	var imageFile;
+	var base64ImageString;
+	var cropX;
+	var cropX;
+	var cropWidth;
+	var cropHeight;
+
+	enableImageOverlay()
+
+
+	function enableImageOverlay(){
+		var profileImage = document.getElementById("id_profile_image")
+		profileImage.style.opacity = "1"
+		profileImage.style.display = "block"
+		profileImage.style.width = "100%"
+		profileImage.style.height = "auto"
+		profileImage.style.transition = ".5s ease"
+		profileImage.style.backfaceVisibility  = "hidden"
+		profileImage.style.cursor = "pointer"
+
+		var middleContainer = document.getElementById("id_middle_container")
+		middleContainer.style.transition = ".5s ease"
+		middleContainer.style.opacity = "0"
+
+		var imageContainer = document.getElementById("id_image_container")
+		imageContainer.addEventListener("mouseover", function( event ) { 
+			profileImage.style.opacity = "0.3"
+			middleContainer.style.opacity = "1"
+		})
+
+		imageContainer.addEventListener("mouseout", function( event ) { 
+			profileImage.style.opacity = "1"
+			middleContainer.style.opacity = "0"
+		})
+
+		imageContainer.addEventListener("click", function(event){
+			document.getElementById('id_profile_image').click();
+		});
+		var cropConfirm = document.getElementById("id_image_crop_confirm")
+		cropConfirm.classList.add("d-none")
+
+		var btnSave = document.getElementById("btn-save")
+		btnSave.classList.add("d-none")
+	};
+
+	function disableImageOverlay(){
+		var profileImage = document.getElementById("id_profile_image_display")
+		var middleContainer = document.getElementById("id_middle_container")
+		var imageContainer = document.getElementById("id_image_container")
+
+		imageContainer.removeEventListener("mouseover", function( event ) { 
+			profileImage.style.opacity = "0.3"
+			middleContainer.style.opacity = "1"
+		})
+		imageContainer.removeEventListener("mouseout", function( event ) { 
+			profileImage.style.opacity = "1"
+            middleContainer.style.opacity = "0"
+		})
+		profileImage.style.opacity = "1"
+		middleContainer.style.opacity = "0"
+
+		document.getElementById('id_image_container').removeEventListener("click", function(event){
+			event.preventDefault();
+			// do nothing
+		});
+		document.getElementById('id_profile_image').addEventListener("click", function(event){
+			event.preventDefault();
+			// do nothing
+		});
+		var cropConfirm = document.getElementById("id_image_crop_confirm")
+		cropConfirm.classList.remove("d-none");
+
+		var btnSave = document.getElementById("btn-save")
+		btnSave.classList.remove("d-none");
+
+		var confirm = document.getElementById("id_confirm")
+		confirm.addEventListener("click", function(event){
+			cropImage( 
+                imageFile, 
+                cropX, 
+                cropY, 
+                cropWidth, 
+                cropHeight
+                )
+		})
+		var cancel = document.getElementById("id_cancel")
+		cancel.addEventListener("click", function(event){
+			console.log("Reloading window...")
+			window.location.reload();
+		})
+	};
+
+	/* return null if invalid or base64String if valid */
+	function isImageSizeValid(image){
+		var startIndex = image.indexOf("base64,") + 7
+		var base64str = image.substr(startIndex);
+		var decoded = atob(base64str);
+		if(decoded.length >= "{{MAX_IMAGE_SIZE}}"){
+			return null
+		}
+		return base64str
+	}
+
+	function cropImage(image, x, y, width, height){
+		base64ImageString = isImageSizeValid(image)
+
+		if(base64ImageString != null){
+			var requestData = {
+				"csrfmiddlewaretoken": "{{ csrf_token }}",
+				"image": base64ImageString,
+				"cropX": cropX,
+				"cropY": cropY,
+				"cropWidth": cropWidth,
+				"cropHeight": cropHeight
+			}
+			$.ajax({
+				type: 'POST',
+				dataType: "json",
+				url: "{% url 'crop_image' pk=user.pk %}",
+				data: requestData,
+				timeout: 10000,
+				success: function(data) {
+					if(data.result == "success"){
+						document.getElementById("id_cancel").click()
+					}
+					else if(data.result == "error"){
+						alert(data.exception)
+						document.getElementById("id_cancel").click()
+					}
+				},
+				error: function(data) {
+					console.error("ERROR...", data)
+				}
+			});
+		}
+		else{
+			alert("Upload an image smaller than 8 MB");
+			document.getElementById("id_cancel").click()
+		}
+	};
+
+	/*
+		Called when a new image is selected from file chooser dialog
+	*/
+	function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+            	disableImageOverlay()
+            	var image = e.target.result
+            	var imageField = document.getElementById('id_profile_image_display')
+                imageField.src = image
+				cropper = new Cropper(imageField, {
+					aspectRatio: 1/1,
+					crop(event) {
+						setImageCropProperties(
+							image,
+							event.detail.x,
+							event.detail.y,
+							event.detail.width,
+							event.detail.height
+						)
+					},
+				});
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
+    function setImageCropProperties(image, x, y, width, height){
+		imageFile = image
+		cropX = x
+		cropY = y
+		cropWidth = width
+		cropHeight = height
+	}
+
+</script>
+
+
+{% endblock %}

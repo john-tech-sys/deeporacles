@@ -1,0 +1,308 @@
+{% extends "main.html" %}
+{% load static %}
+{% block headtitle %}
+{{site_name}} Contact
+{% endblock headtitle %}
+{% block home %}
+
+<style>
+    .module-info_blocks-194 .module-item.swiper-slide {
+        margin-right: 10px;
+        width: calc((100% - 0 * 10px) / 1 - 0.01px)
+    }
+
+    .module-info_blocks-194 .module-item:not(.swiper-slide) {
+        padding: 5px;
+        width: calc(100% / 1 - 0.01px)
+    }
+
+    .one-column #content .module-info_blocks-194 .module-item.swiper-slide {
+        margin-right: 10px;
+        width: calc((100% - 0 * 10px) / 1 - 0.01px)
+    }
+
+    .one-column #content .module-info_blocks-194 .module-item:not(.swiper-slide) {
+        padding: 5px;
+        width: calc(100% / 1 - 0.01px)
+    }
+
+    .two-column #content .module-info_blocks-194 .module-item.swiper-slide {
+        margin-right: 10px;
+        width: calc((100% - 0 * 10px) / 1 - 0.01px)
+    }
+
+    .two-column #content .module-info_blocks-194 .module-item:not(.swiper-slide) {
+        padding: 5px;
+        width: calc(100% / 1 - 0.01px)
+    }
+
+    .side-column .module-info_blocks-194 .module-item.swiper-slide {
+        margin-right: 10px;
+        width: calc((100% - 0 * 10px) / 1 - 0.01px)
+    }
+
+    .side-column .module-info_blocks-194 .module-item:not(.swiper-slide) {
+        padding: 5px;
+        width: calc(100% / 1 - 0.01px)
+    }
+
+    .module-info_blocks-194 .info-block .info-block-title {
+        font-family: 'Oswald';
+        font-weight: 700;
+        font-size: 14px;
+        text-transform: uppercase;
+        margin-bottom: 3px;
+        display: block
+    }
+
+    .module-info_blocks-194 .info-block .info-block-text {
+        font-size: 13px;
+        color: rgba(139, 145, 152, 1);
+        display: block
+    }
+
+    .module-info_blocks-194 .info-block {
+        border-width: 0;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: rgba(221, 221, 221, 1);
+        padding: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        text-align: left
+    }
+
+    .module-info_blocks-194 .info-blocks:last-child .info-block {
+        border-width: 0;
+        border-bottom-width: 0px
+    }
+
+    .module-info_blocks-194 .info-block-content {
+        display: flex;
+        justify-content: flex-start
+    }
+
+    .module-info_blocks-194 .info-block::before {
+        align-self: flex-start;
+        width: 45px;
+        height: 45px;
+        font-size: 24px
+    }
+
+    .module-info_blocks-194 .info-block-img {
+        align-self: flex-start
+    }
+
+    .module-info_blocks-194 .info-block::before,
+    .module-info_blocks-194 .info-block-img {
+        margin-right: 10px
+    }
+
+    .module-info_blocks-194 .info-block .count-badge {
+        display: none
+    }
+
+</style>
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li><a href="{% url 'home' %}"><span class="bi bi-house"></span></a>
+            </li>
+            <li><a href="{% url 'contact' %}">Contact Us</a></li>
+        </ul>
+        <div id="top">
+            <div class="title module-title w-100 text-center mx-auto my-4">
+                <h1>Contact Us</h1>
+            </div>
+        </div>
+        <div id="information-information">
+            <div class="row">
+                <div id="content" class="col-sm-9">
+                    <div id="top" class="top top-row">
+                        <div class="grid-rows">
+                            <div class="grid-row grid-row-top-2">
+                                <div class="grid-cols">
+                                    <div class="grid-col grid-col-top-2-1">
+                                        <div class="grid-items">
+                                            <div class="grid-item grid-item-top-2-1-1">
+                                                <div class="module module-info_blocks module-info_blocks-194">
+                                                    <div class="d-flex">
+                                                        <div
+                                                            class="module-item info-blocks info-blocks-icon">
+                                                            <div class="info-block">
+                                                                <div class="info-block-content">
+                                                                    <div class="info-block-title">Office Address</div>
+                                                                    <div class="info-block-text">{{site_config.address}}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div
+                                                            class="module-item info-blocks info-blocks-icon">
+                                                            <a href="tel:18005559090" class="info-block">
+                                                                <div class="info-block-content">
+                                                                    <div class="info-block-title">Call Us</div>
+                                                                    <div class="info-block-text">Tel: {{site_config.phone}}<br>
+                                                                        Email: {{site_config.email}}</div>
+                                                                </div>
+                                                            </a>
+                                                        </div>
+                                                        <div
+                                                            class="module-item info-blocks info-blocks-icon">
+                                                            <div class="info-block">
+                                                                <div class="info-block-content">
+                                                                    <div class="info-block-title">Office Hours</div>
+                                                                    <div class="info-block-text">Mon-Fri: 8:00 -
+                                                                        20:00<br>
+                                                                        Weekend: 8:00 - 16:00</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="grid-col grid-col-top-2-2">
+                                        <div class="grid-items">
+                                            <div class="grid-item grid-item-top-2-2-1">
+                                                <div class="module mx-4">
+                                                    <div id="top">
+                                                        <div class=" module-title w-100 text-center bg-info py-2">
+                                                            <h1>{{title}}</h1>
+                                                        </div>
+                                                    </div>
+
+                                                    {% if confirm_message %}
+                                                    <p>{{ confirm_message }}</p>
+
+                                                    {% endif %}
+
+
+                                                    {% if form %}
+
+                                                    <h3 class="mt-4 module-title">Write your message here
+                                                    </h3>
+                                                    <div class="module-body">
+
+                                                        <form action="{% url 'contact' %}" method="POST" class="form-horizontal">
+                                                            <fieldset>
+                                                                {% csrf_token %}
+                                                                <div class="form-group custom-field required">
+                                                                    <label class="col-sm-2 control-label"
+                                                                        for="field-611a20961d4ce-1">Your Name</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="text" name="name" value=""
+                                                                            placeholder="Your Name"
+                                                                            id="field-611a20961d4ce-1"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group custom-field required">
+                                                                    <label class="col-sm-2 control-label"
+                                                                        for="field-611a20961d4ce-2">Your Email</label>
+                                                                    <div class="col-sm-10">
+                                                                        <input type="email" name="email" value=""
+                                                                            placeholder="Your Email"
+                                                                            id="field-611a20961d4ce-2"
+                                                                            class="form-control">
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <div class="form-group custom-field ">
+                                                                    <label class="col-sm-2 control-label"
+                                                                        for="field-611a20961d4ce-3">Topic</label>
+                                                                    <div class="col-sm-10">
+                                                                        <select name="item[3]"
+                                                                            id="field-611a20961d4ce-3"
+                                                                            class="form-control">
+                                                                            <option value=""> --- Please Select ---
+                                                                            </option>
+                                                                            <option
+                                                                                value="Capture the information you need">
+                                                                                Capture the information you need
+                                                                            </option>
+                                                                            <option value="Add or remove any fields">Add
+                                                                                or remove any fields</option>
+                                                                            <option value="Your own custom criteria">
+                                                                                Your own custom criteria</option>
+                                                                            <option
+                                                                                value="Make any field required or not">
+                                                                                Make any field required or not</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div> -->
+                                                                <div class="form-group custom-field required">
+                                                                    <label class="col-sm-2 control-label"
+                                                                        for="field-611a20961d4ce-4">Message</label>
+                                                                    <div class="col-sm-10">
+                                                                        <textarea name="comment" rows="5"
+                                                                            placeholder="Message"
+                                                                            id="field-611a20961d4ce-4"
+                                                                            class="form-control"></textarea>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <div class="checkbox">
+                                                                    <label>
+                                                                        <input type="checkbox" name="agree" value="1">
+                                                                        I have read and agree to the <a
+                                                                            href="#"
+                                                                            class="agree"><b>Privacy Policy</b></a>
+                                                                    </label>
+                                                                </div> -->
+                                                            </fieldset>
+                                                            <div class="buttons">
+                                                                <div class="pull-right">
+                                                                    <input type="submit" class="btn btn-primary"
+                                                                        value="submit" />
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    {% endif %}
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {% comment %} <div id="top" class="top top-row">
+                        <div class="grid-rows">
+                            <div class="col-sm-12 mx-4">
+                                <h2 class="title location-title bg-info py-4">Other Location</h2>
+                                <div class="panel panel-default our-location">
+                                    <div class="panel-body">
+                                        <div class="row store-data">
+                                            <div class="col-sm-3 store-address"><strong>{{site_name}}</strong><br>
+                                                <address>
+                                                    Store Address
+                                                </address>
+                                            </div>
+                                            <div class="col-sm-3 store-tel"><strong>Telephone</strong><br>
+                                                {{site_phone}}<br>
+                                                <br>
+                                            </div>
+                                            <div class="col-sm-3 store-info">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> {% endcomment %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    {% include 'modules/info-block.html' %}
+
+{% endblock home %}

@@ -1,0 +1,104 @@
+{% extends 'main.html' %}
+{% block headtitle %}
+{{ site_name }}-{{ title }}
+{% endblock headtitle %}
+{% load static %}
+{% load thumbnail %}
+{% block home %}
+<div class="container-fluid">
+  <div class="w-100 bg-info">
+      <ul class="breadcrumb">
+          <li><a href="{% url 'home' %}"><span class="bi bi-house"></span></a>
+          </li>
+          <li class="active"><Span class="h6">Mypal</span></li>
+      </ul>
+  </div>
+</div>
+<div class="container-fluid mb-0">
+  <div id="bottom" class="bottom top-row">
+      <div class="grid-rows">
+          <div class="grid-row grid-row-top-00">
+              <div class="grid-cols">
+                  <div class="grid-col grid-col-top-00-1">
+                      <div class="grid-items crumina-sticky-sidebar">
+                          <div class="grid-item grid-item-top-00-1-1 sidebar__inner">
+                            <div class="d-flex justify-content-between">
+                              <div class="post__user user my-auto">
+                                  {% if user.is_authenticated %}
+                                  {% if request.user.profile.picture %}
+                                  <img class="medium-image"
+                                      src="{% thumbnail request.user.profile.picture 100x100 crop %}"
+                                      alt="{{ request.user.profile.name }}">
+                                  {% else %}
+                                  <div class="h4 medium-image bg-now p-2 d-flex">
+                                      <span class="m-auto">
+                                          {{ request.user.profile.name_initials }}
+                                      </span>
+                                  </div>
+                                  {% endif %}
+                                  {% else %}
+                                  <span class="bi bi-person-circle h1 mr-2">
+                                  </span>
+                                  {% endif %}
+                              </div>
+                              <button type="button" class="btn btn-primary mb-3" onclick="location.href=''">New Chat +</button>
+                            </div>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="grid-col grid-col-top-00-2">
+                      <div class="grid-items crumina-sticky-sidebar">
+                          <div class="grid-item grid-item-top-00-2-1 mb-5 sidebar__inner">
+                            <div class="well">
+                              <h1 class="card-header text-center">Mypal AI</h1>
+                              <div class="card-body">
+                                <div class="chat-history mb-3" id="conversation">
+                                  {% for message in messages %}
+                                    <div class="card mb-2 {% if message.role == 'assistant' %}bg-success text-white{% endif %}">
+                                      <div class="card-body p-2">
+                                        <strong>{{ message.role|title }}:</strong> {{ message.content|linebreaksbr }}
+                                      </div>
+                                    </div>
+                                  {% endfor %}
+                                </div>
+                                <form id="chat-form" action="{% url 'mypal' %}" method="POST">
+                                  <!-- this secures the form from malicious attacks during submission -->
+                                  {% csrf_token %}
+                                  <textarea class="form-control mb-2" required type="text" id="user-input" type="text" name="user_input" placeholder="Your message"></textarea>
+                                  <button class="btn btn-success fw-bold" type="submit">
+                                       Submit
+                                  </button>
+                                </form>
+                              </div>
+                          </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+        const conversation = document.getElementById('conversation');
+
+        // Scroll conversation to the bottom
+        conversation.scrollTop = conversation.scrollHeight;
+
+        // Submit the form when the user presses Enter key
+        userInput.addEventListener('keypress', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                chatForm.submit();
+            }
+        });
+
+        // Focus on the user input field
+        userInput.focus();
+    });
+</script> 
+{% endblock %} 
+

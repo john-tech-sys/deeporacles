@@ -1,0 +1,149 @@
+{% extends 'main.html' %}
+{% block headtitle %}
+{{ site_name }}-{{ forum.forum_name }}
+{% endblock headtitle %}
+{% load static %}
+{% load thumbnail %}
+{% block home %}
+
+<script type="text/javascript" src="{% static 'forum/forum.js' %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'forum/forum.css' %}">
+<div class="bg-now">
+    {% include 'special/group/forum-top.html' %}
+	<div class="container-fluid">
+		<div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-6 px-2">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-6-1 px-2">
+                            <div class="grid-items crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-6-1-1 sidebar__inner">
+                                    <ul class="mx-0 px-0">
+                                        <h4 class="title">Forum Summarry</h4>
+                                        <div class="accordion-menu well">
+                                            <ul class="j-menu">
+                                                <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                    <span><strong>Date Created: </strong></span>{{ forum.date_created }}
+                                                </li>
+                                                <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                    <span><strong>Posts: </strong></span>{{ posts.count }}
+                                                </li>
+                                                <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                    <span><strong>Questions: </strong></span>{{ questions.count }}
+                                                </li>
+                                                <li class="menu-item accordion-menu-item accordion-menu-item-1 mb-3">
+                                                    <span><strong>Authors: </strong></span>
+                                                </li>
+                                            </ul>
+                                            <hr>
+                                            <span class="h5">About Forum</span>
+                                            <div class="block-body expand-block">
+                                                <div class="block-wrapper py-4">
+                                                    {{  forum.forum_bio|safe|truncatechars_html:"200" }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <li class="menu-item w-100 well ">
+                                            <div class="mb-4">
+                                                <span class="links-text h5"><i class=" fa fa-group pr-3"></i>Contributors</span>
+                                                <span class="count-badge wishlist-badge count-zero">{{ forum.forum_members.count }}</span>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                {% for member in forum.forum_members.all %}
+                                                {% if member == forum.forum_admin %}
+                                                <div class="d-flex">
+                                                    <a class="m-1" href="{% url 'user_timeline' member.profile.slug %}">
+                                                        <img class="small-image mr-1" src="{% thumbnail member.profile.picture 80x80 crop %}"
+                                                        alt="{% thumbnail member.profile.image 20x20 crop %}"/>
+                                                        <span class="links-text">{{ member.profile.name }}</span>
+                                                    </a><span class="my-auto ml-4">Admin</span>
+                                                </div>
+                                                {% elif member in forum.forum_sub_admin.all|slice:"10" %}
+                                                <div class="d-flex">
+                                                    <a class="m-1" href="{% url 'user_timeline' member.profile.slug %}">
+                                                        <img class="small-image mr-1" src="{% thumbnail member.profile.picture 80x80 crop %}"
+                                                        alt="{% thumbnail member.profile.image 20x20 crop %}"/>
+                                                        <span class="links-text">{{ member.profile.name }}</span>
+                                                    </a><span class="my-auto ml-4">Subadmin</span>
+                                                </div>
+                                                {% elif forloop.counter <= 10 %}
+                                                <a class="m-1" href="{% url 'user_timeline' member.profile.slug %}">
+                                                    <img class="small-image mr-1" src="{% thumbnail member.profile.picture 80x80 crop %}"
+                                                    alt="{% thumbnail member.profile.image 20x20 crop %}"/>
+                                                    <span class="links-text">{{ member.profile.name }}</span>
+                                                </a>
+                                                {% endif %}
+                                                {% endfor %}
+                                                <a class="mt-4" href="{% url 'forum-members' forum.pk %}">
+                                                    <span class="links-text">All Contributors</span>
+                                                </a>
+                                            </div>
+                                            <div class="menu-item well d-flex justify-content-between w-100 mt-2">
+                                                <a class="my-auto" href="">
+                                                    <span class="links-text"><i class=" bi bi-chevron-double-left pr-3"></i>Followers</span>
+                                                    <span class="count-badge wishlist-badge count-zero">{{ forum.followers.count }}</span>
+                                                </a>
+                                                {% if not request.user == forum.forum_admin %}
+                                                <a data-href="{{ forum.get_forum_api_follow_url }}" class="follow-btn main-btn py-1">
+                                                    {% if request.user in forum.followers.all %}
+                                                        Unfollow
+                                                    {% else %} Follow
+                                                    {% endif %}
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                            <div class="module-body pb-0 mt-2 d-flex justify-content-evenly">
+                                                {% if request.user in forum.forum_members.all and not request.user == forum.forum_admin %}
+                                                <form method="POST" action="{% url 'leave-forum' forum.pk %}">
+                                                    {% csrf_token %}
+                                                    <a href="#">
+                                                        <button class=" main-btn py-1">
+                                                            Leave forum
+                                                        </button>
+                                                    </a>
+                                                </form>
+                                                {% elif request.user not in forum.forum_members.all %}                                                
+                                                <a data-href="{{ forum.get_forum_api_join_url }}" class="join-btn main-btn py-1">
+                                                    {% if request.user in forum.forum_members_waiting.all %}
+                                                    Cancel Request to join
+                                                    {% else %} Join Forum
+                                                    {% endif %}
+                                                </a>
+                                                {% endif %}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <span class="title">Trending</span>
+                                    <ul class="my-3 mx-0 px-0">
+                                        <li class="menu-item w-100 well ">
+                                            {% for post in posts %}
+                                            {% if forloop.counter <= 10 %}
+                                            {% include 'home/fragments/trend_post.html' %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+						<div class="grid-col grid-col-top-6-2 px-0">
+                            <div class="grid-items">
+                                <div class="grid-item grid-item-top-6-2-1">
+                                    {% block forum %}
+                                    {% endblock forum %}
+								</div>
+							</div>
+						</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'home/js/profile.js' %}"></script>
+{% endblock %}
+
+{% endblock %} 
+

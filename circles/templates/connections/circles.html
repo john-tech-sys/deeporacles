@@ -1,0 +1,106 @@
+
+
+
+{% extends 'main.html' %}
+{% load static %}
+{% load thumbnail %}
+{% block headtitle %}
+{{ site_name }}-{{ user}}'s Circles
+{% endblock headtitle %}
+{% block home %}
+
+<div class="bg-now">
+    {% include 'profiles/profile_top.html' %}
+    <div class="container-fluid">
+        <style>
+            .tab-pane .card {
+                background-color: aliceblue;
+                border: 0.1rem solid #e3e3e5;
+                border-radius: 0.25rem;
+                box-shadow: 0 1px 2px rgba(34, 42, 66, 0.075);
+            }
+            .tab-pane .card span{
+                margin:auto;
+            }
+        </style>
+        <div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <ul class="nav nav-tabs">
+                    <li class="tab-1 active">
+                        <a href="#connections-60b486ec43626-tab-1" data-toggle="tab">
+                            <span class="links-text"><i class=" bi bi-people pr-3"></i>Connections</span>
+                            <span class="count-badge wishlist-badge count-zero">{{ user.circles.connections.count }}</span>
+                        </a>
+                    </li>
+                    <li class="tab-4">
+                        <a href="#connections-60b486ec43626-tab-2" data-toggle="tab">
+                            <span class="links-text"><i class=" bi bi-chevron-double-left pr-3"></i>Followers</span>
+                            <span class="count-badge wishlist-badge count-zero">{{ user.circles.followers.count }}</span>
+                        </a>
+                    </li>
+                    <li class="tab-4">
+                        <a href="#connections-60b486ec43626-tab-3" data-toggle="tab">
+                            <span class="links-text"><i class=" bi bi-chevron-double-right pr-3"></i>Following</span>
+                            <span class="count-badge wishlist-badge count-zero">{{ user.circles.following.count }}</span>
+                        </a>
+                    </li>
+                    <li class="tab-4">
+                        <a href="#connections-60b486ec43626-tab-4" data-toggle="tab">Find Users</a>
+                    </li>
+                </ul>
+                <div class="module-body side-products-tabs">
+                    <div class="tab-content">
+                        <div class="module-item module-item-2 tab-pane active" id="connections-60b486ec43626-tab-1">
+                            <div class="col-12 mt-3">
+                                {% if connections %}
+                                {% for member in connections %}
+                                {% include 'special/group/member.html' %}
+                                {% endfor %}
+                                {% else %}
+                                <h5><i>{{use.profile.name}} has no followers!</i>
+                                </h5>
+                                {% endif %}
+                            </div> <!-- end row -->
+                        </div>
+                        <div class="module-item module-item-2 tab-pane" id="connections-60b486ec43626-tab-2">
+                            <div class="col-12 mt-3">
+                                {% if user.circles.followers.all %}
+                                {% for member in user.circles.followers.all %}
+                                {% include 'special/group/member.html' %}
+                                {% endfor %}
+                                {% else %}
+                                <h5><i>{{use.profile.name}} has no followers!</i>
+                                </h5>
+                                {% endif %}
+                            </div> <!-- end row -->
+                        </div>
+                        <div class="module-item module-item-2 tab-pane" id="connections-60b486ec43626-tab-3">
+                            <div class="col-12 mt-3">
+                                {% if user.circles.following.all %}
+                                {% for member in user.circles.following.all %}
+                                {% include 'special/group/member.html' %}
+                                {% endfor %}
+                                {% else %}
+                                <h5><i>{{use.profile.name}} does not follow anyone!</i>
+                                </h5>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="module-item module-item-2 tab-pane" id="connections-60b486ec43626-tab-4">
+                            <div class="col-12 mt-3">
+                                {% comment %} {% for member in rec_connections%}
+                                {% include 'special/group/member.html' %}
+                                {% endfor %} {% endcomment %}
+                                {% for member in users%}
+                                {% include 'special/group/member.html' %}
+                                {% endfor %}
+                            </div> <!-- end row -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'fragments/js/profilesjs.html' %}
+{% endblock %}

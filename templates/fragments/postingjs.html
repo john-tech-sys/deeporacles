@@ -1,0 +1,242 @@
+
+
+
+    <script>
+        function InviteMember(btn, forum, user){
+            $.ajax({
+                url: '/connections/invite/forum/member/',
+                data: {'forumPK':forum, 'userPK':user},
+                method: 'POST',
+                success: function(data) {
+                    if (data.success == true) {
+                        btn.innerHTML = 'Invited'
+                    } else {
+                        alert("something went wrong please try again later")
+                    }
+                }
+            })
+        }
+
+        
+        dummy = document.getElementsByClassName('dummy-request');
+        function AcceptUserRequestToGroup(x,y) {
+            $.ajax({
+                headers: {"X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,},
+                url: '/circles/accept/user/forum/join/request/',
+                method: 'POST',
+                data: {'forum':x, 'user':y,},
+                success : function(data) {
+                    document.getElementById('request-container-'+y).remove()
+                    if (dummy.length == 0) {
+                        document.getElementById('requests-container').innerHTML = "<h1 style='text-align:center;'> No more requests </h1>"
+                    }
+                }
+            })
+        }
+        
+        function DenyUserRequestToGroup(x,y) {
+            $.ajax({
+                headers:  {"X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,},
+                url: '/connections/deny/user/forum/join/request/',
+                method: 'POST',
+                data: {'forum':x, 'user':y,},
+                success : function(data) {
+                    document.getElementById('request-container-'+y).remove()
+                    if (dummy.length == 0) {
+                        document.getElementById('requests-container').innerHTML = "<h1 style='text-align:center;'> No more requests </h1>"
+                    }
+                }
+            })
+        }
+
+        // saving post
+
+        function updateText(btn, verb){
+            btn.text(" " + verb)
+        }
+        $(".save-btn").click(function(e){
+            e.preventDefault()
+            var this_ = $(this)
+            var saveUrl = this_.attr("data-href")
+            if (saveUrl){
+                $.ajax({
+                    url: saveUrl,
+                    method: "GET",
+                    data: {},
+                    success: function(data){
+                        var newSavedPosts;
+                        if (data.post_saved){ 
+                            updateText(this_, " ", "Unsave Post")
+                        } else {
+                            updateText(this_, " ", "Save Post")
+                        }
+                    }, error: function(error){
+                    console.log(error)
+                    console.log("error")
+                    }
+                })
+            }
+        })
+
+        // reporting post
+
+        function updateText(btn, verb){
+            btn.text(" " + verb)
+        }
+        $(".report-btn").click(function(e){
+            e.preventDefault()
+            var this_ = $(this)
+            var reportUrl = this_.attr("data-href")
+            if (reportUrl){
+                $.ajax({
+                    url: reportUrl,
+                    method: "GET",
+                    data: {},
+                    success: function(data){
+                        var newReportedPosts;
+                        if (data.post_reported){ 
+                            updateText(this_, " ", "Post Reported")
+                        }
+                    }, error: function(error){
+                    console.log(error)
+                    console.log("error")
+                    }
+                })
+            }
+        })
+
+        // liking post
+
+        function updateText(btn, newCount, verb){
+            btn.text(newCount + " " + verb)
+        }
+        $(".like-btn").click(function(e){
+            e.preventDefault()
+            var this_ = $(this)
+            var likeUrl = this_.attr("data-href")
+            var likeCount = parseInt(this_.attr("data-likes")) | 0
+            var addLikes = likeCount + 1
+            var removeLikes = likeCount - 1
+            if (likeUrl){
+                $.ajax({
+                    url: likeUrl,
+                    method: "GET",
+                    data: {}, 
+                    success: function(data){
+                        console.log(data)
+                        var newLikes;
+                        if (data.liked){ 
+                            updateText(this_, addLikes, "Unlike")
+                        } else {
+                            updateText(this_, removeLikes, "Like")
+                        }
+                    }, error: function(error){
+                    console.log(error)
+                    console.log("error")
+                    }
+                })
+            }
+        })
+
+        
+        function SubmitComment(form, pk) {
+            commentData = new FormData(form)
+            $.ajax({
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                cache: false,
+                contentType: false,
+                processData: false,
+                url:'/comment/'+pk,
+                method:'POST',
+                data:commentData,
+                success: function (data){
+                    if (data.comment) {
+                        var div = document.getElementById("post-"+pk+"-comments-div")
+                        div.innerHTML += data.comment;
+                        var this_ = document.getElementById("comment-"+pk+"-div")
+                        var commentCount = this_.attr("data-comments")
+                        var addComment = commentCount + 1
+                        updateText(this_, addComment, "Comments")
+                    }
+                }
+            })
+        }
+
+        function showReactsBox(btn, argument) {
+            var isOnBtn = true;
+            btn.addEventListener("mouseout", function(  ) {
+                isOnBtn = false;
+                isOnDiv = false;
+                setTimeout(function() {
+                    if (isOnBtn == false && isOnDiv == false) {
+                        container.style.display = 'none';
+                    }
+                }, 500);
+            });
+            var container = document.getElementById('post-' + argument + '-react-container');
+            setTimeout(function() {
+                if (isOnBtn == true) {
+                    container.style.display = 'flex';
+                }
+            }, 500);
+            container.addEventListener("mouseover", function(  ) {isOnDiv=true});
+            container.addEventListener("mouseout", function(  ) {
+                isOnDiv = false;
+                setTimeout(function() {
+                    if (isOnBtn == false && isOnDiv == false) {
+                        container.style.display = 'none';
+                    }
+                }, 500);
+            });
+        }
+        
+
+        function PostReact(_type, pk) {
+            $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                }
+            });
+            $.ajax({
+                url: '/' + _type + '/post-number/'+pk,
+                success: function(message) {
+                    if (! message.blocked) {
+                        document.getElementById('post-' + pk + '-middle').innerHTML = message
+                    } else if (message.blocked == true) {
+                        document.getElementById('post-'+pk).remove()
+                    }
+                }
+                }
+            )
+        }
+
+        function RemovePostReact(pk) {
+                $.ajaxSetup({
+                headers: {
+                    "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+                }
+            });
+            $.ajax({
+                url: '/remove-react/on/post-number/'+pk,
+                success: function(message) {
+                    if (! message.fail) {
+                        document.getElementById('post-' + pk + '-middle').innerHTML = message
+                    } else {
+                        var modal = document.getElementById("myModal");
+                        modal.style.display = "block";
+                        var span = document.getElementById("modal-close");
+                        var content = document.getElementById("modal-content");
+                        content.innerHTML += span;
+                        modal.appendChild(content);
+                        content.innerHTML = message.data;
+                        setTimeout(function() {
+                            modal.style.display = 'none';
+                        }, 1000);
+                    }
+                }
+                }
+            )
+        }
+</script>

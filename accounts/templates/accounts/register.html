@@ -1,0 +1,38 @@
+
+{% extends 'accounts/LandingPage.html' %}
+
+{% load static %}
+{% block signup %}
+
+<!-- {% block log %}Register from here{% endblock %} -->
+
+<link rel="stylesheet" href="{% static 'home/Bootstrap/dist/css/bootstrap.css' %}">
+
+<link href="{% static 'home/css/ajoreb.css' %}" type="text/css" rel="stylesheet" media="all">
+<div class="container">
+<form class="form-signin login-form" method="POST">
+    <div class=" bg-transparent">
+        <div class="col bg-transparent col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <br />
+              {{ form }}
+            </fieldset>
+            <div class="terms mb-2"> By clicking "Register", you acknowledge that you have
+                read the <a href="#">Privacy
+                    Policy</a> and agree to the <a href="#">Terms of Service.</a> 
+            </div>
+            <div class="d-flex justify-content-between py-2">
+                <a class="text-white" href="#">
+                  <button class="btn btn-primary btn-block text-uppercase" type="submit">
+                    Register</button>
+                </a>
+                <div class="text-white mb-3">Already have an account</div>
+                <div class="mb-3">
+                    <a href="{% url 'login' %}" class="password">Login Here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form></div>
+{% endblock %}

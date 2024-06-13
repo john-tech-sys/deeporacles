@@ -1,0 +1,113 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% load product_tags %}
+{% load search_tags %}
+{% block headtitle %}{{ page_title }}{% endblock %}
+
+{% block home %}
+
+<h1>
+	what was searched for:
+	<mark>
+		{{ searched }}
+	</mark>
+</h1>
+
+{% if searched %}
+
+{% for post in s_posts %}
+<div class="container" style=" font-size: 20px;">
+
+
+</div>
+
+{% endfor %}
+
+{% if s_profiles %}
+{% for profile in s_profiles %}
+
+<h1>
+	Users:
+</h1>
+
+<div class="container">
+	<div>
+		<a href="">
+			{% for word in profile.first_name.split %}
+
+			{% if word in searched %}
+
+			<mark>{{word}}</mark>
+
+			{% else %}
+
+			{{word}}
+
+			{% endif %}
+			{% endfor %}
+		</a>
+		<img src="{{profile.picture.url}}" width="60px" height="60px" style=" border-radius: 100%;">
+	</div>
+</div>
+
+{% endfor %}
+{% endif %}
+
+{% if s_productadd %}
+{% for productadd in s_productadds %}
+<h1>productadds</h1>
+<div class="container">
+	<div>
+		<a href="{% url 'modify-search' search.pk 2 1 %}">
+			{% for word in productadd.title.split %}
+
+			{% if word in searched %}
+
+			<mark>{{word}}</mark>
+
+			{% else %}
+
+			{{word}}
+
+			{% endif %}
+			{% endfor %}
+		</a>
+		<img src="{{productadd.image.url}}" width="100px" height="100px" style=" border-radius: 100%;">
+	</div>
+</div>
+
+{% endfor %}
+{% endif %}
+
+{% if s_products %}
+{% for product in s_products %}
+<h1>Product</h1>
+<div class="container">
+	<div>
+		<a href="">
+			{% for word in product.title.split %}
+
+			{% if word in searched %}
+
+			<mark>{{word}}</mark>
+
+			{% else %}
+
+			{{word}}
+
+			{% endif %}
+			{% endfor %}
+		</a>
+		<img src="{{MEDIA_URL }}{{ product.image.url }}" width="100px" height="100px" style=" border-radius: 5px;">
+	</div>
+</div>
+
+{% endfor %}
+{% endif %}
+
+
+{% else %}
+No search!
+{% endif %}
+{% endblock %}

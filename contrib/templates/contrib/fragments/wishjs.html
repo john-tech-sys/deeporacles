@@ -1,0 +1,85 @@
+
+
+<script type="text/javascript">
+
+function AddWishlist(id) {
+    document.getElementById("overlay").style.display = "block";
+    $.ajax({
+      type: 'POST',
+      url: '/ajax/addtowishlist',
+      data: {
+        'id': id
+      },
+      success: function (resp) {
+        document.getElementById("overlay").style.display = "none";
+        if (resp.type == 'add') {
+          var type = 'success'
+          $(".wishlist-count").text(parseInt($(".wishlist-count").text()) + 1)
+          title = 'Successfully Added'
+          document.querySelectorAll("#btn-wishlist" + id).forEach((element) => {
+            $(element).addClass("select")
+          })
+        }
+        else if (resp.type == 'remove') {
+          var type = 'fail'
+          $(".wishlist-count").text(parseInt($(".wishlist-count").text()) - 1)
+          title = 'Successfully Removed'
+          document.querySelectorAll("#btn-wishlist" + id).forEach((element) => {
+            $(element).removeClass("select")
+          })
+        }
+        else {
+          title = 'Fail'
+        }
+        new PNotify({
+          title: title,
+          type: type,
+          text: resp.msg,
+          addclass: 'stack-bottom-right',
+          icon: true,
+          delay: 2500
+        });
+      },
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+    });
+  }
+  
+  function WishItemDelete(w_id, pro_id) {
+    document.getElementById("overlay").style.display = "block";
+    $.ajax({
+      type: 'POST',
+      url: '/ajax/deletewishlist',
+      data: {
+        'wishlist_id': w_id,
+        'product_id': pro_id,
+        'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val()
+      },
+      success: function (resp) {
+        $('#item' + pro_id).remove();
+        $(".wishlist-count").text(parseInt($(".wishlist-count").text()) - 1)
+        if (parseInt($(".wishlist-count").text()) == 0) {
+          $(".table-wishlist").addClass("d-none")
+          $(".empty-wishlist").removeClass("d-none")
+        }
+        else {
+          $(".empty-wishlist").addClass("d-none")
+        }
+        document.getElementById("overlay").style.display = "none";
+        new PNotify({
+          title: 'Successfully deleted',
+          type: 'success',
+          text: `Product successfully deleted from wishlist`,
+          addclass: 'stack-bottom-right',
+          icon: true,
+          delay: 2500
+        });
+      },
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+    });
+  }
+
+</script>

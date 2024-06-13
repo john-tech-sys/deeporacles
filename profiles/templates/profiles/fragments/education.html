@@ -1,0 +1,29 @@
+
+
+            
+            {% for educ in studies %}
+            <tr class="">
+                <td class="text-left td-name">
+                    {{ educ.institution }}</td>
+                <td class="text-center td-Price">
+                    {{ educ.qualification }}</td>
+                <td class="text-center td-Store">
+                    {{ educ.period }}</td>
+                <td class="text-center td-action">
+                    <a hx-delete="{% url 'delete_educ' educ.pk %}"
+                        class="btn btn-danger p-2 btn-remove"><i
+                            class="bi bi-trash"></i></a>
+                    <a class="btn btn-primary p-2"
+                        data-toggle="collapse"
+                        href="#collapsetwo-1"
+                        aria-expanded="true"
+                        aria-controls="collapseOne">
+                        <span class="bi bi-pencil"></span>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+
+
+
+    

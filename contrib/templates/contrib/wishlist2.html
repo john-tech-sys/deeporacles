@@ -1,0 +1,27 @@
+{% extends 'main.html' %}
+
+{% load thumbnail %}
+{% load static %}
+{% block home %}
+<div class="bg-now">
+
+
+    {% include 'profiles/profile_top.html' %}
+
+    <div class="container-fluid">
+        <h1 class="module-title title">{{ heading_title }}</h1>
+        <div id="account-wishlist">
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i>
+                You now have {{ request.user.profile.wishlist.all.count }}
+                product{% if request.user.profile.wishlist.all.count >= 2 %}s{% endif %} and 
+                {{ request.user.profile.add_wishlist.all.count }} Ad{% if request.user.profile.wishlist.all.count >= 2 %}s{% endif %} on your wishlist
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+
+            {% include 'modules/top_wishlist.html' %}
+
+        </div>
+    </div>
+</div>
+{% include 'mall/fragments/productjs.html' %}
+    {% endblock %}

@@ -1,0 +1,190 @@
+
+        {% load static %}
+{% load thumbnail %}
+{% load humanize %}
+<style>
+    .product-layout.has-extra-button, .listing button, .-rad4 {
+        border: 1px ##114488 solid;
+        border-radius: 20px;
+    }
+    .product-layout .post .bi-three-dots {
+        color: #114488 !important;
+        fill: #114488 !important;
+    }
+    .product-layout .post .comment-section, .product-layout .post {
+        border-radius: 20px;
+    }
+</style>
+    {% for post in questions %}
+    <div class="col-md-6 col-12 p-2">
+        <div class="product-layout has-extra-button border border-round" id="{{ post_id }}" id="post-{{post.pk}}">
+            <div class="w-100">
+                <div class="post">
+                    <div class="post__user user vcard inline-items d-flex justify-content-between pt-1">
+                        <div class="user-thumb d-flex">
+                            <a class="mr-2">
+                                {% if post.user.profile.picture %}
+                                <img class="small-image"
+                                    src="{% thumbnail post.user.profile.picture 80x80 crop %}"
+                                    alt="{% thumbnail post.user.profile.image 20x20 crop %}">
+                                {% else %}
+                                <div class="h5 small-image bg-now d-flex">
+                                    <span class="m-auto">
+                                        {{ post.user.profile.name_initials }}
+                                    </span>
+                                </div>
+                                {% endif %}
+                            </a>
+                            <div class="mr-2">
+                                <span class="links-text">
+                                    {% if post.user.verified.is_verified %}
+                                    <div class="is_verified">
+                                        <span class="bi bi-check-circle-fill"></span>
+                                    </div>
+                                    {% endif %}
+                                    <a class="post__user-name" href="{% if request.user == post.user %}{% url 'my_timeline' %}
+                                    {% else %}{% url 'user_timeline' post.user.profile.slug %}{% endif %}">
+                                    {{ post.user.profile.name }}</a>
+                                </span>
+                                <time class="published m-0">
+                                    <s>{{ post.DatePublished|naturaltime }}</s>
+                                </time>
+                                <s class="main-btn my-auto py-1">
+                                    <a data-href="{{ post.user.circles.get_api_follow_url }}" class="follow-btn" 
+                                    data-followers="{{post.user.circles.followers.count}}">
+                                        {% if request.user in post.user.circles.followers.all %}
+                                            Unfollow
+                                        {% else %} Follow
+                                        {% endif %}
+                                    </a>
+                                </s>
+                            </div>
+                        </div>
+                        <div class="more bi bi-three-dots h2" style="right: 0;">
+                            {% if request.user == post.user %}
+                            <ul class="more-dropdown">
+                                <li>
+                                    <span class="py-1" title="Save this post">
+                                        <a data-href="{{ post.get_api_save_url }}" class="save-btn">
+                                            <bdo>
+                                                {% if post in request.user.profile.saved_posts.all %}
+                                                Remove from saved{% else %} Save question
+                                                {% endif %}
+                                            </bdo>
+                                        </a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <div>
+                                        <a class="cursor-pointer" hx-delete="{% url 'delete_post' post.pk %}">
+                                            Delete question
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                            {% else %}
+                            <ul class="more-dropdown">
+                                <li>
+                                    <a {% if request.user == post.user %} href="{% url 'my_timeline' %}" {% else %}
+                                        href="
+                                        {% comment %} {% url 'user_timeline' post.user.profile.slug %} {% endcomment %}
+                                        " {% endif %}>View more {% if post.is_question %} questions {% else %}posts{% endif %} by
+                                        {{ post.user.profile.name }}</a>
+                                </li>
+                                <li>
+                                    <span class="py-1" title="Save this post">
+                                        <a data-href="{{ post.get_api_save_url }}" class="save-btn">
+                                            <bdo>
+                                                {% if post in request.user.profile.saved_posts.all %}
+                                                Unsave {% if post.is_question %} question {% else %}post{% endif %} {% else %} Save {% if post.is_question %} question {% else %}post{% endif %}
+                                                {% endif %}
+                                            </bdo>
+                                        </a>
+                                    </span>
+                                </li>
+                                <li>
+                                    <span class="py-1" title="Report bad post">
+                                        <a data-href="{% url 'post_api_report' post.pk %}" class="report-btn">
+                                            <bdo>
+                                                Report {% if post.is_question %} question {% else %}post{% endif %}
+                                            </bdo>
+                                        </a>
+                                    </span>
+                                </li>
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="module-body my-2">
+                        <div class="text-center w-100 h6">{{ post.get_title }}</div>
+                        <div class="module-item module-item-1 p-2">
+                            <a href="{% url 'details' post.slug %}">
+                                <span class="text-field text-main">
+                                    {{post.content|safe|truncatechars_html:"200"}}
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="module-body p-2">
+                        <div class="comment-section post-middle" id="post-{{post.pk}}-middle">
+                            {% load social_share %}
+                            <div class="w-100 d-flex justify-content-between">
+                                <a data-href="{{ post.get_api_like_url }}" data-likes="{{ post.like_count }}" class="cursor-pointer like-btn">
+                                    <i class="text-main bi-hand-thumbs-up">
+                                        {{post.like_count}}
+                                    </i>
+                                </a>
+                                <div>
+                                    <button class="bg-transparent">
+                                        <a href="{% url 'details' post.slug %}" id="comment-{{post.pk}}-div" data-comments="{{post.num_comments}}">
+                                            <i class="bi-chat-square-text">{{post.num_comments}}</i>
+                                        </a>
+                                    </button>
+                                </div>
+                                <div class="mr-2">
+                                    <button class="bg-transparent" data-toggle="collapse" href="#collapsethree_{{post.pk}}" aria-expanded="true"
+                                            aria-controls="collapseOne">
+                                        <i class="bi-share-fill"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="collapsethree_{{post.pk}}" class="collapse" role="tabpanel">
+                                <ul class="menu d-flex justify-content-end w-auto">
+                                <style>
+                                    .btn-facebook {
+                                        background-color: #1d8cf8;;
+                                    }
+                                    .btn-twitter {
+                                        background-color: skyblue;
+                                    }
+                                </style>
+                                    <button class="py-1 btn btn-twitter">
+                                        <i class=" bi bi-twitter h4"></i>
+                                        <i>{% post_to_twitter "{{post.title}}" object_or_url "Share" %}</i>
+                                    </button> 
+                                    <button class="py-1 btn btn-facebook">
+                                        <i class=" bi bi-facebook h4"></i>
+                                        <i>{% post_to_facebook "{{post.title}}" "Share" %}</i>
+                                    </button>
+                                    <button class="py-1 btn btn-success">
+                                        <i class="bi bi-whatsapp h4"></i>
+                                        <i>{% post_to_whatsapp "{{post.title}}" "Share" %}</i>
+                                    </button>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% if questions.has_next and forloop.last %}
+        <span hx-get="{% url 'questions' %}?page={{ questions.next_page_number }}"
+            hx-swap="beforeend" hx-target="#questions" hx-select=".question-container"
+            hx-trigger="revealed">
+        </span>
+        {% endif %}
+    </div><br>
+
+    {% include 'fragments/js/profilesjs.html' %}
+    {% include 'fragments/postingjs.html' %}
+{% endfor %}

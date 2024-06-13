@@ -1,0 +1,36 @@
+{% extends 'special/group/forum-base.html' %}
+{% block forum %}
+<div class="row m-0 p-0">
+    <ul class="nav nav-tabs h4">
+        <li class="tab-1 active">
+            <a href="#connections-60b486ec43626-tab-1" data-toggle="tab">
+                <span class="links-text"><i class=" bi bi-card-heading pr-3"></i>Post Feeds
+                    <span class="count-badge wishlist-badge count-zero">{{ forum.total_posts }}</span>
+                </span>
+            </a>
+        </li>
+        <li class="tab-2">
+            <a href="#connections-60b486ec43626-tab-2" data-toggle="tab">
+                <span class="links-text"><i class=" bi bi-question-square pr-3"></i>Question Feeds
+                    <span class="count-badge wishlist-badge count-zero">{{ forum.total_questions }}</span>
+                </span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div class="module-body side-products-tabs">
+    <div class="tab-content">
+        <div class="module-item module-item-2 tab-pane active" id="connections-60b486ec43626-tab-1">
+            <div class="module module-blocks module-blocks-100 blocks-grid py-1 post-container" id="filterData" data-counter="2">
+                {% include 'home/fragments/grid_posts.html' %}
+            </div>
+        </div>
+        <div class="module-item module-item-2 tab-pane" id="connections-60b486ec43626-tab-2">
+            <div class="module module-blocks module-blocks-100 blocks-grid py-1 question-container" id="questions">
+              {% include 'home/fragments/grid_question.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock forum %}
+

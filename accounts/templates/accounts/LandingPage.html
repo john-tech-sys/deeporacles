@@ -1,0 +1,91 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>{{site_name}}-Authentiate</title>
+    <!-- Required meta tags always come first -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'home/images/deepoo2.png' %}">
+    <link rel="apple-touch-icon" type="image/jpg" href="{% static 'home/images/deepoo2.png' %}">
+    <link rel="stylesheet" href="{% static 'home/css/register.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/other.css' %}">
+	<link rel="stylesheet" href="{% static 'home/icons/font/bootstrap-icons.css' %}">
+
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2050291345586425"
+	crossorigin="anonymous"></script>
+</head>
+<body class="landing-page">
+	<div class="content-bg-wrap"></div>
+	<!-- ... end Header Standard Landing  -->
+	<div class="header-spacer--standard"></div>
+
+	<div class="container">
+		<div class="row bg-primaria d-flex justify-content-around">
+			<div class="col bg-transparent col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+				<div class="landing-content text-center">
+					<div class="title text-center">Welcome to</div> <h1><div class="block">DEEPOO</div> Your Social MARKET </h1><br>
+				{% if not  user.is_authenticated %}
+					<p>Login to your account or Register Now to enjoy exclusive features.
+					</p>
+					<a href="#" class="btn btn-sm btn-primary text-white c-grey">Get all in one!</a>
+					{% else %}
+					<h1 class="message_text">You are are our hero</h1>
+					<a href="{% url 'home' %}" class="btn btn-sm btn-primary text-white c-grey">Click here to start enjoying!</a>
+				   {% endif %}
+				</div>
+			</div>
+			<div class="col bg-transparent col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 py-4">
+				<!-- Login-Registration Form  -->
+				{% if not  user.is_authenticated %}
+
+				<div class="registration-login-form">
+					<!-- Nav tabs -->
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="nav-item ">
+							<a class="nav-link " href="{% url 'login' %}">
+								<h3>LOGIN</h3>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'register' %}">
+								<h3>REGISTER </h3>
+							</a>
+						</li>
+					</ul>
+					<!-- Tab panes -->
+					<div class="tab-content">
+
+						<div class="tab-pane active" id="home" role="tabpanel" data-mh="log-tab">
+							<div class="title text-center text-white h2">{% block log %}{% endblock %}</div>
+
+							{% block signup %}
+							{% endblock %}
+
+						   <div class="text-white text-center w-100 pl-2">
+								<P>Enjoy the best social market.</P>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% else %}
+				 <h3 class="message_text">You are already signed in to your account</h3>
+				 <a href="{% url 'home' %}" class="btn btn-sm btn-primary text-white c-grey">Get to homepage!</a>
+				{% endif %}
+
+				<!-- ... end Login-Registration Form  -->
+			</div>
+		</div>
+	</div>
+	<!-- JS Scripts -->
+    <script type="text/javascript" src="{% static 'home/js/jquery-3.6.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/ajoquerry.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %}"></script>
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+{% extends 'special/group/forum-base.html' %}
+{% block forum %}
+
+<div class="row m-0 p-0">
+    <aside class="col-md-3 my-3">
+        <ul class="nav nav-dashboard mb-3 mb-md-0" role="tablist">
+            <li class="nav-item well">
+                <a class="nav-link h6 active" id="tab-other-link" data-toggle="tab" href="#tab-other" role="tab" aria-controls="tab-other" aria-selected="true"><i class="bi-person-lines-fill pr-3"></i>Edit Details</a>
+            </li>
+            <li class="nav-item well">
+                <a class="nav-link h6" id="tab-pic-link" data-toggle="tab" href="#tab-pic" role="tab" aria-controls="tab-other" aria-selected="false"><i class="bi-image-alt pr-3"></i>Edit Picture</a>
+            </li>
+        </ul>
+    </aside><!-- End .col-lg-3 -->
+
+    <div class="col-md-9">
+        <div class="tab-content">
+            <div class="tab-pane active" id="tab-other" role="tabpanel" aria-labelledby="tab-other-link">
+                <h4>Forum Name and details</h4>
+                <form class="d-none address-edit" method="post">
+                    {% csrf_token %}
+                    <div class="row m-0 p-0">
+                        <div class="my-2 col-sm-6 py-3">
+                            <label>Forum Name *</label>
+                            <input type="text" name="fname" class="form-control py-0" value="{{forum.forum_name}}">
+                        </div><!-- End .my-2 col-sm-6 -->
+                        <div class="my-2 col-sm-6 py-3">
+                            <label>Forum Details</label>
+                            <textarea type="text" class="form-control" id="body" name="fbio">{{forum.forum_bio|safe}}</textarea>
+                        </div>
+                        <div class="my-2 col-sm-6 py-3">
+                            <label>Set to Private Mode *</label>
+                            <input type="checkbox" name="fmode" class="form-control py-0" value="{{forum.private_mode}}">
+                        </div><!-- End .my-2 col-sm-6 -->
+                    </div><!-- End .row -->
+
+                    <button type="submit" class="btn btn-outline-primary-2 mt-5 profile-submit-btn">
+                        <span>SAVE CHANGES</span>
+                        <i class="icon-long-arrow-right"></i>
+                    </button>
+                </form>
+                <div class="container-fluid address-view">
+                    <div class="py-2">
+                        <div class="m-0 p-0">
+                            <ul>
+                                <li class="my-2">Forum Name: <span class="ml-2">{{forum.forum_name}}</span></li>
+                                <li class="my-2">Forum Details: <span class="ml-2">{{forum.forum_bio|safe}}</span></li>
+                                <li class="my-2">Private Mode: <span class="ml-2">{{forum.private_mode}}</span></li>
+                            </ul>
+                        </div>
+                        <div class="text-center m-0 p-0">
+                            <div class="m-0 cursor-pointer main-btn edit-btn">
+                                <i class="bi bi-pencil">Edit</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .End .tab-pane -->
+
+            <div class="tab-pane fade" id="tab-pic" role="tabpanel" aria-labelledby="tab-pic-link">
+                <h4>Forum Picture and cover image</h4>
+                <form class="d-none address-edit" method="post">
+                    {% csrf_token %}
+                    <div class="row m-0 p-0">
+                        <div class="my-2 col-sm-6 py-3">
+                            <label>Forum Picture *</label>
+                            <input type="file" name="pic" class="form-control py-0" value="{{forum.picture}}">
+                        </div><!-- End .my-2 col-sm-6 -->
+                        <div class="my-2 col-sm-6 py-3">
+                            <label>Forum Cover Photo *</label>
+                            <input type="file" name="cover" class="form-control py-0" value="{{forum.forum_cover_photo}}">
+                        </div><!-- End .my-2 col-sm-6 -->
+                    </div><!-- End .row -->
+
+                    <button type="submit" class="btn btn-outline-primary-2 mt-5 profile-submit-btn">
+                        <span>SAVE CHANGES</span>
+                        <i class="icon-long-arrow-right"></i>
+                    </button>
+                </form>
+                <div class="container-fluid address-view">
+                    <div class="py-2">
+                        <div class="m-0 p-0">
+                            <ul>
+                                <li class="my-2 well">Forum Picture:
+                                    <img class="ml-2" src="" style="height:50px"></li>
+                                <li class="my-2 well">Forum Cover Photo:
+                                    <img class="ml-2" src="" style="height:50px">
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="text-center m-0 p-0">
+                            <div class="m-0 cursor-pointer main-btn edit-btn">
+                                <i class="bi bi-pencil">Edit</i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .End .tab-pane -->
+        </div>
+    </div><!-- End .col-lg-9 -->
+</div><!-- End .row -->
+{% endblock %}

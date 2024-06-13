@@ -1,0 +1,50 @@
+
+
+<div class="row p-3">
+    {% if s_profiles %}
+
+        {% for profile in s_profiles %}
+<div class="col-md-6 col-12 well">
+    <div class="my-2 d-flex flex-wrap w-100">
+        <div class="card-body d-flex justify-content-around w-100">
+            <a href="{{ profile.get_absolute_url }}"><img
+                    src="{{ MEDIA_URL }}{{ profile.picture.url }}"
+                    class="medium-image mr-2"
+                    alt="{{ profile.get_full_name }}" />
+            </a>
+            <a class="text-dark"
+                href="{{ profile.get_absolute_url }}"><b>
+                    {{ profile.name }}</b></a>
+            {% if not profile in request.user.circles.connections %}
+            {% comment %} <small>
+                <a data-href="{% url 'profile_api_send_connection' profile.user.pk %}" title="Send Connection"
+                class="send-btn btn py-2">
+                    Connect</a></small> {% endcomment %}
+            {% else %}
+            <small><a class="btn py-2 btn-danger float-right delete-btn" title="Delete Connection"
+                data-href="{% url 'profile_api_delete_connection' user.pk %}">Disconnect</a></small>
+            {% endif %}
+            <small class="" >
+                <a data-href="{{ profile.user.circles.get_api_follow_url }}" class="follow-btn btn py-1" 
+                data-followers="{{profile.user.circles.followers.count}}" style="color:#f0f8ff;">
+                {{profile.followers.count}}
+                    {% if request.user in profile.user.circles.followers.all %}
+                        Unfollow
+                    {% else %} Follow
+                    {% endif %}
+                </a>
+            </small>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="col-12">
+    <h5><i>No users were found matching those searchterms.</i>
+    </h5>
+</div>
+{% endif %}
+</div>
+
+{% include 'fragments/js/profilesjs.html' %}
+{% include 'fragments/postingjs.html' %}

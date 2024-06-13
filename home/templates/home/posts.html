@@ -1,0 +1,233 @@
+{% load static %}
+{% load thumbnail %}
+{% load humanize %}
+<style>
+    .product-layout.has-extra-button, .listing button, .-rad4 {
+        border: 1px ##114488 solid;
+        border-radius: 20px;
+    }
+    .product-layout .post .bi-three-dots {
+        color: #114488 !important;
+        fill: #114488 !important;
+    }
+    .product-layout .post .comment-section, .product-layout .post {
+        border-radius: 20px;
+    }
+    .product-img img {
+        max-height:200px;
+        width:100%%;
+    }
+</style>
+    {% for post in posts %}
+    <div class="product-layout has-extra-button infinite-item  border border-round" id="{{ post_id }}">
+        <div class="w-100">
+            <div class="post">
+                <div class="post__user user vcard inline-items d-flex justify-content-between pt-2 px-2">
+                    <div class="user-thumb d-flex">
+                        {% if post.forum %}
+                        <a class="my-auto" href="{% url 'forum' post.forum.slug %}">
+                            {% if post.forum.picture %}
+                            <img class="small-image"
+                                src="{% thumbnail post.forum.picture 50x50 crop %}"
+                                alt="{% thumbnail post.forum.forum_cover_photo 20x20 crop %}">
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                        <div class="my-auto d-flex">
+                            <div class="d-flex flex-column">
+                                {% if post.forum %}
+                                <span class="d-flex">
+                                    <a href="{% url 'forum' post.forum.slug %}" class="mr-2 h6 d-flex"> {{post.forum.forum_name}}</a>
+                                    <s class="main-btn my-auto py-1">
+                                        <a data-href="{{ post.forum.get_forum_api_follow_url }}" class="follow-btn">
+                                            {% if request.user in post.forum.followers.all %}
+                                                Unfollow
+                                            {% else %} Follow
+                                            {% endif %}
+                                        </a>
+                                    </s>
+                                </span>
+                                {% endif %}
+                                <span class="links-text d-flex ">
+                                    {% if post.user.verified.is_verified %}
+                                    <div class="is_verified">
+                                        <span class="bi bi-check-circle-fill"></span>
+                                    </div>
+                                    {% endif %}
+                                    <span class="my-auto">by<span><a class="ml-1 post__user-name" href="{% if request.user == post.user %}{% url 'my_timeline' %}
+                                    {% else %}{% url 'user_timeline' post.user.profile.slug %}{% endif %}">
+                                    {{ post.user.profile.name }}</a>
+                                    <s class="main-btn my-auto py-1">
+                                        <a data-href="{{ post.user.circles.get_api_follow_url }}" class="follow-btn" 
+                                        data-followers="{{post.user.circles.followers.count}}">
+                                            {% if request.user in post.user.circles.followers.all %}
+                                                Unfollow
+                                            {% else %} Follow
+                                            {% endif %}
+                                        </a>
+                                    </s>
+                                </span>
+                            </div>
+                            <div class="post__date pl-3 my-auto">
+                                <time class="published">
+                                    <span>{{ post.DatePublished|naturaltime }}</span>
+                                </time>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="more bi bi-three-dots h2" style="right: 0;">
+                        {% if request.user == post.user %}
+                        <ul class="more-dropdown">
+                            <li>
+                                <span class="py-1" title="Save this post">
+                                    <a data-href="{{ post.get_api_save_url }}" class="save-btn">
+                                        <bdo>
+                                            {% if post in request.user.profile.saved_posts.all %}
+                                            Unsave {% if post.is_question %} question {% else %}post{% endif %} {% else %} Save {% if post.is_question %} question {% else %}post{% endif %}
+                                            {% endif %}
+                                        </bdo>
+                                    </a>
+                                </span>
+                            </li>
+                            <li>
+                                <div>
+                                    <a class="cursor-pointer" hx-delete="{% url 'delete_question' post.pk %}" hx-target="#filterData" >
+                                        Delete post
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                        {% else %}
+
+                        <ul class="more-dropdown">
+                            <li>
+                                <a {% if request.user == post.user %} href="{% url 'my_timeline' %}" {% else %}
+                                    href="
+                                    {% comment %} {% url 'user_timeline' post.user.profile.slug %} {% endcomment %}
+                                    " {% endif %}>View more {% if post.is_question %} questions {% else %}posts{% endif %} by
+                                    {{ post.user.profile.name }}</a>
+                            </li>
+                            <li>
+                                <span class="py-1" title="Save this post">
+                                    <a data-href="{{ post.get_api_save_url }}" class="save-btn">
+                                        <bdo>
+                                            {% if post in request.user.profile.saved_posts.all %}
+                                            Unsave {% if post.is_question %} question {% else %}post{% endif %} {% else %} Save {% if post.is_question %} question {% else %}post{% endif %}
+                                            {% endif %}
+                                        </bdo>
+                                    </a>
+                                </span>
+                            </li>
+                            <li>
+                                <span class="py-1" title="Report bad post">
+                                    <a data-href="{% url 'post_api_report' post.pk %}" class="report-btn">
+                                        <bdo>
+                                            Report {% if post.is_question %} question {% else %}post{% endif %}
+                                        </bdo>
+                                    </a>
+                                </span>
+                            </li>
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="module-body">
+                    <div class="text-center w-100 h5 mb-4">{{ post.get_title }}</div>
+                    <div class="post-img">
+                        {% if post.picture %}
+                        <a href="{{post.get_absolute_url}}" class="d-flex">
+                            <img src="{% thumbnail post.get_picture 1200x800 %}" class="m-auto w-100">
+                        </a>
+                        {% elif post.Audio_file %}
+                        <a href="{{post.get_absolute_url}}" class="d-flex">
+                            <audio src="{{ post.Audio_file.url }}" class="bg-now m-auto" controls preload="metadata"></audio>
+
+                        </a>
+                        {% elif post.Video_file %}
+                        <a href="{{post.get_absolute_url}}" class="d-flex">
+                            <video src="{{ post.Video_file.url }}" class="m-auto" preload="metadata" controls></video>
+
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="module-item module-item-1 p-2">
+                        <a href="{{post.get_absolute_url}}">
+                            <span class="text-field text-main"style="font-size: 14px">
+                                {{post.content|safe|truncatechars_html:"500"}}
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="post px-2 p-0">
+                <div class="module-body">
+                    <div class="module-item module-item-1">
+                        <div class="block-body  m-0 p-0">
+                            <div class="commenta" role="document">
+                                <div class="grid-rows">
+                                    <div class="mCustomScrollbar ">
+                                        {% include 'home/fragments/last_comment.html' %}
+                                    </div>
+                                    <!-- ... end Comments -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="comment-section">
+                        <div class="comments">
+                            <form class="comment-form inline-items" method="POST" action="javascript:void(0);"
+                            onsubmit="SubmitComment(this, '{{post.pk}}')">
+                                <div class="d-flex">
+                                    <div class="post__user user mb-0 ">
+                                        {% if user.is_authenticated %}
+                                        {% if request.user.profile.picture %}
+                                        <img class="medium-image"
+                                            src="{% thumbnail request.user.profile.picture 80x80 crop %}"
+                                            alt="{% thumbnail request.user.profile.image 20x20 crop %}">
+                                        {% else %}
+                                        <div class="h4 medium-image bg-now p-2 d-flex">
+                                            <span class="m-auto">
+                                                {{ request.user.profile.name_initials }}
+                                            </span>
+                                        </div>
+                                        {% endif %}
+                                        {% else %}
+                                        <a href="{% url 'login' %}" class="user my-auto" >
+                                            <span class="bi bi-person-circle h1 mr-2"></span>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                    {% csrf_token %}
+                                    <div class="form-group w-100 d-flex">
+                                            {{ form.comment }}
+                                    </div>
+                                    <button class="bg-now rounded-circle ml-2 fa fa-paper-plane p-3 my-auto" type="submit" 
+                                    {% comment %} hx-post="{% url 'comment' post.pk %}" hx-target="#post_comments" {% endcomment %}
+                                    value="comment">
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="comment-section post-middle py-2" id="post-{{post.pk}}-middle">
+                        {% include 'home/post-middle.html' %}
+                    </div>
+                </div>
+            </div> 
+        </div>
+        {% if posts.has_next and forloop.last %}
+        <span hx-get="{% if Space %}{% url 'space' post.space.slug%}{% elif home %}{% url 'home' %}
+        {% elif forum %}{% url 'forum' post.forum.slug %}{% elif user_timeline_seg %}{% url 'user_timeline' post.user.profile.slug %}
+        {% elif timeline_seg %}{% url 'my_timeline' %}{% endif %}?page={{ posts.next_page_number }}"
+            hx-swap="beforeend" hx-target="#filterData" hx-select=".post-container"
+            hx-trigger="revealed">
+        </span>
+        {% endif %}
+    </div><br>
+{% endfor %}
+
+
+{% include 'fragments/js/profilesjs.html' %}
+{% include 'fragments/postingjs.html' %}
+
+

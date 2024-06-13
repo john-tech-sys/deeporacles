@@ -1,0 +1,38 @@
+
+
+{% load thumbnail %}
+    <div class="main-posts post-list">
+        {% for pot in potfolio %}
+
+        <div class="post-layout ">
+            <div class="post-thumb">
+                <div class="image">
+                    {% comment %} <span class="p-date p-date-image">15
+                        <i>Sep</i></span> {% endcomment %}
+                        {%if pot.image%}
+                    <a href="">
+                        <img src="{% thumbnail pot.image 150x150 %}"
+                            style="max-height: 150px; max-width:150px"
+                            alt="{{pot.title}}" title="{{pot.title}}"
+                            class="img-responsive">
+                    </a>
+                    {%endif%}
+                </div>
+
+                <div class="caption">
+                    <div class="name"><a href="{% url 'pot_detail' pot.slug %}">{{pot.title}}</a></div>
+
+                    <div class="description">{{pot.description|truncatechars_html:"100"}}
+                    </div>
+
+                    <div class="button-group">
+                        <a class="btn btn-read-more" href="{% url 'pot_detail' pot.slug %}">
+                            <span class="btn-text">Read
+                                More</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>

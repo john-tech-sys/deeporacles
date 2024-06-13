@@ -1,0 +1,62 @@
+{% extends 'main.html' %}
+
+{% load static %}
+{% load social_share %}
+
+{% load thumbnail %}
+{% block headtitle %}
+{{ site_name }}-Space-{{space.name}}
+{% endblock headtitle %}
+
+{{ form.media }}
+
+{% block home %}
+
+<div class="bg-now">
+    <div class="container-fluid">
+        <div class="w-100 bg-info">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}"><span class="bi bi-house"></span></a>
+                </li>
+                <li class="active"><Span class="h6">{{space.name}}</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="bottom" class="bottom top-row">
+            <div class="grid-rows">
+                <div class="grid-row grid-row-top-6 px-2">
+                    <div class="grid-cols">
+                        <div class="grid-col grid-col-top-6-1 px-2">
+                            <div class="grid-items crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-6-1-1 sidebar__inner">
+                                    <span class="title">Trending</span>
+                                    <ul class="py-2 mx-0 px-0">
+                                        <li class="menu-item w-100 well ">
+                                            {% for post in posts %}
+                                            {% include 'home/fragments/trend_post.html' %}
+                                            {% endfor %}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid-col grid-col-top-6-2 px-0">
+                            <div class="grid-items crumina-sticky-sidebar">
+                                <div class="grid-item grid-item-top-6-2-1">
+                                    <span class="title">Feeds</span>
+                                    <div class="module module-blocks module-blocks-100 blocks-grid py-1 post-container" id="filterData" data-counter="2">
+                                        {% include 'home/fragments/grid_posts.html' %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'fragments/js/profilesjs.html' %}
+{% include 'fragments/postingjs.html' %}
+{% endblock home %}

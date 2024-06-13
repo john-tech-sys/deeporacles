@@ -1,0 +1,50 @@
+{% extends 'accounts/LandingPage.html' %}
+
+{% load socialaccount %}
+{% providers_media_js %}
+{% load static %}
+{% block signup %}
+
+<!-- {% block log %}Login to your Account{% endblock %} -->
+
+<link rel="stylesheet" href="{% static 'home/Bootstrap/dist/css/bootstrap.css' %}">
+
+<link href="{% static 'home/css/ajoreb.css' %}" type="text/css" rel="stylesheet" media="all">
+<br />
+<div class="container">
+<form class="form-signin login-form" method="POST">
+  <div class="col bg-transparent col-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+    {% csrf_token %}
+    <div class="form-group label-floating is-empty">
+      <fieldset class="form-group">
+        {{ form }}
+      </fieldset>  
+    </div>
+    <div class="remember d-flex justify-content-between">
+      <a class="text-white" href="#">
+        <button class="btn btn-primary btn-block text-uppercase" type="submit">
+          Login</button>
+      </a>
+      <a href="{% url 'password_reset' %}" class="password">Forgot my Password</a>
+    </div>
+  
+    <div class="d-flex justify-content-between py-2">
+      <div class="text-white mb-3">Don’t have an account</div>
+      <a class="text-white" href="{% url 'register' %}">
+        <span class="password">
+          Register Now</span>
+      </a>
+    </div>
+  
+    <div class="connect mt-4 mb-5"></div>
+  
+    <ul class="p-0 ajo-social-links">
+      {% comment %} <li><a href="{% provider_login_url "facebook" method="js_sdk" %}"><span class="bi bi-facebook"></span></a></li>
+      <li><a href="{% provider_login_url "google" openid="https://www.google.com/accounts/o8/id" next="/success/url/" %}"><span class="bi bi-google"></span></a></li>
+      <li><a href="{% provider_login_url "twitter" %}"><span class="bi bi-twitter"></span></a></li> {% endcomment %}
+    </ul>
+  </div>
+  </form>
+</div>
+{% endblock %}
+

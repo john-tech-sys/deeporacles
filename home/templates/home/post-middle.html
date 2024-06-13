@@ -1,0 +1,123 @@
+
+
+			{% load social_share %}
+
+			<div class="w-100 d-flex justify-content-between">
+				<div class="post-reactions-container my-auto main-btn">
+					<div class="post-reacts-container well" id="post-{{post.pk}}-react-container">
+						<div class="post-react-container mx-2">
+							<button class="post-react-button react bg-transparent" onclick="PostReact( 'like' , '{{post.pk}}');">
+								<i class="text-danger bi-hand-thumbs-up react"></i>
+							</button>
+							<span>{{post.like_count}}</span>
+						</div>
+						<div class="post-react-container mx-2">
+							<button class="post-react-button react bg-transparent" onclick="PostReact('love' , '{{post.pk}}');">
+								<i class="bi-heart react text-danger"></i>
+							</button>
+							<span>{{post.love_count}}</span>
+						</div>
+						<div class="post-react-container mx-2">
+							<button class="post-react-button react bg-transparent" onclick="PostReact('haha' , '{{post.pk}}');">
+								<i class="text-danger bi-emoji-smile react"></i>
+							</button>
+							<span>{{post.laugh_count}}</span>
+						</div>
+						<div class="post-react-container mx-2">
+							<button class="post-react-button react bg-transparent" onclick="PostReact('sad' , '{{post.pk}}');">
+								<i class="text-danger bi-emoji-frown react"></i>
+							</button>
+							<span>{{post.sad_count}}</span>
+						</div>
+						<div class="post-react-container mx-2">
+							<button class="post-react-button react bg-transparent" onclick="PostReact('wow' , '{{post.pk}}');">
+								<i class="text-danger bi-emoji-laughing react"></i>
+							</button>
+							<span>{{post.wow_count}}</span>
+						</div>
+						<div class="post-react-container mx-2">
+							<button class="post-react-button react bg-transparent" onclick="PostReact('angry' , '{{post.pk}}');">
+								<i class="text-danger bi-emoji-angry react"></i>
+							</button>
+							<span>{{post.angry_count}}</span>
+						</div>
+					</div>
+					<button class="post-action-button text-main bg-transparent" id="post-{{post.pk}}-choosen-react-button" onmousemove="showReactsBox(this, '{{post.pk}}')" 
+					{% if request.user in post.like.all or request.user in post.love.all or request.user in post.haha.all or request.user in post.sad.all or request.user in post.wow.all or request.user in post.angry.all %}
+					onclick="RemovePostReact('{{post.pk}}');"	
+					{% else %}
+					onclick="PostReact('like','{{post.pk}}');"
+					{% endif %}>
+						<i
+						{% if request.user in post.like.all %}
+						 class="text-danger bi-hand-thumbs-up react"
+						{% elif request.user in post.love.all %}
+						class="text-danger bi-heart react"
+						{% elif request.user in post.haha.all %}
+						class="text-danger bi-emoji-smile react"
+						{% elif request.user in post.sad.all %}
+						class="text-danger bi-emoji-frown react"
+						{% elif request.user in post.wow.all %}
+						class="text-danger bi-emoji-laughing react"
+						{% elif request.user in post.angry.all %}
+						class="text-danger bi-emoji-angry react"
+						{% else %}
+						class="text-main bi-hand-thumbs-up react"
+						{% endif %}
+						 id="post-{{post.pk}}-react-icon"></i>
+						&nbsp
+						<b id="post-{{post.pk}}-react-button">
+						{{post.reacts_count}}
+						</b>
+					</button>
+				</div>
+				<div class="">
+					<button class="bg-transparent main-btn">
+						<a href="{% url 'details' post.slug %}" id="comment-{{post.pk}}-div" data-comments="{{post.num_comments}}">
+							{% if post.is_question %}
+							{% else %}
+							<i class="bi-chat-square-text text-main">
+								&nbsp
+								{% if post.num_comments == 1 %}
+								1 Response
+								{% else %}
+								{{post.num_comments}} Responses
+								{% endif %}
+							</i>
+							{% endif %}
+						</a>
+					</button>
+				</div>
+				<div class="">
+					<button class="bg-transparent main-btn" data-toggle="collapse" href="#collapsethree_{{post.pk}}" aria-expanded="true"
+					aria-controls="collapseOne">
+						<i class="bi-share-fill">&nbsp {% if post.is_question %}
+							{% else %}Share{% endif %}</i>
+					</button>
+				</div>
+			</div>
+			<div id="collapsethree_{{post.pk}}" class="collapse" role="tabpanel">
+				<ul class="menu d-flex justify-content-end w-auto">
+				<style>
+					.btn-facebook {
+						background-color: #1d8cf8;;
+					}
+
+					.btn-twitter {
+						background-color: skyblue;
+					}
+				</style>
+					 <button class="py-1 btn btn-twitter">
+						<i class=" bi-twitter"></i>
+						<i>{% post_to_twitter "{{post.title}}" object_or_url "Share" %}</i>
+					</button> 
+					<button class="py-1 btn btn-facebook">
+						<i class=" bi-facebook"></i>
+						<i>{% post_to_facebook "{{post.title}}" "Share" %}</i>
+					</button>
+					<button class="py-1 btn btn-success">
+						<i class="bi bi-whatsapp"></i>
+						<i>{% post_to_whatsapp "{{post.title}}" "Share" %}</i>
+					</button>
+				</ul>
+			</div>

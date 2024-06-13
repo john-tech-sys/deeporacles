@@ -1,0 +1,62 @@
+{% extends "main.html" %}
+{% load static %}
+{% load thumbnail %}
+{% block headtitle %}
+{{site_name}} - About
+{% endblock headtitle %}
+{% block home %} 
+
+<div class="bg-now">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li><a href="{% url "home" %}"><i class="bi bi-house"></i></a>
+            </li>
+            <li><a href="">About Us</a></li>
+        </ul>
+        <div id="top">
+            <div class="title module-title w-100 text-center mx-auto my-4">
+                <h1>About Us</h1>
+            </div>
+        </div>
+        <div id="information-information">
+            <div class="row">
+                <div id="content" class="col-sm-9">
+                    {%for about in abouts %}
+                    <div class="main-posts post-list">
+                        <div class="post-layout ">
+                            <div class="post-thumb">
+                                <div class="image">
+                                    {% comment %} <span class="p-date p-date-image">02 <i>Aug</i></span> {% endcomment %}
+                                    <a href="">
+                                        <img src="{% thumbnail about.banner 800x600 %}" style="height: 250px; width:400px"
+                                        alt="img" class="img-responsive lazyload lazyloaded">
+                                    </a>
+                                </div>
+
+                                <div class="caption">
+                                    <div class="name"><a
+                                            href="">{{about.line1}}</a></div>
+                                    <div class="description">{{about.line2}}</div>
+
+                                    <div class="button-group">
+                                        <a class="btn btn-read-more"
+                                            href="">
+                                            <span class="btn-text">Read More</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    {%endfor%}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include 'modules/info-block.html' %}
+
+</div>
+
+
+{% endblock %}

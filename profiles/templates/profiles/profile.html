@@ -1,0 +1,374 @@
+{% extends 'main.html' %}
+{% load static %}
+    {% block headtitle %}
+    {{ site_name }}-Profile Settings
+    {% endblock headtitle %}
+{% block home %}
+<main class="bg-now pb-3">
+    {% include 'profiles/profile_top.html' %}
+    <div class="page-content">
+            	<div class="dashboard">
+	                <div class="container py-2 mb-3">
+	                	<div class="row m-0 p-0">
+	                		<aside class="col-md-3 my-3">
+	                			<ul class="nav nav-dashboard mb-3 mb-md-0" role="tablist">
+								    <li class="nav-item well">
+								        <a class="nav-link h6 active" id="tab-dashboard-link" data-toggle="tab" href="#tab-dashboard" role="tab" aria-controls="tab-dashboard" aria-selected="true">
+                                            <i class="fa fa-tachometer pr-3"></i>Profile</a>
+								    </li>
+								    <li class="nav-item well">
+								        <a class="nav-link h6" id="tab-address-link" data-toggle="tab" href="#tab-address" role="tab" aria-controls="tab-address" aria-selected="false">
+                                            <i class="fa fa-map-marker pr-3"></i>Adresses</a>
+								    </li>
+								    <li class="nav-item well">
+								        <a class="nav-link h6" id="tab-account-link" data-toggle="tab" href="#tab-account" role="tab" aria-controls="tab-account" aria-selected="false">
+                                            <i class="far fa-user-circle pr-3"></i>Account Details</a>
+								    </li>
+								    <li class="nav-item well">
+								        <a class="nav-link h6" id="tab-other-link" data-toggle="tab" href="#tab-other" role="tab" aria-controls="tab-other" aria-selected="false">
+                                            <i class="far fa-user-circle pr-3"></i>More Details</a>
+								    </li>
+								</ul>
+	                		</aside><!-- End .col-lg-3 -->
+
+	                		<div class="col-md-9">
+	                			<div class="tab-content">
+								    <div class="tab-pane active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+                                        <h4>Profile</h4>
+                                        <div class="container-fluid">
+                                            <div class="row m-0 p-0 m-0 p-0">
+                                                <div class="col-lg-4 col-12 m-0 p-0">
+                                                    <div class="my-3">
+                                                        <h6 class="m-0 p-0">Personal Profile</h6>
+                                                        <p class="m-0 p-0">{{user.profile.name}}</p>
+                                                        <a class="py-2 nav-link main-btn" id="tab-account-link" data-toggle="tab" href="#tab-account">
+                                                            <i class="fa fa-edit pr-3">Edit</i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="my-3">
+                                                        <h6 class="m-0 p-0">Personal Profile</h6>
+                                                        <p class="m-0 p-0">{{user.profile.phone}}</p>
+                                                        <p class="user-email">{{user.profile.email}}</p>
+                                                        <p class="user-email">{{user.profile.birth_date}}</p>
+                                                        <a class="py-2 nav-link main-btn" id="tab-other-link" data-toggle="tab" href="#tab-other">
+                                                            <i class="fa fa-edit pr-3">Edit</i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8 col-12 my-3 p-0">
+                                                    <h6 class="m-0 p-0 d-flex flex-fill">Address Book</h6>
+                                                    <div class="container-fluid">
+                                                        <div class="row m-0 p-0">
+                                                            <div class="col-6">
+                                                                <small>Default Shipping Address</small>
+                                                                {% for address in user.address_book.all %}
+                                                                    {% if address.default %}
+                                                                    <p class="m-0 p-0">{{address.country.name}}-{{address.region.name}}-{{address.city.name}}-{{address.area.name}}</p>
+                                                                    <p class="user-email">{{address.address}}</p>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <a class="nav-link main-btn" id="tab-address-link" data-toggle="tab" href="#tab-address">
+                                                            <i class="fa fa-edit pr-3">Edit</i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+								    </div><!-- .End .tab-pane -->
+
+								    <div class="tab-pane fade" id="tab-address" role="tabpanel" aria-labelledby="tab-address-link">
+								    	<div class="d-flex flex-fill justify-content-between">
+                                            <h4>Address Book</h4>
+                                            <button class="btn btn-outline-warning add-address-btn"><i class="fa fa-plus"></i>New Address</button>
+                                        </div>
+                                        <table class="table address">
+                                            <thead>
+                                                <tr>
+                                                    <th>Address Name</th>
+                                                    <th>Region</th>
+                                                    <th>Address</th>
+                                                    <th>Phone Number</th>
+                                                    <th></th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for ab in address_book %}
+                                                {% if not ab.temp %}
+                                                <tr>
+                                                    <td>{{ab.name}}</td>
+                                                    <td>{{ab.country}}-{{ab.region}}-{{ab.city}}-{{ab.area}}</td>
+                                                    <td>{{ab.address}}</td>
+                                                    <td>{{ab.phone}}</td>
+                                                    <td>{% if ab.default %}Default addess{% endif %}</td>
+                                                    <td class="text-warning address-edit-btn" add-id="{{ab.id}}">edit</td>
+                                                </tr>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </tbody>
+                                        </table><!-- End .table table-wishlist -->
+
+                                        <form class="d-none" id="address-edit-form" method="post">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="id" id="edit-address-id">
+			                				<div class="row m-0 p-0">
+			                					<div class="my-2 col-sm-6">
+			                						<label>Address Name *</label>
+			                						<input type="text" name="name" id="edit-address-name" class="form-control py-0" required value="{{user.first_name}}">
+			                					</div><!-- End .my-2 col-sm-6 -->
+
+			                					<div class="my-2 col-sm-6">
+			                						<label>Phone *</label>
+			                						<input type="text" name="phone" id="edit-address-phone" class="form-control py-0" required>
+			                					</div><!-- End .my-2 col-sm-6 -->
+			                				</div><!-- End .row -->
+
+		            						{% comment %} <label>Display Name *</label>
+		            						<input type="text" class="form-control py-0" required>
+		            						<small class="form-text">This will be how your name will be displayed in the account section and in reviews</small> {% endcomment %}
+                                            <div class="row m-0 p-0">
+                                                <div class="my-2 col-sm-4">
+                                                    <label>Country *</label>
+                                                    <select class="form-control py-0" name="country" id="edit-country">
+                                                        <option value="null"></option>
+                                                        {% for country in countrys %}
+                                                            <option value="{{country.id}}">{{country.name}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                                <div class="my-2 col-sm-4">
+                                                    <label>Region *</label>
+                                                    <select class="form-control py-0" name="region" id="edit-region">
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="my-2 col-sm-4">
+                                                    <label>City *</label>
+                                                    <select class="form-control py-0" name="city" id="edit-city">
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+                                                <div class="my-2 col-sm-4">
+                                                    <label>Area *</label>
+                                                    <select class="form-control py-0" name="area" id="edit-area">
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+                                                <div class="my-2 col-sm-8">
+                                                    <label>Address *</label>
+                                                    <input type="text" name="address" id="edit-address-address" class="form-control py-0" required>
+                                                </div>
+                                            </div><!-- End .row -->
+
+		                					<button type="submit" class="btn btn-outline-primary-2 mt-5 profile-submit-btn">
+			                					<span>SAVE CHANGES</span>
+			            						<i class="fa fa-long-arrow-right"></i>
+			                				</button>
+		                					<div class="btn btn-outline-primary-2 mt-5 profile-submit-btn address-cancel-btn">
+			            						<i class="fa fa-times"></i>
+                                                <span>Cancel</span>
+                                            </div>
+			                			</form>
+                                        <form class="d-none" id="add-address-form" method="post">
+                                            {% csrf_token %}
+			                				<div class="row m-0 p-0">
+			                					<div class="my-2 col-sm-6">
+			                						<label>Address Name *</label>
+			                						<input type="text" class="form-control py-0" name="ab-name" required>
+			                					</div><!-- End .my-2 col-sm-6 -->
+
+			                					<div class="my-2 col-sm-6">
+			                						<label>Phone *</label>
+			                						<input type="text" class="form-control py-0" name="ab-phone" required>
+			                					</div><!-- End .my-2 col-sm-6 -->
+			                				</div><!-- End .row -->
+
+		            						{% comment %} <label>Display Name *</label>
+		            						<input type="text" class="form-control py-0" required>
+		            						<small class="form-text">This will be how your name will be displayed in the account section and in reviews</small> {% endcomment %}
+                                            <div class="row m-0 p-0">
+                                                <div class="my-2 col-sm-4">
+                                                    <label>Country *</label>
+                                                    <select class="form-control py-0" name="ab-country" id="add-country">
+                                                        <option value="null"></option>
+                                                        {% for country in countrys %}
+                                                            <option value="{{country.id}}">{{country.name}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                                <div class="my-2 col-sm-4">
+                                                    <label>Region *</label>
+                                                    <select class="form-control py-0" name="ab-region" id="add-region" disabled>
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+
+                                                <div class="my-2 col-sm-4">
+                                                    <label>City *</label>
+                                                    <select class="form-control py-0" name="ab-city" id="add-city" disabled>
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+                                                <div class="my-2 col-sm-4">
+                                                    <label>Area *</label>
+                                                    <select class="form-control py-0" name="ab-area" id="add-area" disabled>
+                                                        <option value=""></option>
+                                                    </select>
+                                                </div>
+                                                <div class="my-2 col-sm-8">
+                                                    <label>Address *</label>
+                                                    <input type="tel" class="form-control py-0" name="ab-address" required>
+                                                </div>
+                                            </div><!-- End .row -->
+
+                                            <div class="row m-0 p-0">
+                                                <div class="custom-control custom-checkbox">
+                                                    <input class="custom-control-input" type="checkbox" name="default" id="default">
+                                                    <label class="custom-control-label" for="default">Default Address book</label>
+                                                </div>
+                                            </div>
+
+		                					<button type="submit" class="btn btn-outline-primary-2 mt-5 profile-submit-btn">
+			                					<span>Save</span>
+			            						<i class="fa fa-long-arrow-right"></i>
+			                				</button>
+		                					<div class="btn btn-outline-primary-2 mt-5 profile-submit-btn address-cancel-btn">
+			            						<i class="fa fa-times"></i>
+                                                <span>Cancel</span>
+                                            </div>
+			                			</form>
+
+								    </div><!-- .End .tab-pane -->
+
+								    <div class="tab-pane fade" id="tab-account" role="tabpanel" aria-labelledby="tab-account-link">
+								    	<h4>Profile</h4>
+                                        <form class="d-none address-edit" method="post">
+                                            {% csrf_token %}
+			                				<div class="row m-0 p-0">
+			                					<div class="my-2 col-sm-6 py-3">
+			                						<label>First Name *</label>
+			                						<input type="text" name="fname" class="form-control py-0" required value="{{user.profile.first_name}}">
+			                					</div><!-- End .my-2 col-sm-6 -->
+			                					<div class="my-2 col-sm-6 py-3">
+			                						<label>Middle Name *</label>
+			                						<input type="text" name="mname" class="form-control py-0" required value="{{user.profile.middle_name}}">
+			                					</div><!-- End .my-2 col-sm-6 -->
+			                					<div class="my-2 col-sm-6 py-3">
+			                						<label>Last Name *</label>
+			                						<input type="text" name="lname" class="form-control py-0" required value="{{user.profile.last_name}}">
+			                					</div><!-- End .my-2 col-sm-6 -->
+                                                <div class="my-2 col-sm-6 py-3">
+                                                    <label>Profile picture</label>
+                                                    <input type="file" name="picture" class="form-control py-0" value="{{user.profile.picture}}">
+                                                </div>
+                                                <div class="my-2 col-sm-6 py-3">
+                                                    <label>Wall paper</label>
+                                                    <input type="file" name="image" class="form-control py-0" value="{{user.profile.image}}">
+                                                </div>
+                                            </div><!-- End .row -->
+
+		                					<button type="submit" class="btn btn-outline-primary-2 mt-5 profile-submit-btn">
+			                					<span>SAVE CHANGES</span>
+			            						<i class="icon-long-arrow-right"></i>
+			                				</button>
+			                			</form>
+                                        <div class="container-fluid address-view">
+                                            <div class="py-2">
+                                                <div class="m-0 p-0">
+                                                    <ul>
+                                                        <li class="my-2">First Name: <span class="ml-2">{{user.profile.first_name}}</span></li>
+                                                        <li class="my-2">Middle Name: <span class="ml-2">{{user.profile.middle_name}}</span></li>
+                                                        <li class="my-2">Last Name: <span class="ml-2">{{user.profile.last_name}}</span></li>
+                                                        <li class="my-2">Profile Pic: <span class="ml-2">{{user.profile.picture}}</span></li>
+                                                        <li class="my-2">Wall paper: <span class="ml-2">{{user.profile.image}}</span></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="text-center m-0 p-0">
+                                                    <div class="m-0 cursor-pointer main-btn edit-btn">
+                                                        <i class="far fa-edit">Edit</i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+								    </div><!-- .End .tab-pane -->
+								    <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-link">
+								    	<h4>More Profile Details</h4>
+                                        <form class="d-none more-address-edit" method="post">
+                                            {% csrf_token %}
+			                				<div class="row m-0 p-0">
+			                					<div class="my-2 col-sm-6 py-3">
+			                						<label>Phone *</label>
+			                						<input type="text" name="phone" class="form-control py-0" required value="{{user.profile.phone}}">
+			                					</div><!-- End .my-2 col-sm-6 -->
+			                					<div class="my-2 col-sm-6 py-3">
+			                						<label>Email *</label>
+			                						<input type="email" name="email" class="form-control py-0" required value="{{user.profile.email}}">
+			                					</div><!-- End .my-2 col-sm-6 -->
+			                					<div class="my-2 col-sm-6 py-3">
+			                						<label>Gender *</label>
+                                                    <select id="input-sort" name="gender" class="form-control py-0">
+                                                        <option value="" selected="selected">--- Select ---</option>
+                                                        <option value="{{Male}}">Male</option>
+                                                        <option value="{{Female}}">Female</option>
+                                                    </select>
+			                					</div><!-- End .my-2 col-sm-6 -->
+                                                <div class="my-2 col-sm-6 py-3">
+                                                    <label>Birth Day</label>
+                                                    <input type="date" name="birth_date" class="form-control py-0" required value="{{user.profile.birth_date}}">
+                                                </div>
+                                            </div><!-- End .row -->
+                                            <div class="row mb-3">
+                                              <label for="body" class="my-2 col-sm-2 col-form-label d-xl-block">Your Motivation</label>
+                                              <div class="col-xl-10 form-control">
+                                                <textarea type="text" class="form-control" id="body" name="bio"></textarea>
+                                              </div>
+                                            </div>
+                                            <div class="my-3">
+                                                <label for="body" class="mt-3">Hide your birth date. It will be visible only to you.</label>
+                                                <div class="checkbox">
+                                                    <input type="checkbox" name="hide_sensitive" value="1">
+                                                    <label> Hide </label>
+                                                </div>
+                                              </div>
+
+		                					<button type="submit" class="btn btn-outline-primary-2 mt-5 profile-submit-btn">
+			                					<span>SAVE CHANGES</span>
+			            						<i class="icon-long-arrow-right"></i>
+			                				</button>
+			                			</form>
+                                        <div class="container-fluid address-views">
+                                            <div class="py-2">
+                                                <div class="m-0 p-0">
+                                                    <ul>
+                                                        <li class="my-2">Phone: <span class="ml-2">{{user.profile.phone}}</span></li>
+                                                        <li class="my-2">Email: <span class="ml-2">{{user.profile.email}}</span></li>
+                                                        <li class="my-2">Gender: <span class="ml-2">{{user.profile.gender}}</span></li>
+                                                        <li class="my-2">Birth Day: <span class="ml-2">{{user.profile.birth_date}}</span></li>
+                                                        <li class="my-2">Details: <span class="ml-2">{{user.profile.bio}}</span></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="text-center m-0 p-0">
+                                                    <div class="m-0 cursor-pointer main-btn edit-btns">
+                                                        <i class="far fa-edit">Edit</i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+								    </div><!-- .End .tab-pane -->
+								</div>
+	                		</div><!-- End .col-lg-9 -->
+	                	</div><!-- End .row -->
+	                </div><!-- End .container -->
+                </div><!-- End .dashboard -->
+    </div><!-- End .page-content -->
+</main>
+{% endblock home %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{% static 'home/js/profile.js' %}"></script>
+{% endblock %}

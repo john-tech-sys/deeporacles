@@ -1,0 +1,135 @@
+{% extends 'special/group/forum-base.html' %}
+{% block forum %}
+		<div class="members-container" id="members-container">
+            <ul class="nav nav-tabs">
+                <li class="tab-1 active">
+                    <a href="#connections-60b486ec43626-tab-1" data-toggle="tab">
+                        <span class="links-text"><i class=" bi bi-people pr-3"></i>Members</span>
+                        <span class="count-badge wishlist-badge count-zero">{{forum.forum_members.count}}</span>
+                    </a>
+                </li>
+                <li class="tab-4">
+                    <a href="#connections-60b486ec43626-tab-2" data-toggle="tab">
+                        <span class="links-text"><i class=" bi bi-chevron-double-left pr-3"></i>Followers</span>
+                        <span class="count-badge wishlist-badge count-zero">{{forum.followers.count}}</span>
+                    </a>
+                </li>
+                {% if request.user == forum.forum_admin or request.user in forum.forum_sub_admin.all%}
+                <li class="tab-4">
+                    <a href="#connections-60b486ec43626-tab-3" data-toggle="tab">
+                        <span class="links-text"><i class=" bi bi-person-check pr-3"></i>Requests</span>
+                        <span class="count-badge wishlist-badge count-zero">{{forum.forum_members_waiting.count}}</span>
+                    </a>
+                </li>
+                <li class="tab-4">
+                    <a href="#connections-60b486ec43626-tab-4" data-toggle="tab">
+                        <span class="links-text"><i class=" bi bi-person-plus pr-3"></i>Add Members</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+            <div class="module-body side-products-tabs">
+                <div class="tab-content">
+                    <div class="module-item module-item-2 tab-pane active" id="connections-60b486ec43626-tab-1">
+                        <div class="col-12 mt-3">
+                            <div class="members-container">
+                                <h4>
+                                    Administrators
+                                </h4>
+                                <div class="members-div-container">
+                                    <div class="row p-3">
+                                        {% with member=forum.forum_admin %}
+                                        {% include 'special/group/member.html' %}<br>
+                                        {% endwith %}
+                                        {% if forum.forum_sub_admin.all %}
+                                        {% for member in forum.forum_sub_admin.all|slice:"20" %}
+                                        {% include 'special/group/member.html' %}<br>
+                                        {% endfor %}
+                                        {% endif %}
+                                    </div> <!-- end row -->
+                                </div>
+                            </div>
+                            <br>
+                            <div class="members-container">
+                                <h4>
+                                    Members
+                                </h4>																								
+                                <div class="members-div-container">
+                                    <div class="row p-3">
+                                        {% for member in forum.forum_members.all|slice:"20" %}
+                                        {% include 'special/group/member.html' %}<br>
+                                        {% empty %}
+                                        No member added yet
+                                        {% endfor %}
+                                    </div> <!-- end row -->
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+                    </div>
+                    <div class="module-item module-item-2 tab-pane" id="connections-60b486ec43626-tab-2">
+                        <div class="col-12 mt-3">
+                            <div class="members-container">
+                                <h4>
+                                    Followers
+                                </h4>
+                                <div class="members-div-container">
+                                    <div class="row p-3">
+                                        {% if forum.followers.all %}
+                                        {% for member in forum.followers.all %}
+                                        {% include 'special/group/member.html' %}
+                                        {% endfor %}
+                                        {% else %}
+                                        <h5><i>{{forum.name}} has no followers!</i>
+                                        </h5>
+                                        {% endif %}
+                                    </div> <!-- end row -->
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+                    </div>
+                    <div class="module-item module-item-2 tab-pane" id="connections-60b486ec43626-tab-3">
+                        <div class="col-12 mt-3">
+                            <div class="members-container">
+                                <h4>
+                                    Requests
+                                </h4>
+                                <div class="members-div-container">
+                                    <div class="row p-3" id="requests-container">
+                                        {% if forum.forum_members_waiting.all %}
+                                        {% for member in forum.forum_members_waiting.all %}
+                                            {% include 'special/group/groupRequest.html' %}
+                                        {% endfor %}
+                                        {% else %}
+                                        <h5 style='text-align: center;'>No requests</h5>
+                                        {% endif %}
+                                    </div> <!-- end row -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-item module-item-2 tab-pane" id="connections-60b486ec43626-tab-4">
+                        <div class="col-12 mt-3">
+                            <div class="members-container">
+                                <h4>
+                                    Users
+                                </h4>
+                                <div class="members-div-container">
+                                    <div class="row p-3">
+                                        {% comment %} {% for member in rec_connections%}
+                                        {% include 'special/group/member.html' %}
+                                        {% endfor %} {% endcomment %}
+                                        {% for member in users%}
+                                        {% include 'special/group/add_member.html' %}
+                                        {% endfor %}
+                                    </div> <!-- end row -->
+                                </div>
+                            </div>
+                        </div> <!-- end row -->
+                    </div>
+                </div>
+            </div>
+		</div>
+        
+{% include 'fragments/js/profilesjs.html' %}
+{% include 'fragments/postingjs.html' %}
+{% endblock %}

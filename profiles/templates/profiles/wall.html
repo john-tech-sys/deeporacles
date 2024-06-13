@@ -1,0 +1,390 @@
+
+
+
+    <link rel="stylesheet" src="{% static 'cropperjs/dist/cropper.min.css' %}">
+            <a class="notify-badge bottom-10 right-10" id="id_middle_wall_container">
+            <i class="bi bi-camera"></i>
+        </a>
+            <form class="form-signin d-flex justify-content-center" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <div class="d-none" id="id_image_wall_crop_confirm">
+                    <span id="id_wall_cancel"  class="text-danger btn p-2 cursor-pointer">cancel
+                    </span>
+                    <span id="id_wall_confirm" class="ml-2 text-success btn p-2 cursor-pointer">confirm
+                    </span>
+                </div>
+                <input class="d-none" type="file" name="image" id="id_wall_image" onchange="readerURL(this)">
+                <div class="d-flex flex-column">
+                    <button class="main-btn d-none" id="btn-save" type="submit">Save</button>
+                </div>
+              </form>
+
+                <script type="text/javascript" src="{% static 'home/js/jquery-3.6.0.min.js' %}"></script>
+                <script type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %}"></script>
+                <script type="module" src="{% static 'cropperjs/dist/cropper.min.js' %}"></script>
+ 
+<script type="text/javascript">
+
+	var cropper;
+	var imageFile;
+	var base64ImageString;
+	var cropX;
+	var cropX;
+	var cropWidth;
+	var cropHeight;
+
+	enableImageOverlay()
+
+	function enableImageOverlay(){
+
+		var wallImage = document.getElementById("id_wall_image")
+		wallImage.style.opacity = "1"
+		wallImage.style.display = "block"
+		wallImage.style.width = "100%"
+		wallImage.style.height = "auto"
+		wallImage.style.transition = ".5s ease"
+		wallImage.style.backfaceVisibility  = "hidden"
+		wallImage.style.cursor = "pointer"
+
+		var middleWallContainer = document.getElementById("id_middle_wall_container")
+		middleWallContainer.style.transition = ".5s ease"
+		middleWallContainer.style.opacity = "0"
+
+		var imageWallContainer = document.getElementById("id_image_wall_container")
+		imageWallContainer.addEventListener("mouseover", function( event ) { 
+			wallImage.style.opacity = "0.3"
+			middleWallContainer.style.opacity = "1"
+		})
+		imageWallContainer.addEventListener("mouseout", function( event ) { 
+			wallImage.style.opacity = "1"
+            middleWallContainer.style.opacity = "0"
+		})
+
+		imageWallContainer.addEventListener("click", function(event){
+			document.getElementById('id_wall_image').click();
+		});
+		var cropConfirm = document.getElementById("id_image_crop_confirm")
+		cropConfirm.classList.add("d-none")
+
+		var btnSave = document.getElementById("btn-save")
+		btnSave.classList.add("d-none")
+	}
+
+	function disableImageOverlay(){
+		var profileImage = document.getElementById("id_profile_image_display")
+		var wallImage = document.getElementById("id_cover_image_display")
+		var middleContainer = document.getElementById("id_middle_container")
+		var middleWallContainer = document.getElementById("id_middle_wall_container")
+		var imageContainer = document.getElementById("id_image_container")
+		var imageWallContainer = document.getElementById("id_image_wall_container")
+
+        imageWallContainer.removeEventListener("mouseover", function( event ) { 
+			wallImage.style.opacity = "0.3"
+            middleWallContainer.style.opacity = "1"
+		})
+		imageWallContainer.removeEventListener("mouseout", function( event ) { 
+			wallImage.style.opacity = "1"
+            middleWallContainer.style.opacity = "0"
+		})
+		profileImage.style.opacity = "1"
+		wallImage.style.opacity = "1"
+		middleContainer.style.opacity = "0"
+		middleWallContainer.style.opacity = "0"
+
+		document.getElementById('id_image_wall_container').removeEventListener("click", function(event){
+			event.preventDefault();
+			// do nothing
+		});
+		document.getElementById('id_wall_image').addEventListener("click", function(event){
+			event.preventDefault();
+			// do nothing
+		});
+
+		var cropConfirm = document.getElementById("id_image_crop_confirm")
+		cropConfirm.classList.remove("d-none");
+
+		var btnSave = document.getElementById("btn-save")
+		btnSave.classList.remove("d-none");
+
+		var confirmWall = document.getElementById("id_wall_confirm")
+		confirm.addEventListener("click", function(event){
+			console.log("Sending crop data for processing...")
+			cropWallImage(
+				imageFile, 
+				cropX, 
+				cropY, 
+				cropWidth,
+				cropHeight
+			)
+		})
+		var cancel = document.getElementById("id_cancel")
+		cancel.addEventListener("click", function(event){
+			console.log("Reloading window...")
+			window.location.reload();
+		})
+	}
+
+	/* return null if invalid or base64String if valid */
+	function isImageSizeValid(image){
+		console.log("max size: {{MAX_IMAGE_SIZE}}")
+		// console.log(image)
+		var startIndex = image.indexOf("base64,") + 7;
+		var base64str = image.substr(startIndex);
+		var decoded = atob(base64str);
+		console.log("FileSize: " + decoded.length);
+		if(decoded.length >= "{{MAX_IMAGE_SIZE}}"){
+			return null
+		}
+		return base64str
+	}
+
+	function cropWallImage(image, x, y, width, height){
+		base64ImageString = isImageSizeValid(image)
+
+		if(base64ImageString != null){
+			var requestData = {
+				"csrfmiddlewaretoken": "{{ csrf_token }}",
+				"image": base64ImageString,
+				"cropX": cropX,
+				"cropY": cropY,
+				"cropWidth": cropWidth,
+				"cropHeight": cropHeight
+			}
+			$.ajax({
+				type: 'POST',
+				dataType: "json",
+				url: "{% url 'crop_wall_image' pk=user.pk %}",
+				data: requestData,
+				timeout: 10000,
+				success: function(data) {
+					if(data.result == "success"){
+						document.getElementById("id_wall_cancel").click()
+					}
+					else if(data.result == "error"){
+						alert(data.exception)
+						document.getElementById("id_wall_cancel").click()
+					}
+				},
+				error: function(data) {
+					console.error("ERROR...", data)
+				}
+			});
+		}
+		else{
+			alert("Upload an image smaller than 8 MB");
+			document.getElementById("id_cancel").click()
+		}
+	}
+	function readerURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+            	disableImageOverlay()
+            	var image = e.target.result
+            	var imageField = document.getElementById('id_cover_image_display')
+                imageField.src = image
+				cropper = new Cropper(imageField, {
+					aspectRatio: 3/1,
+					crop(event) {
+						setImageCropProperties(
+							image,
+							event.detail.x,
+							event.detail.y,
+							event.detail.width,
+							event.detail.height
+						)
+					},
+				});
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
+    function setImageCropProperties(image, x, y, width, height){
+		imageFile = image
+		cropX = x
+		cropY = y
+		cropWidth = width
+		cropHeight = height
+	}
+
+</script>
+
+
+<script type="text/javascript">
+
+	var cropper;
+	var imageFile;
+	var base64ImageString;
+	var cropX;
+	var cropX;
+	var cropWidth;
+	var cropHeight;
+
+	enableImageOverlay()
+
+	/*
+		Called when a new image is selected from file chooser dialog
+	*/
+	function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+            	disableImageOverlay()
+            	var image = e.target.result
+            	var imageField = document.getElementById('id_profile_image_display')
+                imageField.src = image
+				cropper = new Cropper(imageField, {
+					aspectRatio: 1/1,
+					crop(event) {
+						setImageCropProperties(
+							image,
+							event.detail.x,
+							event.detail.y,
+							event.detail.width,
+							event.detail.height
+						)
+					},
+				});
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
+
+    function setImageCropProperties(image, x, y, width, height){
+		imageFile = image
+		cropX = x
+		cropY = y
+		cropWidth = width
+		cropHeight = height
+	}
+
+	/* return null if invalid or base64String if valid */
+	function isImageSizeValid(image){
+		var startIndex = image.indexOf("base64,") + 7
+		var base64str = image.substr(startIndex);
+		var decoded = atob(base64str);
+		if(decoded.length >= "{{MAX_IMAGE_SIZE}}"){
+			return null
+		}
+		return base64str
+	}
+
+	function cropImage(image, x, y, width, height){
+		base64ImageString = isImageSizeValid(image)
+
+		if(base64ImageString != null){
+			var requestData = {
+				"csrfmiddlewaretoken": "{{ csrf_token }}",
+				"image": base64ImageString,
+				"cropX": cropX,
+				"cropY": cropY,
+				"cropWidth": cropWidth,
+				"cropHeight": cropHeight
+			}
+			$.ajax({
+				type: 'POST',
+				dataType: "json",
+				url: "{% url 'crop_image' pk=user.pk %}",
+				data: requestData,
+				timeout: 10000,
+				success: function(data) {
+					if(data.result == "success"){
+						document.getElementById("id_cancel").click()
+					}
+					else if(data.result == "error"){
+						alert(data.exception)
+						document.getElementById("id_cancel").click()
+					}
+				},
+				error: function(data) {
+					console.error("ERROR...", data)
+				}
+			});
+		}
+		else{
+			alert("Upload an image smaller than 8 MB");
+			document.getElementById("id_cancel").click()
+		}
+	};
+
+
+	function enableImageOverlay(){
+		var profileImage = document.getElementById("id_profile_image")
+		profileImage.style.opacity = "1"
+		profileImage.style.display = "block"
+		profileImage.style.width = "100%"
+		profileImage.style.height = "auto"
+		profileImage.style.transition = ".5s ease"
+		profileImage.style.backfaceVisibility  = "hidden"
+		profileImage.style.cursor = "pointer"
+
+		var middleContainer = document.getElementById("id_middle_container")
+		middleContainer.style.transition = ".5s ease"
+		middleContainer.style.opacity = "0"
+
+		var imageContainer = document.getElementById("id_image_container")
+		imageContainer.addEventListener("mouseover", function( event ) { 
+			profileImage.style.opacity = "0.3"
+			middleContainer.style.opacity = "1"
+		})
+
+		imageContainer.addEventListener("mouseout", function( event ) { 
+			profileImage.style.opacity = "1"
+			middleContainer.style.opacity = "0"
+		})
+
+		imageContainer.addEventListener("click", function(event){
+			document.getElementById('id_profile_image').click();
+		});
+		var cropConfirm = document.getElementById("id_image_crop_confirm")
+		cropConfirm.classList.add("d-none")
+
+		var btnSave = document.getElementById("btn-save")
+		btnSave.classList.add("d-none")
+	};
+
+	function disableImageOverlay(){
+		var profileImage = document.getElementById("id_profile_image_display")
+		var middleContainer = document.getElementById("id_middle_container")
+		var imageContainer = document.getElementById("id_image_container")
+
+		imageContainer.removeEventListener("mouseover", function( event ) { 
+			profileImage.style.opacity = "0.3"
+			middleContainer.style.opacity = "1"
+		})
+		imageContainer.removeEventListener("mouseout", function( event ) { 
+			profileImage.style.opacity = "1"
+            middleContainer.style.opacity = "0"
+		})
+		profileImage.style.opacity = "1"
+		middleContainer.style.opacity = "0"
+
+		document.getElementById('id_image_container').removeEventListener("click", function(event){
+			event.preventDefault();
+			// do nothing
+		});
+		document.getElementById('id_profile_image').addEventListener("click", function(event){
+			event.preventDefault();
+			// do nothing
+		});
+		var cropConfirm = document.getElementById("id_image_crop_confirm")
+		cropConfirm.classList.remove("d-none");
+
+		var btnSave = document.getElementById("btn-save")
+		btnSave.classList.remove("d-none");
+
+		var confirm = document.getElementById("id_confirm")
+		confirm.addEventListener("click", function(event){
+			cropImage( imageFile, cropX, cropY, cropWidth, cropHeight)
+		})
+		var cancel = document.getElementById("id_cancel")
+		cancel.addEventListener("click", function(event){
+			console.log("Reloading window...")
+			window.location.reload();
+		})
+	};
+
+</script>
+

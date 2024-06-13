@@ -1,0 +1,62 @@
+
+
+{% load humanize %}
+{% load thumbnail %}
+<li>
+    <div class="post__user user vcard inline-items d-flex justify-content-between">
+        <div class="user-thumb d-flex">
+            <a class="my-auto mr-2">
+                {% if comment.user.profile.picture %}
+                <img class="small-image"
+                    src="{% thumbnail comment.user.profile.picture 100x100 %}"
+                    alt="{{ comment.user.profile.name }}">
+                {% else %}
+                <div class="h5 small-image bg-now d-flex">
+                    <span class="m-auto">
+                        {{ comment.user.profile.name_initials }}
+                    </span>
+                </div>
+                {% endif %}
+            </a>
+            <div class="my-auto d-flex">
+                {% if request.user == comment.user %}
+                <span>
+                    <a class="h6 post__user-name"
+                        href="{% url 'my_timeline' %}">You</a>
+                </span>
+                {% else %}
+                <span>
+                    <a class="h6 post__user-name"
+                        href="{% url 'user_timeline' comment.user.profile.slug %}">
+                        {{ comment.user.profile.name }}</a>
+                </span>
+                {% endif %}
+                <span>commented</span>
+                <div class="post__date pl-3">
+                    <time class="published">
+                        <span>{{ comment.comment_date|naturaltime }}</span>
+                    </time>
+                </div>
+            </div>
+        </div>
+        <div class="more bg-now rounded rounded-circle my-auto px-2 bi bi-three-dots h2" style="right: 0;">
+            {% if request.user == comment.user %}
+            <ul class="more-dropdown">
+                <li>
+                    <a class="cursor-pointer" hx-delete="{% url 'delete_response' comment.pk %}" hx-target="#post-{{post.pk}}-comments-div">
+                        Delete response
+                    </a>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="more-dropdown">
+                <li>
+                    <a>Report Comment</a>
+                </li>
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+    <p>{{ comment.comment|truncatechars_html:"200" }}
+    </p>
+</li> 

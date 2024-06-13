@@ -1,0 +1,29 @@
+{% extends 'accounts/LandingPage.html' %}
+
+{% load static %}
+{% block signup %}
+
+
+<link rel="stylesheet" href="{% static 'home/Bootstrap/dist/css/bootstrap.css' %}">
+
+<link href="{% static 'home/css/ajoreb.css' %}" type="text/css" rel="stylesheet" media="all">
+
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+    <div class="main">
+        <div class="success-checkmark">
+            <div class="check-icon">
+                <span class="icon-line line-tip"></span>
+                <span class="icon-line line-long"></span>
+                <div class="icon-circle"></div>
+                <div class="icon-fix"></div>
+            </div>
+        </div>
+        <span class="text-center">
+            <h3>Successfully active your account!</h3>
+            <h5>Please signin first</h5>
+            <a class="btn btn-success mt-3 px-5" href="/auth"><p class="m-0 h4">Signin</p></a>
+            <p></p>
+        </span>
+    </div>
+    {% endblock %}

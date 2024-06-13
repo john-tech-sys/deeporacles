@@ -1,0 +1,95 @@
+
+
+{% load static %}
+{% load thumbnail %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'cropperjs/dist/cropper.min.css' %}">
+<style>
+    #jssor_2 {
+        max-height: 30vh;
+        position: relative;
+        margin: auto;
+        overflow: hidden
+    }
+    .img-cont {
+        height: 150px;
+        width: 150px;
+        position: relative;
+    }
+    .account-img {
+        height: 150px;
+        width: 150px;
+        margin: 20px;
+        padding: 5px;
+        margin-bottom: 0px;
+        transform: translate(-20px, 0px);
+        border: 5px solid #ebebeb;
+
+    }
+    .account-img-container {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+</style>
+<div class="container-fluid content-section">
+    <div id="jssor_2">
+        <div data-u="slides" class="img" id="id_image_wall_container">
+            <img data-u="image" src="{{MEDIA_URL}}{{forum.forum_cover_photo.url}}"
+                id="id_cover_image_display" class="w-100">
+        </div>
+        <div class="account-img-container w-100 flex-column" style="top:-20px;">
+            <div class="img-cont image-container">
+                {% if forum.picture %}
+                <img class="circle account-img profile-image" src="{% thumbnail forum.picture 150x150 %}"
+                    alt="{% thumbnail forum.forum_cover_photo 80x80 crop %}">
+                {% else %}
+                <div class="h1 circle account-img bg-now d-flex">
+                    <span class="m-auto">
+                        {{ forum.name_initials }}
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="bottom-2 bg-info rounded rounded-circle" >
+                <span class="title section-title px-3">
+                    {{forum.forum_name|title}}
+                </apan>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-between">
+        <div class=" mt-2 h5 bold flex-auto">
+            <a href="{% url 'forum' forum.slug %}" class="my-auto main-btn border-secondary">
+                <i class="mr-2 bi bi-rss"></i>Feeds
+            </a>
+            <a href="{% url 'forum-members' forum.pk %}" class="my-auto main-btn border-secondary">
+                <i class="mr-2 bi bi-people"></i>Members
+            </a>
+        </div>
+        {% if request.user == forum.forum_admin %}
+        <div class="text-center mt-2">
+            <a href="{% url 'forum_setting' forum.slug %}" class="my-auto main-btn border-secondary">
+                <i class="mr-2 bi bi-pencil"></i>Edit Forum
+            </a>
+        </div>
+        {% endif %}
+        <div class=" mt-2">
+            <a href="{% url 'post_create' %}" class="my-auto main-btn border-secondary">
+                <span class="btn p-0"><i class="h5 bi bi-plus">Blog Post</i>
+                </span>
+            </a>
+            <a href="{% url 'ask_question' %}" class="my-auto main-btn border-secondary">
+                <span class="btn p-0"><i class="h5 bi bi-plus">Ask Querry</i></span>
+            </a>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+
+
+
+

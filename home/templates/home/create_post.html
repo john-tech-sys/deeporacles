@@ -1,0 +1,113 @@
+{% extends "main.html" %}
+{% load static %}
+{{ form.media }}
+{% block headtitle %}
+    {{ site_name }}-Crreat Post
+{% endblock headtitle %}
+{% block home %}
+<style>
+  .form-input input {
+    display: none;
+  }
+
+  .form-input label {
+    display: block;
+    cursor: pointer;
+  }
+</style>
+<div class="container-fluid pops">
+  <div class="card card-signin my-3">
+    <div class="card-body  p-2">
+      <h4 class="card-title text-center"><b>Create Blog Post</b></h4><br>
+      {{ form.media }}
+      <form class="w-100" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <fieldset class="form-group">
+          <br />
+          <div class="w-100 d-flex justify-content-between">
+            <div class="w-50 d-flex flex-column">
+              <span><b>Sellect Space</b></span>
+              <select class="form-control p-1 my-2" name="space" id="space_select">
+                {% for space in spaces %}
+                  <option value="{{ space.id }}">{{ space.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <br />
+            <div class="w-50 d-flex flex-column">
+                <span><b>Sellect Forum</b></span>
+              <select class="form-control p-1 my-2" name="forum" id="space_select">
+                {% for forum in forums %}
+                {%if request.user in forum.forum_members.all%}
+                  <option value="{{ forum.id }}">{{ forum.forum_name }}</option>
+                  {%endif%}
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        <br />
+          <div class="preview w-100 d-flex flex-column">
+            <span><b>Write the title</b></span>
+            <input class="form-control" name="title" placeholder="  Post Title....">
+            <img class="w-100 d-none" id="file-ip-1-preview">
+            <audio class="w-100 d-none" id="file-ip-2-preview"></audio>
+            <video class="w-100 d-none" id="file-ip-3-preview"></video>
+            <div class="mt-3" placeholder="Content here" >{{form.content}}</div>
+          </div>
+        </fieldset>
+        <div class="form-group d-flex justify-content-between">
+          <div class="form-input border border-secondary border-rounded px-2 py-1">
+            <input type="file" id="file-ip-1" name="picture" accept="image/*" onchange="showPreview(event);">
+            <label class="bi bi-image h4 mr-2" for="file-ip-1"></label>
+            <label for="file-ip-1">add display image</label>
+          </div>
+          {% comment %} <div class="form-input border border-secondary border-rounded px-2 py-1">
+            <input type="file" id="file-ip-2" name="Audio_file" accept="audio/*" onchange="showPreviewAudio(event);">
+            <label class="bi bi-file-music h4 mr-2" for="file-ip-2"></label>
+            <label for="file-ip-2">add audio</label>
+          </div>
+          <div class="form-input border border-secondary border-rounded px-2 py-1">
+            <input type="file" id="file-ip-3" name="Video_file" accept="video/*" onchange="showPreviewVideo(event);">
+            <label class="bi bi-film h4 mr-2" for="file-ip-3"></label>
+            <label for="file-ip-3">add video</label>
+          </div> {% endcomment %}
+          <button class="btn py-2 fa fa-paper-plane " type="submit" id="postSubmit">
+            Publish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showPreview(event) {
+    if (event.target.files.length > 0) {
+      var src = URL.createObjectURL(event.target.files[0]);
+      var preview = document.getElementById("file-ip-1-preview");
+      preview.classList.remove('d-none')
+      preview.src = src;
+      preview.style.display = "block";
+    }
+  };
+
+  function showPreviewAudio(event) {
+    if (event.target.files.length > 0) {
+      var src = URL.createObjectURL(event.target.files[0]);
+      var preview = document.getElementById("file-ip-2-preview");
+      preview.classList.remove('d-none')
+      preview.src = src;
+      preview.style.display = "block";
+    }
+  };
+
+  function showPreviewVideo(event) {
+    if (event.target.files.length > 0) {
+      var src = URL.createObjectURL(event.target.files[0]);
+      var preview = document.getElementById("file-ip-3-preview");
+      preview.classList.remove('d-none')
+      preview.src = src;
+      preview.style.display = "block";
+    }
+  }
+</script>
+{% endblock home %}

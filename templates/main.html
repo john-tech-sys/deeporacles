@@ -1,0 +1,170 @@
+{% load static %}
+{% load humanize %}
+{% load custom_tags %}
+{% load solo_tags %}
+{% footerlinks as footerlinks %}
+{% currencies as currencies %}
+{% mycurrency as mycurrency %}
+{% get_solo 'settings.SiteConfiguration' as site_config %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en"
+    class="desktop win webkit route-common-home route-product-product desktop-header-active mobile-sticky flexbox no-touchevents">
+<head typeof="og:website">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="{% block keywords %} {% endblock %}" />
+    <meta name="description" content="{% block description %} {% endblock %}" />
+    <title>{% block headtitle %}{% if page_title %}{{ site_name }}{{ page_title }}{% endif %}
+        {{ site_name }}{% endblock %}</title>
+    <meta name="author" content="John Revival Aomu also the Owner">
+    <meta property="og:description" content="DeepOracles">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="apple-mobile-web-app-title" content="{{ site_name }}">
+    <meta name="application-name" content="{{ site_name }}">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" content="{% static 'assets/images/icons/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="canonical" href="{{ request.path }}">
+    <link rel="home" href="{% url 'home' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{site_config.logo.url}}">
+    <link rel="apple-touch-icon" type="image/jpg" href="{{site_config.logo.url}}">
+    <link rel="stylesheet" href="{% static 'home/responsive.css' %}">
+    <link rel="stylesheet" href="{% static 'home/ajoshop.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/reserve/spinner.css' %}">
+    <link href="{% static 'home/reserve/ajostrapee.css' %}" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'home/reserve/ajostrap.css' %}">
+    <link rel="stylesheet" href="{% static 'home/ajomodular.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/ajoreb.css' %}">
+    <link rel="stylesheet" src="{% static 'cropperjs/dist/cropper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/css/owl.carousel.min.css' %}">
+    <link rel="stylesheet" href="{% static 'home/icons/font/bootstrap-icons.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'home/plugins/font-awesome/css/font-awesome.min.css' %}">
+    {% block extendheader %}{% endblock %}
+    <script src="{% static 'js/htmx.min.js' %}" defer></script>
+    <script type="text/javascript" src="{% static 'home/reserve/ajoquerry.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/jquery-3.6.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/reserve/ajoscript.js' %}"></script>
+    {% include 'fragments/maincss.html' %}
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2050291345586425"
+    crossorigin="anonymous"></script>
+</head>
+<body class="bg-now pb-0">
+    <div class="mobile-container mobile-main-menu-container">
+        <div class="mobile-wrapper-header">
+            <div class="icon">
+                <span class="bi bi-grid-fill"></span>
+            </div>
+            <span>Menu</span>
+            <a class="x">
+                <i class="bi bi-x-circle"></i>
+            </a>
+        </div>
+        <div class="mobile-main-menu-wrapper">
+        </div>
+    </div>
+    <div class="mobile-container mobile-cart-content-container ">
+        <div class="mobile-wrapper-header">
+            <div class="icon">
+                <span class="bi bi-grid-3x3-gap-fill" style="height:30px"></span>
+            </div>
+            <span>Spaces</span>
+            <a class="x">
+                <i class="bi bi-x-circle"></i>
+            </a>
+        </div>
+        <div class="mobile-cart-content-wrapper cart-content">
+            <div class="row mx-2">
+                {%for space in spaces%}
+                <div class="col-6 col-sm-6 col-md-6 col-xs-6 my-2">
+                    <a href=""  class="card card-chart text-center">
+                        <div class="card-body mx-auto">
+                            <div class="chart-area">
+                                <i class="bi {{space.icon}} h4 p-3">
+                                </i>
+                            </div>
+                        </div>
+                        <h6>{{space.name}}</h6>
+                    </a>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+    {% include 'index.html' %}
+    <div class="site-wrapper bg-now background">
+        {% include 'header.html' %}
+        {% block home %}
+        {% endblock %}
+        {% block messages %}
+        {% if messages %}
+        <ul class="bg-now notifier">
+            {% for message in messages %}
+            <li class="notifications toast bg-info px-5">{{ message|capfirst }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endblock messages %}
+        <footer>
+            <div class="bg-main px-4 d-flex justify-content-between">
+                <div class="mx-2 p-2">
+                    <span class="text-light">Copyright © <script>document.write(new Date().getFullYear());</script>,
+                        <a class="text-light" href="{% url "home" %}">{{ site_name }}</a>
+                    </span>
+                </div>
+                <div class="text-light">
+                    <ul class="d-flex flex-wrap">
+                        {% for link in footerlinks %}
+                        {% if link.is_footer %}
+                        {%for footer in link.links.all%}
+                        <li class="mx-2 p-2">
+                            <a href="{{footer.link}}">
+                                <span class="text-light">{{footer.name}}</span>
+                            </a>
+                        </li>
+                        {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div class="scroll-top">
+        <span class="btn p-2">
+            <span class="bi bi-chevron-up">
+            </span>
+        </span>
+    </div>
+    <div id="myModal" class="modal w-100 bg-info">
+        <div class=" w-100 bg-info modal-content d-flex justify-content-center" id="modal-content">
+            <span id="modal-close" class="btn close h2 bi bi-x-circle" style="right:20px;"></span>
+        </div>
+    </div>
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+          })
+    </script>
+    <script type="text/javascript" src="{% static 'home/js/owl.carousel.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/bootstrap.min.js' %}"></script>
+    <script type="module" src="{% static 'cropperjs/dist/cropper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/reserve/socket.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/sticky-sidebar.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/reserve/jquery.countdown.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/reserve/main.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/jquery.magnific-popup.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/js/base-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/reserve/intercooler.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/plugins/waypoint/jquery.waypoints.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/plugins/waypoint/shortcuts/infinite.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'home/plugins/waypoint/shortcuts/inview.min.js' %}"></script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>

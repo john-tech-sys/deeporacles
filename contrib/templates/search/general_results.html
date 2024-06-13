@@ -1,0 +1,78 @@
+{% extends "main.html" %}
+{% load static %}
+{% load search_tags %}
+{% block headtitle %}{{ page_title }}{% endblock %}
+
+{% block home %}
+
+
+<div class="bg-now">
+    <div class="container-fluid">
+        <div class="w-100 bg-info">
+            <ul class="breadcrumb">
+                <li><a href="{% url 'home' %}"><span class="bi bi-house"></span></a>
+                </li>
+                <li class="active"><Span class="h6">All Results for: '{{ q }}'</span></li>
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div id="content my-0">
+            <div class="tab-container">
+                <style>
+                    .tab-container .nav-tabs .active, .tab-container .nav-tabs li:hover {
+                        background-color: #afd9ee;
+                    }
+                </style>
+                <ul class="nav nav-tabs d-flex justify-content-center bg-info">
+                    <li class="tab-1 active">
+                        <a href="#search-60b4d294dfe71-tab-2" data-toggle="tab"><span
+                                class="count-badge wishlist-badge count-zero">{{s_posts|length}}</span>Posts & Questions</a>
+                    </li>
+                    <li class="tab-2">
+                    <li class="tab-2">
+                        <a href="#search-60b4d294dfe71-tab-4" data-toggle="tab"><span
+                                class="count-badge wishlist-badge count-zero">{{s_profiles|length}}</span>Users</a>
+                    </li>
+                    <li class="tab-2">
+                        <a href="#search-60b4d294dfe71-tab-5" data-toggle="tab"><span
+                                class="count-badge wishlist-badge count-zero">{{s_forums|length}}</span>Forums</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="module-item module-item-2 tab-pane active" id="search-60b4d294dfe71-tab-2">
+                        <div class="main-products-wrapper">
+                            {% include 'search/fragments/posts.html' %}
+                        </div>
+                    </div>
+                    <div class="module-item module-item-1 tab-pane" id="search-60b4d294dfe71-tab-4">
+                        <div class="main-products-wrapper">
+                            <h6 class="module-title">Users matching "{{ q }}"</h6>
+                            {% include 'search/fragments/users.html' %}
+                        </div>
+                    </div>
+                    <div class="module-item module-item-1 tab-pane" id="search-60b4d294dfe71-tab-5">
+                        <div class="main-products-wrapper">
+                            <h6 class="module-title">Forums matching "{{ q }}"</h6>
+                            {% include 'search/fragments/forums.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% comment %} <div class="container-fluid">
+        <div id="content">
+            <div class="my-4">
+                {% product_list recently_viewed 'Your Recently Viewed' %}
+            </div>
+            <div class="my-4">
+                {% product_list search_recs 'Recommended For You' %}
+            </div>
+            <div class="my-4">
+                {% product_list view_recs 'Similar Products' %}
+            </div>
+        </div>
+    </div> {% endcomment %}
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+    $("#loadMorePosts").on('click',function(){
+        var _currentData=$(".data-box").length;
+        var _limit=$(this).attr('data-limit');
+        var _total=$(this).attr('data-total');
+        var data_url=$(this).attr('data-href');
+
+        // start ajax
+
+        $.ajax({
+            url: data_url,
+            data:{
+                limit:_limit,
+                offset:_currentData
+            },
+            dataType:'json',
+            beforeSend:function(){
+                $("#loadMorePosts").attr('disabled',true);
+                $(".load-more-icon").addClass('fa-spin');
+            },
+            success:function(res){
+                $("#filterData").append(res.data);
+                $("#loadMorePosts").attr('disabled',false);
+                $(".load-more-icon").removeClass('fa-spin');
+
+                var _totalShowing=$(".data-box").length;
+                if(_totalShowing == _total){
+                    $("#loadMorePosts").remove();
+                }
+            }
+        });
+
+        // end
+    });
+});
+</script>

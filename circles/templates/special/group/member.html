@@ -1,0 +1,95 @@
+
+
+{% load thumbnail %}
+<div class="col-md-4 col-sm-6 col-12">
+	<div class="card-container">
+	   <div class="card w-100">
+		   <div class="front w-100">
+			   <div class="cover">
+				   <img src="{% thumbnail member.profile.image 200x100 crop %}"alt="{% thumbnail member.profile.picture 100x50 crop %}"/>
+			   </div>
+			   <a class="center-block" href="{% url 'profile_view' member.profile.slug %}">
+				   <div class="user">
+						{% if member.profile.picture %}
+						<img class="img-circle" src="{% thumbnail member.profile.picture 80x80 crop %}" 
+						alt="{% thumbnail member.profile.image 20x20 crop %}"/>
+						{% else %}
+						<div class="h4 bg-now img-circle d-flex">
+							<span class="m-auto d-flex w-100 medium-image bg-now">
+								<span class="m-auto capitalize">
+									{{ member.profile.name_initials }}
+								</span>
+							</span>
+						</div>
+						{% endif %}
+				   </div>
+				   <h4 class="name">
+					   <b>{{member.profile.name}}</b>
+				   </h4>
+			   </a>
+			   <div class="content">
+				   <div class="main">
+						<div class="my-2">
+							<div class="d-flex justify-content-around">
+								<span>Blog Posts</span>
+								<span></span>
+							</div>
+							<div class=" mt-1 d-flex justify-content-around">
+								<span>Questions</span>
+								<span></span>
+							</div>
+						</div>
+					   <div class="stats-container">
+							<div class="stats">
+								<h4>{{member.circles.followers.count}}</h4>
+								<p>
+									Followers
+								</p>
+							</div>
+							<div class="stats">
+								<h4>{{member.circles.following.count}}</h4>
+								<p>
+									Following
+								</p>
+							</div>
+							<div class="stats">
+								<h4>{{member.circles.connections.count}}</h4>
+								<p>
+									Connections
+								</p>
+							</div>
+						</div>
+				   </div>
+			   </div>
+		   </div> <!-- end front w-100 panel -->
+		   <div class="back w-100">
+			   <div class="header">
+				   <h5 class="motto">Profile Biography</h5>
+			   </div>
+			   <div class="content">
+				   <div class="main">
+					   <p class="text-center">{{member.profile.bio|safe|truncatechars:100}}</p>
+					   {% if member != request.user %}
+					   <span class="float-right">
+						   <a href="{% url 'profile_view' member.profile.slug %}" title="View profile"
+							class="btn py-2">
+							   View profile</a>
+					   </span>
+					   <span>
+						   <small title="View profile">
+							   <a data-href="{{ member.circles.get_api_follow_url }}" class="follow-btn btn" 
+							   data-followers="{{member.circles.followers.count}}">
+								   {% if request.user in member.circles.followers.all %}
+									   Unfollow
+								   {% else %} Follow
+								   {% endif %}
+							   </a>
+						   </small>
+					   </span>
+					   {% endif %}
+				   </div>
+			   </div>
+		   </div> <!-- end back panel -->
+	   </div> <!-- end card -->
+   </div> <!-- end card-container -->
+</div> <!-- end col sm 3 -->

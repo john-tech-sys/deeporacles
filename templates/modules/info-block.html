@@ -1,0 +1,31 @@
+{% load static %}
+{% load thumbnail %}
+
+<div class="container-fluid">
+    <div class="module module-blog_posts module-blog_posts-40 module-blog_posts-grid">
+        <div class="module-body">
+            <div class="module-item module-item-1">
+                {% for info in infos %}
+                <div class="post-layout">
+                    <div class="post-thumb">
+                        <div class="image">
+                            <img src="{% thumbnail info.image 200x150 %}"  alt="{{info.title}}"
+                                title="{{info.title}}" class="img-responsive m-auto">
+                        </div>
+                        <div class="caption">
+                            <div class="name">{{ info.title }}</div>
+                            <div class="description">{{ info.description|safe|truncatechars_html:"200" }}</div>
+                            <div class="button-group">
+                                <a class="btn btn-read-more"
+                                    href="">
+                                    <span class="btn-text">Read More</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>

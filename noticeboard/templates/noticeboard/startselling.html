@@ -1,0 +1,52 @@
+
+
+{% load static %}
+
+
+<link rel="stylesheet" href="{% static 'home/responsive.css' %}">
+<link href="{% static 'home/reserve/ajostrapee.css' %}" type="text/css" rel="stylesheet" media="all">
+<link rel="stylesheet" type="text/css" href="{% static 'home/reserve/ajostrap.css' %}">
+<link rel="stylesheet" href="{% static 'home/ajomodular.css' %}">
+<link rel="stylesheet" href="{% static 'home/css/ajoreb.css' %}">
+<link rel="stylesheet" href="{% static 'home/icons/font/bootstrap-icons.css' %}">
+
+
+    <!-- Popup Write Article -->
+
+    <div class="container-fluid">
+        <div class="modal-content">
+            <section class="faq-area section-padding-lg bg-white">
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <div class="--------------------
+                        text-center ">
+                            <h4>Starting to sell in Deepoo
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="row faq-wrapper">
+                    <div class="">
+                        <div class="accordion-wrap" id="cr-accordion">
+                            <div class="accordion my-5  text-center"
+                                id="{{ info.pk }}">
+                                <div class="section-title cursor-pointer" data-toggle="collapse"
+                                    data-target="#cr-accordion-section-{{ faq.pk }}">
+                                    <h4 class="text-blue"><b>{{ info.title }}</b>
+                                    </h4>
+                                </div>
+                                <div id="cr-accordion-section-{{ faq.pk }}"
+                                    class="collapse show" data-parent="#cr-accordion">
+                                    <div class="accordion-body" style="margin: auto;">
+                                        <blockquote>{{info.highlight|safe}}</blockquote>
+                                        <p>{{ info.details|safe }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>

@@ -1,0 +1,236 @@
+
+
+
+section.-oh {
+    overflow: hidden;
+
+}
+
+.reco-w .category-title h5 {
+  font-size: 1.2rem;
+}
+
+.reco-w .category-title h4 {
+  font-size: 1.5rem;
+}
+.crs-w .ajo {
+    scroll-snap-type: x mandatory;
+    display: flex;
+    overflow: auto;
+    margin: 0;
+  }
+  .crs-w .ajo > .itm {
+    scroll-snap-align: start;
+  }
+  html,
+  .crs-w .ajo {
+    scroll-behavior: smooth;
+  }
+  .crs-w .ajo {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+  }
+  .crs-w .ajo::-webkit-scrollbar {
+    -webkit-appearance: none;
+    display: none;
+  }
+  .crs-w .ajo .product-item:hover {
+    transform: scale(1.02);
+    transition: all 0.3s ease-out;
+  }
+  .crs-w .ajo .product-item {
+    min-width: 200px;
+    text-align: center;
+    border-radius: 10px;
+  }
+  
+  .crs-w .ajo .product-item img {
+    border-radius: 100%;
+  }
+
+  .crs-w .ajo .product-item img:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 5px 60px -10px rgba(0, 0, 0, 0.3);
+    transform: scale(1.02);
+    transition: all 0.3s ease-out;
+  }
+
+#jm .-fw-nw {
+  flex-wrap: nowrap;
+}
+
+
+.zone-0{
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: opacity 500ms;
+  opacity: 100%;
+}
+.zone-1{
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: opacity 500ms;
+  opacity: 100%;
+}
+
+.zone-2{
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: opacity 500ms;
+  opacity: 100%;
+}
+
+.common-home-2 .category-menu {
+  padding: 0;
+  margin: 0;
+}
+
+.common-home-2 .category-menu h2.module-title {
+  text-align: center;
+  text-transform: uppercase;
+  width: 100%;
+  font-weight: 700;
+  margin-top: 2rem;
+  letter-spacing: 2px;
+  word-spacing: 16px;
+  color: indigo !important;
+}
+
+.common-home-2 .category-menu .menu-item a  h5 {
+  text-align: center;
+  width: 100%;
+  color: #114488 !important;
+}
+
+.common-home-2 .category-title h2 {
+  font-size: 1.5rem;
+}
+.common-home-2 .category-title h5 {
+  font-size: 1.5rem;
+  color: #114488 !important;
+  font-weight: 800 !important;
+}
+.common-home-2 .category-menu .menu-item a  h5:hover {
+  color: aliceblue !important;
+}
+
+.common-home-2 .category-menu > .menu {
+  margin: 0;
+  display: flex;
+  -ms-flex-wrap: nowrap;
+  flex-wrap: nowrap;
+  scroll-snap-type: x mandatory;
+  overflow: hidden;
+}
+.common-home-2 .category-menu > .menu > .menu-item {
+  position: absolute;
+  overflow: hidden;
+}
+.common-home-2 .category-menu .menu .menu-item:hover {
+  z-index: 1;
+  transform: scale(1.05);
+  transition: all 0.3s ease-out;
+}
+
+/* .common-home-2 .category-menu > .menu > .menu-item a {
+  display: flex;
+  flex-direction: column;
+} */
+.common-home-2 .category-menu .menu-item .links-text {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #051a35;
+  margin: auto;
+  width: inherit;
+  white-space: nowrap;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  bottom: 0;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.common-home-2 .category-menu .menu-item a img{
+  border-radius: 100%;
+  background-color: #b2d5ff;
+  width: 100%;
+  overflow: hidden;
+}
+
+.common-home-2 .category-menu .menu-item a img:hover{
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 5px 60px -10px rgba(0, 0, 0, 0.486);
+  transform: scale(1.05);
+  transition: all 0.3s ease-out;
+}
+
+.common-home-2 .category-menu .menu-item {
+  padding: 10px;
+  margin-bottom: 0;
+  text-align: center;
+  max-width: 150px;
+  flex-wrap: wrap;
+}
+
+
+
+
+/* SEARCH BAR */
+
+#searchbar .search-form {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 1rem 0;
+}
+#searchbar form input.form-control {
+  height: 100%;
+  min-width: 150px;
+  /* flex: 3; */
+}
+
+#searchbar form select {
+  /* flex: 2; */
+  min-width: 150px;
+}
+
+#searchbar form select.form-control {
+  font-size: 1.5rem !important;
+  height: calc(3.5rem + 4px);
+} 
+
+#searchbar .form-control button{
+  width: 100px;
+  border-radius: 20px;
+  color: #0f335f;
+  padding-left: 5px;
+  padding-right: 5px;
+  background-color: #00b7f0 !important;
+}
+
+#searchbar .form-control {
+  padding-left: 3rem;
+  padding-right: 3rem;
+  justify-content: space-between;
+  display: block;
+  padding: 1.1rem 1.1rem;
+}
+#searchbar form input {
+  height: 100%;
+  font-size: 1.5rem !important;
+  padding: 1rem;
+}
+
+#searchbar .search-form {
+  display: flex;
+
+}

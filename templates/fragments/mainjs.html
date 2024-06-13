@@ -1,0 +1,356 @@
+
+
+ {% comment %} cart ajax   care should be taken while changing anything {% endcomment %}
+
+<script>
+	function removeNotification(removeNotificationURL, redirectURL) {
+		const csrftoken = getCookie('csrftoken');
+		let xmlhttp = new XMLHttpRequest();
+
+		xmlhttp.onreadystatechange = function () {
+			if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+				if (xmlhttp.status == 200) {
+					window.location.replace(redirectURL);
+				} else {
+					alert('There was an error');
+				}
+			}
+		};
+		xmlhttp.open("DELETE", removeNotificationURL, true);
+		xmlhttp.setRequestHeader('X-CSRFToken', csrftoken);
+		xmlhttp.send();
+	};
+
+	var updateBtns = document.getElementsByClassName('update-cart')
+
+	for (var i = 0; i < updateBtns.length; i++) {
+		updateBtns[i].addEventListener('click', function () {
+			var productId = this.dataset.product
+			var action = this.dataset.action
+			console.log('productId:', productId, 'action:', action)
+
+			console.log('USER:', user)
+			if (user == 'AnonymousUser') {
+				addCookieItem(productId, action)
+			} else {
+				updateUserOrder(productId, action)
+			}
+
+		})
+	}
+
+
+	function addCookieItem(productId, action) {
+		console.log('Not logged in')
+		if (action == 'add') {
+			if (cart[productId] == undefined) {
+				cart[productId] = {
+					'quantity': 1
+				}
+			} else {
+				cart[productId]['quantity'] += 1
+			}
+		}
+		if (action == 'remove') {
+			cart[productId]['quantity'] -= 1
+
+			if (cart[productId]['quantity'] <= 0) {
+				console.log('Item should be deleted')
+				delete cart[productId];
+			}
+		}
+		console.log('CART:', cart)
+		document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		location.reload()
+	}
+
+	function updateUserOrder(productId, action) {
+		console.log('User is logged in, sending data..')
+
+		var url = '/order/update_cart/'
+
+		fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrftoken,
+				},
+				body: JSON.stringify({
+					'productId': productId,
+					'action': action
+				})
+			})
+			.then((response) => {
+				return response.json()
+			})
+			.then((data) => {
+				console.log('data', data)
+				location.reload()
+			})
+	}
+
+	function searchDiv(label) {
+		if (label.className == 'search-icon not-activated') {
+
+			label.classList.remove("not-active");
+			label.classList.add("active");
+			document.getElementById('searchModal').style.display = 'block';
+
+			document.getElementById('SearchModal-close').onclick = function() {
+			document.getElementById('searchModal').style.display = "none";
+			}
+
+			window.onclick = function(event) {
+			if (event.target == document.getElementById('searchModal')) {
+				document.getElementById('searchModal').style.display = "none";
+			}
+			}
+
+
+		} else {
+			label.classList.remove("active");
+			label.classList.add("not-active");
+			document.getElementById('searchModal').style.display = 'none';
+		}
+	}
+
+	$(window).on('load', function () {
+		var $html = $('html');
+		var $body = $('body');
+		var $search = $('#search').find('input[name=\'search\']');
+		$('.search-button').on('click', function () {
+			var url = $(this).data('search-url');
+			var value = $search.val().trim();
+			if (!value) {
+				return false;
+			}
+			var category_id = parseInt($search.attr('data-category_id'));
+			if (value) {
+				url += encodeURIComponent(value);
+			}
+			if (DeepOracles['searchStyleSearchAutoSuggestDescription']) {
+				url += '&description=true';
+			}
+			if (category_id) {
+				url += '&category_id=' + category_id;
+				if (DeepOracles['searchStyleSearchAutoSuggestSubCategories']) {
+					url += '&sub_category=true';
+				}
+			}
+			location = url;
+		});
+		$search.on('keydown', function (e) {
+			if (e.keyCode === 13) {
+				$('.search-button').trigger('click');
+			}
+		});
+		$('.search-categories li').on('click', function (e) {
+			e.stopPropagation();
+			var $this = $(this);
+			$('.search-categories-button').html($this.html());
+			$search.attr('data-category_id', $this.attr('data-category_id'))
+		});
+		if (DeepOracles['searchStyleSearchAutoSuggestStatus']) {
+			$search.typeahead({
+				hint: true,
+				minLength: 1,
+				autoSelect: true
+			}, {
+				async: true,
+				display: 'name',
+				limit: Infinity,
+				source: function (query, processSync, processAsync) {
+					var data = {
+						search: query
+					};
+					var category_id = parseInt($search.attr('data-category_id'));
+					if (category_id) {
+						data.category_id = category_id;
+						if (DeepOracles['searchStyleSearchAutoSuggestSubCategories']) {
+							data.sub_category = true;
+						}
+					}
+					return $.ajax({
+						url: 'index.php?search',
+						data: data,
+						dataType: 'json',
+						success: function (json) {
+							return processAsync(json['response']);
+						}
+					});
+				},
+				templates: {
+					suggestion: function (data) {
+						if (data['view_more']) {
+							return '<div class="search-result view-more"><a href="' + data['href'] + '">' + data['name'] + '</a></div>';
+						}
+						if (data['no_results']) {
+							return '<div class="search-result no-results"><a>' + data['name'] + '</a></div>';
+						}
+						var html = '';
+						html += '<div class="search-result"><a href="' + data['href'] + '">';
+						if (data['thumb']) {
+							html += '<img src="' + data['thumb'] + '" srcset="' + data['thumb'] + ' 1x, ' + data['thumb2'] + ' 2x" />';
+						}
+						var classes = [];
+						if (data['quantity'] <= 0) {
+							classes.push('out-of-stock');
+						}
+						if (!data['price_value']) {
+							classes.push('has-zero-price');
+						}
+						html += '<span class="' + classes.join(' ') + '">';
+						html += '<span class="product-name">' + data['name'] + '</span>';
+						if (data['price']) {
+							if (data['special']) {
+								html += '<span><span class="price-old">' + data['price'] + '</span><span class="price-new">' + data['special'] + '</span></span>';
+							} else {
+								html += '<span class="price">' + data['price'] + '</span>';
+							}
+						}
+						html += '</span>';
+						html += '</a></div>';
+						return html;
+					}
+				}
+			});
+			$('.header-search > span > div').addClass('.tt-empty');
+			$('.mobile .tt-menu').on('click', function (e) {
+				e.stopPropagation();
+			});
+		}
+		if (!DeepOracles.isPopup && DeepOracles['isDesktop'] && DeepOracles['stickyStatus'] && (['classic', 'mega', 'default'].includes(DeepOracles['headerType']))) {
+			var holder = document.body;
+			var headerHeightOffset = $('.desktop-main-menu-wrapper').offset().top + (parseInt(DeepOracles['stickyAt'], 10) || 100);
+			var menuHeight = $('.desktop-main-menu-wrapper').outerHeight();
+	
+			function enableSticky() {
+				if (DeepOracles['headerType'] === 'classic' || DeepOracles['headerType'] === 'mega') {
+					$body.css('padding-top', menuHeight);
+				}
+			}
+	
+			function disableSticky() {
+				if (DeepOracles['headerType'] === 'classic' || DeepOracles['headerType'] === 'mega') {
+					$body.css('padding-top', '');
+				}
+			}
+	
+			function checkStickyOffset() {
+				return headerHeightOffset <= window.scrollY;
+			}
+	
+			function checkSticky() {
+				var old = holder.classList.contains('is-sticky');
+				holder.classList.toggle('is-sticky', checkStickyOffset());
+				var current = holder.classList.contains('is-sticky');
+				if (current !== old) {
+					if (current) {
+						enableSticky();
+					} else {
+						disableSticky();
+					}
+				}
+			}
+	
+			function checkStickyListener() {
+				requestAnimationFrame(checkSticky)
+			}
+			window.addEventListener('scroll', checkStickyListener, false);
+		}
+		if (!DeepOracles.isPopup && DeepOracles['isDesktop'] && DeepOracles['stickyStatus'] && DeepOracles['topBarStatus'] && (['compact', 'slim'].includes(DeepOracles['headerType']))) {
+			var compact = $('.mid-bar');
+			if (compact.length) {
+				$(window).on('scroll', function () {
+					var compactOffset = compact.offset().top;
+					var scroll = $(this)[0].scrollY
+					if (scroll >= compactOffset) {
+						$('body').addClass('sticky-compact');
+					} else {
+						$('body').removeClass('sticky-compact');
+					}
+				});
+			}
+		}
+		if (!DeepOracles.isPopup && DeepOracles['isDesktop'] && DeepOracles['stickyStatus'] && !DeepOracles['topBarStatus'] && !DeepOracles['stickyFullHomePadding'] && (['compact', 'slim'].includes(DeepOracles['headerType']))) {
+			var site = $('.site-wrapper');
+			var header = $('.mid-bar').outerHeight();
+			if (site.length) {
+				$(window).on('scroll', function () {
+					var siteOffset = site.offset().top - header + 1;
+					var scroll = $(this)[0].scrollY
+					if (scroll >= siteOffset) {
+						$('body').addClass('sticky-compact');
+					} else {
+						$('body').removeClass('sticky-compact');
+					}
+				});
+			}
+		}
+		if (!DeepOracles.isPopup && DeepOracles['isDesktop'] && DeepOracles['stickyStatus'] && !DeepOracles['topBarStatus'] && DeepOracles['stickyFullHomePadding'] && (['compact', 'slim'].includes(DeepOracles['headerType']))) {
+			var site = $('.site-wrapper');
+			var header = $('html:not(.route-common-home) .mid-bar').outerHeight();
+			if (site.length) {
+				$(window).on('scroll', function () {
+					var siteOffset = site.offset().top - header + 1;
+					var scroll = $(this)[0].scrollY
+					if (scroll >= siteOffset) {
+						$('body').addClass('sticky-compact');
+					} else {
+						$('body').removeClass('sticky-compact');
+					}
+				});
+			}
+		}
+		if (!DeepOracles['isDesktop'] && DeepOracles['headerMobileStickyStatus'] && $html.hasClass('mobile-header-active')) {
+			var mobileBar = $('.mobile-header .sticky-bar');
+			if (mobileBar.length) {
+				var mobileBarSticky = mobileBar.offset().top;
+				var mobileBarHeight = mobileBar.outerHeight();
+				$(window).on('scroll', function () {
+					var scroll = $(this)[0].scrollY
+					if (scroll >= mobileBarSticky) {
+						mobileBar.addClass('mobile-bar-sticky');
+						$body.css('padding-top', mobileBarHeight);
+					} else {
+						mobileBar.removeClass('mobile-bar-sticky');
+						$body.css('padding-top', '');
+					}
+				});
+			}
+		}
+		if (DeepOracles['isDesktop'] && (DeepOracles['headerMiniSearchDisplay'] === 'page')) {
+			$('.search-trigger, .desktop .search-categories .j-menu > li > a').click(function () {
+				$('.header-search input').focus();
+			});
+		}
+		if (DeepOracles['scrollTop']) {
+			var scrollTopTimeout;
+			$(window).on('scroll', function () {
+				clearTimeout(scrollTopTimeout);
+				var scroll = $(this)[0].scrollY
+				if (scroll > 500) {
+					$('.scroll-top').addClass('scroll-top-active');
+					scrollTopTimeout = setTimeout(function () {
+						$('.scroll-top').removeClass('scroll-top-active');
+					}, 3000);
+				} else {
+					$('.scroll-top').removeClass('scroll-top-active');
+				}
+			});
+			$('.scroll-top').click(function () {
+				anime({
+					targets: 'html, body',
+					scrollTop: 0,
+					duration: 750,
+					easing: 'easeInOutQuad'
+				});
+			});
+		}
+		if ($html.hasClass('footer-reveal')) {
+			var footerHeight = $('.desktop.footer-reveal footer').outerHeight();
+			$('.desktop body').css('padding-bottom', footerHeight);
+		}
+	});
+</script>
+

@@ -1,0 +1,190 @@
+{% load static %}
+{% load thumbnail %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'cropperjs/dist/cropper.min.css' %}">
+<style>
+    #jssor_2 {
+        max-height: 30vh;
+        position: relative;
+        margin: auto;
+        overflow: hidden
+    }
+    .img-cont {
+        height: 150px;
+        width: 150px;
+        position: relative;
+    }
+    .account-img {
+        height: 150px;
+        width: 150px;
+        margin: 20px;
+        padding: 5px;
+        margin-bottom: 0px;
+        transform: translate(-20px, 0px);
+        border: 5px solid #ebebeb;
+
+    }
+    .account-img-container {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+    .notify-badge {
+        position: absolute;
+        background: white;
+        box-shadow: 0px 0px 5px 0.3px;
+        text-align: center;
+        border-radius: 100%;
+        width: 42px;
+        height: 42px;
+        color: rgb(128, 128, 128);
+        padding: 5px 10px;
+        font-size: 20px;
+    }
+</style>
+<div class="container-fluid content-section">
+    <form class="form-signin d-flex justify-content-center" method="post" enctype="multipart/form-data">{% csrf_token %}
+        <div class="d-none" id="id_image_wall_crop_confirm">
+            <span id="id_wall_cancel"  class="text-danger btn p-2 cursor-pointer">cancel
+            </span>
+            <span id="id_wall_confirm" class="ml-2 text-success btn p-2 cursor-pointer">confirm
+            </span>
+        </div>
+        <input class="d-none" type="file" name="image" id="id_wall_image" onchange="readerURL(this)">
+        <div class="d-flex flex-column">
+            <button class="main-btn d-none" id="btn-save" type="submit">Save</button>
+        </div>
+    </form>
+    <div id="jssor_2">
+        <div data-u="slides" class="img" id="id_image_wall_container">
+            <img data-u="image" src="{% thumbnail user.profile.image 1600x500 crop %}"
+                id="id_cover_image_display" class="w-100">
+            {% comment %} <a class="notify-badge bottom-10 right-10 d-none" id="id_middle_wall_container">
+                <i class="bi bi-camera"></i>
+            </a> {% endcomment %}
+        </div>
+        <div class="absolute d-flex top-10 left-10 flex-column bg-info p-2 rounded">
+            <a {% if request.user == user %} href="{% url 'my_profile' %}" {% else %}
+                href="{% url 'profile_view' user.profile.slug %}" {% endif %} class="title section-title mx-auto my-2">
+                {{ user.profile.name }}
+            </a>
+            {% if user.verified.is_verified %}
+            <div class="is_verified">
+                <span class="bi bi-check-circle-fill"></span>
+            </div>
+            {% endif %}
+            <span class="h5 mx-auto">{{ user.profile.status }}</span>
+            {% if request.user == user and user.profile.is_online %}
+            <div class="online-circle"></div>
+            {% elif user.profile.is_online %}
+            <div class="online-circle"></div>
+            {% else %}
+            <div class="offline-circle"></div>
+            {% endif %}
+        </div>
+        <div>
+            <div class="account-img-container w-100 flex-column" style="top:0;">
+                <div class="img-cont image-container" id="id_image_container">
+                    {% if user.profile.picture %}
+                    <img class="circle account-img profile-image" id="id_profile_image_display"
+                        src="{% thumbnail user.profile.picture 100x100 crop %}"
+                        alt="{% thumbnail user.profile.image 50x50 crop %}">
+                    {% else %}
+                    <div class="h1 circle account-img bg-now d-flex" id="id_profile_image_display">
+                        <span class="m-auto">
+                            {{ user.profile.name_initials }}
+                        </span>
+                    </div>
+                    {% endif %}
+                    <a class="notify-badge right-0 bottom-0 d-none" id="id_middle_container">
+                        <i class="bi bi-camera"></i>
+                    </a>
+                </div>
+                <div class="d-none" id="id_image_crop_confirm">
+                    <span id="id_cancel" class="text-danger main-btn cursor-pointer">cancel
+                    </span>
+                    <span id="id_confirm" class="ml-2 text-success main-btn cursor-pointer">confirm
+                    </span>
+                </div>
+                <form class="form-signin" method="post" enctype="multipart/form-data">{% csrf_token %}
+                    <input class="d-none" type="file" name="picture" id="id_profile_image" onchange="readURL(this)">
+                  <div class="d-flex flex-column">
+                      <button class="main-btn d-none" id="btn-save" type="submit">Save</button>
+                  </div>
+              </form>
+            </div>
+        </div>
+    </div>
+    <div class="grid-rows">
+        <div class="grid-row grid-row-top-1">
+            <div class="grid-cols">
+                <div class="grid-col grid-col-top-1-1">
+                    <div class="grid-items">
+                        <div class="grid-item grid-item-top-1-1-1">
+                            <div class="module module-info_blocks module-info_blocks-260">
+                                <div class="module-body">
+                                    <div class="module-item info-blocks info-blocks-icon">
+                                        <a {% if request.user == user %} href="{% url 'my_timeline' %}"
+                                            {% else %} href="{% url 'user_timeline' user.profile.slug %}" {% endif %}
+                                            class="info-block {% if timeline_seg %}active{% endif %}">
+                                            <div class="info-block-content">
+                                                <div class="inner-content">
+                                                    <div class="info-block-title">Timeline</div>
+                                                    <div class="info-block-text">Feeds</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="module-item info-blocks info-blocks-icon">
+                                        <a {% if request.user == user %} href="{% url 'my_profile' %}"
+                                            {% else %} href="{% url 'profile_view' user.profile.slug %}" {% endif %}
+                                            class="info-block {% if profile_seg %}active{% endif %}">
+                                            <div class="info-block-content">
+                                                <div class="inner-content">
+                                                    <div class="info-block-title">Potfolio</div>
+                                                    <div class="info-block-text">Details</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class="module-item info-blocks info-blocks-icon">
+                                        <a href="{% if request.user == user %}{% url 'users_list' %}
+                                        {% else %}{% url 'user_connection_list' user.profile.slug %}{% endif %}"
+                                            class="info-block {% if circle_seg %}active{% endif %}">
+                                            <div class="info-block-content">
+                                                <div class="inner-content">
+                                                    <div class="info-block-title">Circles</div>
+                                                    <div class="info-block-text">connections</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {% if user == request.user %}
+                                    <div class="module-item info-blocks info-blocks-icon">
+                                        <a href="{% url 'profile' %}" class="info-block  {% if profset_seg %}active{% endif %}">
+                                            <div class="info-block-content">
+                                                <div class="inner-content">
+                                                    <div class="info-block-title">Settings</div>
+                                                    <div class="info-block-text">Edit Profile</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+
+
+
+

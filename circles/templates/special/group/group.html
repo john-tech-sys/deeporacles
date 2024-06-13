@@ -1,0 +1,56 @@
+{% extends 'main.html' %} 
+{% load static %} 
+{{ form.media }} 
+{% block headtitle %} {{ site_name }}-Crreat Forum {% endblock headtitle %} 
+{% block home %} 
+<div class="bg-now w-75">
+  <div class="modal" style="display: block">
+    <div class="container-fluid pops">
+      <h4 class="card-title text-center">
+        <b>
+          {% if not request.user.profile.forums.all %}Create Forum {% else %}Add
+          Forum {% endif %}</b
+        >
+      </h4>
+      <br />
+      <div class="card card-signin my-3">
+        <div class="card-body p-2">
+          <span class="close">
+            <a
+              href="{% url 'forums' %}"
+              class="bi bi-x-circle mt-2 mr-2 bg-main"
+            ></a
+          ></span>
+          <form
+            class="w-100 mx-4"
+            method="POST"
+            action="{% url 'create-forum' %}"
+            enctype="multipart/form-data">
+            {% csrf_token %} 
+            {% for field in form %}
+            <fieldset class="form-group">
+              <div class="preview w-100">
+                <mark>{{field.error}}</mark>
+              </div>
+              <div class="w-100">
+                <b>{{field.label}}:</b> <br />
+                {{field}}
+              </div>
+            </fieldset>
+            <br />
+            {% endfor %}
+            <div class="form-group d-flex justify-content-between">
+              <button
+                class="border-primary main-btn border h6 py-2 fa fa-paper-plane"
+                type="submit"
+              >
+                Create
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock home %}

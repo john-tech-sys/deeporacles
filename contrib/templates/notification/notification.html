@@ -1,0 +1,20 @@
+{% load static %}
+{% load thumbnail %}
+
+
+<div class="top-menu top-menu-14">
+        <ul class="j-menu">
+                <li class="menu-item top-menu-item dropdown drop-menu">
+                        <a class="dropdown-toggle cursor-pointer" data-toggle="" aria-expanded="false">
+                                <i class="bi bi-bell h3"></i>
+                                <span class="count-badge wishlist-badge count-zero">{{ notifications.count }}</span>
+                        </a>
+                        <div class="dropdown-menu j-dropdown ">
+                                {% include 'notification/snippet.html' %}
+                                <div class="w-100 text-center btn-primary">
+                                        <a class="text-light cursor-pointer" hx-delete="{% url 'view_all_notifs' %}" hx-target="#notification_div">Mark all as viewed</a>
+                                </div>
+                        </div>
+                </li>
+        </ul>
+</div>
