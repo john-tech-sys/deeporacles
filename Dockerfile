@@ -1,23 +1,25 @@
-FROM python:3.12-slim
+# Use a Python base image
+FROM python:3.12
 
-# Install system dependencies required for building Python packages
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
     python3-dev \
     build-essential \
-    libffi-dev \
-    libssl-dev
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the project files to the working directory
-COPY . /app
+    libgl1 \
+    libglib2.0-0 \
+    && apt-get clean
 
 # Install Python dependencies
+COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Command to run the application
-# CMD ["gunicorn", "deeporacles.wsgi:application"]
+# Copy the application files
+COPY . /app
+
+# Start the Gunicorn server
 CMD ["gunicorn", "--workers=1", "--threads=2", "--timeout=60", "deeporacles.wsgi:application"]
