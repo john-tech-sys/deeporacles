@@ -22,4 +22,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /app
 
 # Start the Gunicorn server
-CMD ["gunicorn", "--workers=1", "--threads=2", "--timeout=60", "deeporacles.wsgi:application"]
+# CMD ["gunicorn", "--workers=1", "--threads=2", "--timeout=60", "deeporacles.wsgi:application"]
+CMD ["gunicorn", "--workers=1", "--threads=2", "--timeout=60", "--bind", "0.0.0.0:8000", "--log-file", "-", "deeporacles.wsgi:application"]
