@@ -170,15 +170,26 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
+# DATABASES = {
 
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME'),
+#         'USER': config('DB_USER'),
+#         'PASSWORD' : config('DB_PASSWORD'),
+#         'PORT': config('DB_PORT'),
+#         'HOST' : config('DB_HOST'),
+#     }
+# }
+
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD' : config('DB_PASSWORD'),
-        'PORT': config('DB_PORT'),
-        'HOST' : config('DB_HOST'),
+        'NAME': os.getenv('POSTGRES_DB'),  # The name of the database
+        'USER': os.getenv('PGUSER'),  # The database user
+        'PASSWORD': os.getenv('PGPASSWORD'),  # The password for the database
+        'HOST': os.getenv('PGHOST'),  # The host provided by Railway
+        'PORT': os.getenv('PGPORT', '5432'),  # Default PostgreSQL port
     }
 }
 
