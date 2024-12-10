@@ -15,7 +15,7 @@ from pathlib import Path
 import mimetypes
 from decouple import config
 from datetime import timedelta
-
+import dj_database_url
 
 mimetypes.add_type("text/css", ".css", True)
 
@@ -35,9 +35,13 @@ SECRET_KEY = config('SECRET_KEY')
 
 OPENAI_KEY = config('OPEN_AI_KEY')
 
+ENVIRONMENT = config('ENVIRONMENT', default='production')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG',cast=bool)
-
+if ENVIRONMENT == 'development':
+    DEBUG = True
+else:
+    DEBUG = False
+    
 ALLOWED_HOSTS = ['*', '127.0.0.1', 'web-production-ceac.up.railway.app']
 
 TAGGIT_CASE_INSENSITIVE = True
@@ -170,29 +174,33 @@ CHANNEL_LAYERS = {
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD' : config('DB_PASSWORD'),
-#         'PORT': config('DB_PORT'),
-#         'HOST' : config('DB_HOST'),
-#     }
-# }
-
 DATABASES = {
+
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('POSTGRES_DB'),  # The name of the database
-        'USER': os.getenv('PGUSER'),  # The database user
-        'PASSWORD': os.getenv('PGPASSWORD'),  # The password for the database
-        'HOST': os.getenv('PGHOST'),  # The host provided by Railway
-        'PORT': os.getenv('PGPORT', '5432'),  # Default PostgreSQL port
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD' : config('DB_PASSWORD'),
+        'PORT': config('DB_PORT'),
+        'HOST' : config('DB_HOST'),
     }
 }
 
+POSTGRES_READY = False
+
+if ENVIRONMENT == 'production':
+    DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('POSTGRES_DB'),  # The name of the database
+#         'USER': os.getenv('PGUSER'),  # The database user
+#         'PASSWORD': os.getenv('PGPASSWORD'),  # The password for the database
+#         'HOST': os.getenv('PGHOST'),  # The host provided by Railway
+#         'PORT': os.getenv('PGPORT', '5432'),  # Default PostgreSQL port
+#     }
+# }
 
 # allauth
 
