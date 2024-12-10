@@ -38,7 +38,7 @@ OPENAI_KEY = config('OPEN_AI_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG',cast=bool)
 
-ALLOWED_HOSTS = ['*', '127.0.0.1', '.vercel.app']
+ALLOWED_HOSTS = ['*', '127.0.0.1', 'web-production-ceac.up.railway.app']
 
 TAGGIT_CASE_INSENSITIVE = True
 
