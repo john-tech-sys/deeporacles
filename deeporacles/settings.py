@@ -42,7 +42,9 @@ if ENVIRONMENT == 'development':
 else:
     DEBUG = False
     
-ALLOWED_HOSTS = ['*', '127.0.0.1', 'web-production-ceac.up.railway.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'deeporacles.up.railway.app']
+
+CSRF_TRUSTED_ORIGINS = ['https://deeporacles.up.railway.app']
 
 TAGGIT_CASE_INSENSITIVE = True
 
@@ -188,7 +190,7 @@ DATABASES = {
 
 POSTGRES_READY = False
 
-if ENVIRONMENT == 'production':
+if ENVIRONMENT == 'production' or POSTGRES_READY == True:
     DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
 
 # DATABASES = {
