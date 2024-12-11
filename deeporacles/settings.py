@@ -10,7 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-import django_heroku
 from pathlib import Path
 import mimetypes
 from decouple import config
@@ -421,5 +420,3 @@ LOGGING = {
    },
 }
 
-
-django_heroku.settings(locals())
