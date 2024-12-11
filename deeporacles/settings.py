@@ -188,9 +188,8 @@ DATABASES = {
     }
 }
 
-POSTGRES_READY = False
 
-if ENVIRONMENT == 'production' or POSTGRES_READY == True:
+if ENVIRONMENT == 'production':
     DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
 
 # DATABASES = {
