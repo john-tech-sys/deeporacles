@@ -187,21 +187,12 @@ DATABASES = {
         'HOST' : config('DB_HOST'),
     }
 }
-
+ 
 
 if ENVIRONMENT == 'production':
     DATABASES['default'] = dj_database_url.parse(config('DATABASE_URL'))
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': os.getenv('POSTGRES_DB'),  # The name of the database
-#         'USER': os.getenv('PGUSER'),  # The database user
-#         'PASSWORD': os.getenv('PGPASSWORD'),  # The password for the database
-#         'HOST': os.getenv('PGHOST'),  # The host provided by Railway
-#         'PORT': os.getenv('PGPORT', '5432'),  # Default PostgreSQL port
-#     }
-# }
+
 
 # allauth
 
