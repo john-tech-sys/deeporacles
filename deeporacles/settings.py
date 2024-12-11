@@ -42,9 +42,9 @@ if ENVIRONMENT == 'development':
 else:
     DEBUG = False
     
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'deeporacles.up.railway.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'deeporacles.up.railway.app', 'deeporacles.com']
 
-CSRF_TRUSTED_ORIGINS = ['https://deeporacles.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://deeporacles.up.railway.app', 'https://deeporacles.com']
 
 TAGGIT_CASE_INSENSITIVE = True
 
