@@ -1,26 +1,29 @@
-# Use a Python base image
-FROM python:3.12
+# Use an official Python runtime as a parent image
+FROM python:3.12-slim
 
-# Set work directory
+# Set the working directory
 WORKDIR /app
 
 # Install system dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
     python3-dev \
     build-essential \
     libgl1 \
     libglib2.0-0 \
-    && apt-get clean
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Copy the application files
 COPY . /app
 
-# Start the Gunicorn server
-# CMD ["gunicorn", "--workers=1", "--threads=2", "--timeout=60", "deeporacles.wsgi:application"]
-CMD ["gunicorn", "--workers=1", "--threads=2", "--timeout=60", "--bind", "0.0.0.0:8000", "--log-file", "-", "deeporacles.wsgi:application"]
+# Expose port 8000
+EXPOSE 8000
+
+# Run the application
+CMD ["gunicorn", "--workers=3", "--threads=2", "--timeout=60", "--bind", "0.0.0.0:8000", "deeporacles.wsgi:application"]
