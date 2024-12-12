@@ -23,7 +23,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
 COPY . /app
 
 # Expose port 8000
-EXPOSE 8000
+EXPOSE 13
 
 # Run the application
-CMD ["gunicorn", "--workers=3", "--threads=2", "--timeout=60", "--bind", "0.0.0.0:8000", "deeporacles.wsgi:application"]
+CMD ["gunicorn", "--workers=3", "--threads=2", "--timeout=60", "--bind", "0.0.0.0:13", "deeporacles.wsgi:application"]
